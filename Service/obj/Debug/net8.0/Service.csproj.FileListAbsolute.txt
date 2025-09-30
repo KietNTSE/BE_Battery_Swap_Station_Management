@@ -1,0 +1,17 @@
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\bin\Debug\net8.0\Service.deps.json
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\bin\Debug\net8.0\Service.runtimeconfig.json
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\bin\Debug\net8.0\Service.dll
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\bin\Debug\net8.0\Service.pdb
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\bin\Debug\net8.0\BusinessObject.dll
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\bin\Debug\net8.0\BusinessObject.pdb
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.csproj.AssemblyReference.cache
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.GeneratedMSBuildEditorConfig.editorconfig
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.AssemblyInfoInputs.cache
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.AssemblyInfo.cs
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.csproj.CoreCompileInputs.cache
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.csproj.Up2Date
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.dll
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\refint\Service.dll
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.pdb
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\Service.genruntimeconfig.cache
+F:\F\Battery_Swap_Station_Management_System_BE\EV_Driver\Service\obj\Debug\net8.0\ref\Service.dll
