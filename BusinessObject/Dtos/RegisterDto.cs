@@ -21,6 +21,6 @@ namespace BusinessObject.DTOs
         [StringLength(255, MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;
 
-        public UserRole Role { get; set; } = UserRole.Customer;
+        public UserRole Role { get; set; } = UserRole.Driver;
     }
 }

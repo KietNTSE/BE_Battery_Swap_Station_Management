@@ -1,6 +1,6 @@
 ﻿using BusinessObject.Entities;
-using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;
+using BusinessObject.Enums;
 
 namespace BusinessObject
 {
@@ -11,28 +11,51 @@ namespace BusinessObject
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Station> Stations { get; set; }
+        public DbSet<BatteryType> BatteryTypes { get; set; }
+        public DbSet<Battery> Batteries { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<StationStaff> StationStaffs { get; set; }
+        public DbSet<BatterySwap> BatterySwaps { get; set; }
+        public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<SupportTicket> SupportTickets { get; set; }
+        public DbSet<StationInventory> StationInventories { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure User entity
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(u => u.UserId);
-                entity.HasIndex(u => u.Email).IsUnique();
+            // Configure composite key for Booking
+            modelBuilder.Entity<Booking>()
+                .HasKey(b => new { b.StationId, b.UserId, b.VehicleId, b.BatteryId, b.BatteryTypeId });
 
-                // Configure enum conversions
-                entity.Property(u => u.Role)
-                    .HasConversion<int>();
+            // Configure unique indexes
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
 
-                entity.Property(u => u.Status)
-                    .HasConversion<int>();
+            modelBuilder.Entity<Battery>()
+                .HasIndex(b => b.SerialNo)
+                .IsUnique();
 
-                // Set default values
-                entity.Property(u => u.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
-            });
+            modelBuilder.Entity<Vehicle>()
+                .HasIndex(v => v.LicensePlate)
+                .IsUnique();
+
+            // Configure default values
+            modelBuilder.Entity<User>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Station>()
+                .Property(s => s.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
 
             // Seed data
             SeedData(modelBuilder);
@@ -51,6 +74,37 @@ namespace BusinessObject
                     Role = UserRole.Admin,
                     Status = UserStatus.Active,
                     Password = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
+                    CreatedAt = DateTime.UtcNow
+                }
+            );
+
+            // Seed battery types
+            modelBuilder.Entity<BatteryType>().HasData(
+                new BatteryType { BatteryTypeId = "type-001", BatteryTypeName = "Standard Li-ion" },
+                new BatteryType { BatteryTypeId = "type-002", BatteryTypeName = "High Capacity Li-ion" },
+                new BatteryType { BatteryTypeId = "type-003", BatteryTypeName = "Fast Charge Li-ion" }
+            );
+
+            // Seed subscription plans
+            modelBuilder.Entity<SubscriptionPlan>().HasData(
+                new SubscriptionPlan
+                {
+                    PlanId = "plan-001",
+                    Name = "Basic Plan",
+                    Description = "Basic battery swap plan",
+                    MonthlyFee = 199000,
+                    SwapsIncluded = "10",
+                    Active = true,
+                    CreatedAt = DateTime.UtcNow
+                },
+                new SubscriptionPlan
+                {
+                    PlanId = "plan-002",
+                    Name = "Premium Plan",
+                    Description = "Premium battery swap plan",
+                    MonthlyFee = 399000,
+                    SwapsIncluded = "25",
+                    Active = true,
                     CreatedAt = DateTime.UtcNow
                 }
             );

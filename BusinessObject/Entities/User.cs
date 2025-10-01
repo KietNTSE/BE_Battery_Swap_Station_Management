@@ -27,7 +27,7 @@ namespace BusinessObject.Entities
 
         [Required]
         [Column("role")]
-        public UserRole Role { get; set; } = UserRole.Customer;
+        public UserRole Role { get; set; } = UserRole.Driver;
 
         [Required]
         [Column("status")]
@@ -40,5 +40,19 @@ namespace BusinessObject.Entities
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // Navigation properties
+        public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
+        public virtual ICollection<BatterySwap> BatterySwaps { get; set; } = new List<BatterySwap>();
+        public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public virtual ICollection<Battery> Batteries { get; set; } = new List<Battery>();
+        
+        public virtual ICollection<StationStaff> StationStaffs { get; set; } = new List<StationStaff>();
+        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
+        public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+        public virtual ICollection<SubscriptionPayment> SubscriptionPayments { get; set; } = new List<SubscriptionPayment>();
     }
 }
