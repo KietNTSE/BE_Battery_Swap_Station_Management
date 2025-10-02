@@ -3,24 +3,22 @@ namespace BusinessObject.DTOs;
 public class ResponseObject <T>
 {
     public T? Content { get; set; }
-    public string Message { get; set; }
-    public string Code { get; set; }
-    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+    public bool Success { get; set; } = false;
     public PaginationResponse? Pagination { get; set; }
-    public ResponseObject()
-    {
-        Message = string.Empty;
-        Code = string.Empty;
-        Success = false;
-    }
 
-    public ResponseObject(T? content, string message, string code, bool success, PaginationResponse? pagination = null)
+    public ResponseObject<T> UnwrapPagination<TList, TItem>(PaginationWrapper<TList, TItem> response)
+        where TList : IList<TItem>
     {
-        Content = content;
-        Message = message;
-        Code = code;
-        Success = success;
-        Pagination = pagination;
+        Content = (T)(object)response.Items!;
+        Pagination = new PaginationResponse
+        {
+            Page = response.Page,
+            TotalCount = response.TotalCount,
+            PageSize = response.PageSize
+        };
+        return this;
     }
 }
 
@@ -31,18 +29,11 @@ public class PaginationResponse
     public int PageSize { get; set; }
 }
 
-public class PaginationWrapper<T, TU> where T : IList<TU>
+public class PaginationWrapper<T, TU>(T items, int page, int totalCount, int pageSize)
+    where T : IList<TU>
 {
-    public T Items { get; set; }
-    public int Page { get; set; }
-    public int TotalCount { get; set; }
-    public int PageSize { get; set; }
-    
-    public PaginationWrapper(T items, int page, int totalCount, int pageSize)
-    {
-        Items = items;
-        Page = page;
-        TotalCount = totalCount;
-        PageSize = pageSize;
-    }
+    public T Items { get; set; } = items;
+    public int Page { get; set; } = page;
+    public int TotalCount { get; set; } = totalCount;
+    public int PageSize { get; set; } = pageSize;
 }

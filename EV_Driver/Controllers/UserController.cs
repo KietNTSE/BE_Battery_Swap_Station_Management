@@ -72,4 +72,17 @@ public class UserController(IUserService userService): ControllerBase
             Success = true
         });
     }
+
+    [HttpGet]
+    public async Task<ActionResult<ResponseObject<List<UserProfileResponse>>>> GetAllUserProfile(int page, int size,
+        string? search)
+    {
+        var response = await userService.GetAllUsersAsync(page, size, search);
+        return Ok(new ResponseObject<List<UserProfileResponse>>
+        {
+            Message = "User profile retrieved successfully",
+            Code = "200",
+            Success = true
+        }.UnwrapPagination(response));
+    }
 }
