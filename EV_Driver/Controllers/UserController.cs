@@ -11,7 +11,7 @@ namespace EV_Driver.Controllers;
 public class UserController(IUserService userService): ControllerBase
 {
     [HttpGet("me")]
-    public async Task<IActionResult> GetMeUserProfile()
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> GetMeUserProfile()
     {
         var user = await userService.GetMeProfileAsync();
         return Ok(new ResponseObject<UserProfileResponse>
@@ -24,7 +24,7 @@ public class UserController(IUserService userService): ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetProfileById(string id)
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> GetProfileById(string id)
     {
         var user = await userService.GetUserProfileAsync(id);
         return Ok(new ResponseObject<UserProfileResponse>
@@ -37,7 +37,7 @@ public class UserController(IUserService userService): ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUserProfile(string id, [FromBody] UserProfileRequest request)
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateUserProfile(string id, [FromBody] UserProfileRequest request)
     {
         var user = await userService.UpdateUserProfileResponse(id, request);
         return Ok(new ResponseObject<UserProfileResponse>
@@ -49,7 +49,7 @@ public class UserController(IUserService userService): ControllerBase
         });
     }
     [HttpPut("me")]
-    public async Task<IActionResult> UpdateMeProfile([FromBody] UserProfileRequest request)
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateMeProfile([FromBody] UserProfileRequest request)
     {
         var user = await userService.UpdateMeProfileAsync(request);
         return Ok(new ResponseObject<UserProfileResponse>
@@ -62,7 +62,7 @@ public class UserController(IUserService userService): ControllerBase
     }
     
     [HttpPut("me/password")]
-    public async Task<IActionResult> UpdateMePassword([FromBody] ChangePasswordRequest request)
+    public async Task<ActionResult<ResponseObject<object>>> UpdateMePassword([FromBody] ChangePasswordRequest request)
     {
         await userService.UpdatePassword(request);
         return Ok(new ResponseObject<object>
@@ -71,5 +71,18 @@ public class UserController(IUserService userService): ControllerBase
             Code = "200",
             Success = true
         });
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ResponseObject<List<UserProfileResponse>>>> GetAllUserProfile(int page, int size,
+        string? search)
+    {
+        var response = await userService.GetAllUsersAsync(page, size, search);
+        return Ok(new ResponseObject<List<UserProfileResponse>>
+        {
+            Message = "User profile retrieved successfully",
+            Code = "200",
+            Success = true
+        }.UnwrapPagination(response));
     }
 }

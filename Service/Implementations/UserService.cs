@@ -12,6 +12,29 @@ namespace Service.Implementations;
 
 public class UserService(ApplicationDbContext context, ILogger<UserService> logger) : IUserService
 {
+
+    public async Task<PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>> GetAllUsersAsync(int page,
+        int pageSize, string? search)
+    {
+        var query = context.Users.AsQueryable();
+        if (!string.IsNullOrEmpty(search))
+        {
+            query = query.Where(u => u.FullName.Contains(search) || u.Email.Contains(search));
+        }
+        var totalItem = await query.CountAsync();
+        var users = await query.Skip((page - 1) * pageSize).Take(pageSize).OrderByDescending(u => u.CreatedAt).Select(u => new UserProfileResponse
+        {
+            UserId = u.UserId,
+            FullName = u.FullName,
+            Email = u.Email,
+            Phone = u.Phone,
+            Role = u.Role,
+            Status = u.Status,
+            CreatedAt = u.CreatedAt
+        }).ToListAsync();
+        return new PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>(users, page, totalItem, pageSize);
+    } 
+    
     public async Task<UserProfileResponse?> GetUserProfileAsync(string userId)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);

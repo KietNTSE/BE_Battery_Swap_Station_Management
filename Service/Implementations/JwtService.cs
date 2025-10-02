@@ -26,7 +26,7 @@ public class JwtService(IConfiguration config) : IJwtService
             issuer: jwtSettings["Issuer"],
             audience: jwtSettings["Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpiresInMinutes"])),
+            expires: DateTime.UtcNow.AddHours(Convert.ToDouble(jwtSettings["ExpiryInHours"])),
             signingCredentials: credential
         );
 
@@ -43,7 +43,7 @@ public class JwtService(IConfiguration config) : IJwtService
 
         try
         {
-            var jwtSettings = config.GetSection("Jwt");
+            var jwtSettings = config.GetSection("JwtSettings");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
@@ -60,7 +60,7 @@ public class JwtService(IConfiguration config) : IJwtService
                 ClockSkew = TimeSpan.Zero
             };
 
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
             
             userId = principal.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? string.Empty;
             role = principal.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
