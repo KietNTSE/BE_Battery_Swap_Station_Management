@@ -6,7 +6,5 @@ namespace Service.Interfaces
     {
         Task<AuthResponseDto?> RegisterAsync(RegisterDto registerDto);
         Task<AuthResponseDto?> LoginAsync(LoginDto loginDto);
-        Task<UserProfileDto?> GetUserProfileAsync(string userId);
-        string GenerateJwtToken(string userId, string email, string role);
     }
 }
