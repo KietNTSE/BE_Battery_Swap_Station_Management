@@ -32,16 +32,29 @@ namespace BusinessObject.Entities
         public string BatteryTypeId { get; set; } = string.Empty;
 
         [Required]
-        [Column("date")]
-        public DateTime Date { get; set; }
+        [Column("booking_date")]
+        public DateTime BookingDate { get; set; }
+
+        [Required]
+        [Column("time_slot")]
+        public TimeSpan TimeSlot { get; set; }
 
         [Required]
         [Column("status")]
         public BBRStatus Status { get; set; } = BBRStatus.Pending;
 
+        [Column("confirm_by")]
+        public string? ConfirmBy { get; set; } = string.Empty;
+
+        [Column("complete_at")]
+        public DateTime? CompleteAt { get; set; }
+
         [Required]
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [Column("updated_at")]
+        public DateTime? UpdatedAt { get; set; }
 
         // Foreign key navigation properties
         [ForeignKey("StationId")]
@@ -50,7 +63,7 @@ namespace BusinessObject.Entities
         [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
 
-        [ForeignKey("VehiclesId")]
+        [ForeignKey("VehicleId")]
         public virtual Vehicle Vehicle { get; set; } = null!;
 
         [ForeignKey("BatteryId")]

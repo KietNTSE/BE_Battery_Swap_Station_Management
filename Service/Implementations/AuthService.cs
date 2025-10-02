@@ -1,5 +1,5 @@
 ﻿using BusinessObject;
-using BusinessObject.DTOs;
+using BusinessObject.Dtos.UserDtos;
 using BusinessObject.Entities;
 using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 ﻿using BusinessObject.Enums;
 
-namespace BusinessObject.DTOs
+namespace BusinessObject.Dtos.UserDtos
 {
     public class AuthResponseDto
     {
