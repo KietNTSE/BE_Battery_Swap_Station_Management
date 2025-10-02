@@ -34,7 +34,7 @@ namespace EV_Driver.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                throw new InvalidModelStateException(ModelState);
             }
 
             var result = await authService.LoginAsync(loginDto);
