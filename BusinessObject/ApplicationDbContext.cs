@@ -43,6 +43,13 @@ namespace BusinessObject
             });
             #endregion
 
+            #region BatteryType Configuration
+            modelBuilder.Entity<BatteryType>(entity =>
+            {
+                entity.HasKey(bt => bt.BatteryTypeId);
+            });
+            #endregion
+
             #region Station Configuration
             modelBuilder.Entity<Station>(entity =>
             {
@@ -50,13 +57,6 @@ namespace BusinessObject
                 entity.Property(s => s.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
                 entity.Property(s => s.Latitude).HasPrecision(18, 6);
                 entity.Property(s => s.Longitude).HasPrecision(18, 6);
-            });
-            #endregion
-
-            #region BatteryType Configuration
-            modelBuilder.Entity<BatteryType>(entity =>
-            {
-                entity.HasKey(bt => bt.BatteryTypeId);
             });
             #endregion
 
@@ -68,22 +68,6 @@ namespace BusinessObject
                 entity.Property(b => b.Owner).HasConversion<int>();
                 entity.HasIndex(b => b.SerialNo).IsUnique();
                 entity.Property(b => b.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                // ✅ SỬA: Relationships với NO ACTION
-                entity.HasOne(b => b.Station)
-                    .WithMany(s => s.Batteries)
-                    .HasForeignKey(b => b.StationId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(b => b.User)
-                    .WithMany(u => u.Batteries)
-                    .HasForeignKey(b => b.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(b => b.BatteryType)
-                    .WithMany(bt => bt.Batteries)
-                    .HasForeignKey(b => b.BatteryTypeId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
@@ -93,22 +77,6 @@ namespace BusinessObject
                 entity.HasKey(v => v.VehicleId);
                 entity.HasIndex(v => v.LicensePlate).IsUnique();
                 entity.Property(v => v.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                // ✅ SỬA: Relationships với NO ACTION
-                entity.HasOne(v => v.User)
-                    .WithMany(u => u.Vehicles)
-                    .HasForeignKey(v => v.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(v => v.Battery)
-                    .WithMany() // ✅ Bỏ navigation property để tránh circular reference
-                    .HasForeignKey(v => v.BatteryId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(v => v.BatteryType)
-                    .WithMany(bt => bt.Vehicles)
-                    .HasForeignKey(v => v.BatteryTypeId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
@@ -121,32 +89,6 @@ namespace BusinessObject
 
                 entity.HasIndex(b => new { b.StationId, b.BookingDate, b.TimeSlot })
                     .HasDatabaseName("IX_Booking_Station_Date_TimeSlot");
-
-                // ✅ SỬA: Relationships với NO ACTION
-                entity.HasOne(b => b.User)
-                    .WithMany(u => u.Bookings)
-                    .HasForeignKey(b => b.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(b => b.Vehicle)
-                    .WithMany(v => v.Bookings)
-                    .HasForeignKey(b => b.VehicleId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(b => b.Station)
-                    .WithMany(s => s.Bookings)
-                    .HasForeignKey(b => b.StationId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(b => b.Battery)
-                    .WithMany(bat => bat.Bookings)
-                    .HasForeignKey(b => b.BatteryId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(b => b.BatteryType)
-                    .WithMany() // ✅ Bỏ navigation property
-                    .HasForeignKey(b => b.BatteryTypeId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
@@ -155,16 +97,6 @@ namespace BusinessObject
             {
                 entity.HasKey(ss => ss.StationStaffId);
                 entity.Property(ss => ss.AssignedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(ss => ss.User)
-                    .WithMany(u => u.StationStaffs)
-                    .HasForeignKey(ss => ss.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(ss => ss.Station)
-                    .WithMany(s => s.StationStaffs)
-                    .HasForeignKey(ss => ss.StationId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
@@ -175,60 +107,28 @@ namespace BusinessObject
                 entity.Property(bs => bs.Status).HasConversion<int>();
                 entity.Property(bs => bs.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
                 entity.Property(bs => bs.SwappedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(bs => bs.Vehicle)
-                    .WithMany(v => v.BatterySwaps)
-                    .HasForeignKey(bs => bs.VehicleId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(bs => bs.User)
-                    .WithMany(u => u.BatterySwaps)
-                    .HasForeignKey(bs => bs.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(bs => bs.Station)
-                    .WithMany() // ✅ Bỏ navigation property
-                    .HasForeignKey(bs => bs.StationId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(bs => bs.Battery)
-                    .WithMany(b => b.BatterySwaps)
-                    .HasForeignKey(bs => bs.BatteryId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(bs => bs.StationStaff)
-                    .WithMany(ss => ss.BatterySwaps)
-                    .HasForeignKey(bs => bs.StationStaffId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
-            #region Subscription Related Configurations
+            #region SubscriptionPlans Configuration
             modelBuilder.Entity<SubscriptionPlan>(entity =>
             {
                 entity.HasKey(sp => sp.PlanId);
                 entity.Property(sp => sp.MonthlyFee).HasPrecision(18, 2);
                 entity.Property(sp => sp.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             });
+            #endregion
 
+            #region Subscriptions Configuration
             modelBuilder.Entity<Subscription>(entity =>
             {
                 entity.HasKey(s => s.SubscriptionId);
                 entity.Property(s => s.Status).HasConversion<int>();
                 entity.Property(s => s.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(s => s.User)
-                    .WithMany(u => u.Subscriptions)
-                    .HasForeignKey(s => s.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(s => s.SubscriptionPlan)
-                    .WithMany(sp => sp.Subscriptions)
-                    .HasForeignKey(s => s.PlanId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
+            #endregion
 
-            // ✅ SỬA: SubscriptionPayment configuration
+            #region SubscriptionPayment Configuration
             modelBuilder.Entity<SubscriptionPayment>(entity =>
             {
                 entity.HasKey(sp => sp.SubPayId);
@@ -236,17 +136,6 @@ namespace BusinessObject
                 entity.Property(sp => sp.Status).HasConversion<int>();
                 entity.Property(sp => sp.PaymentMethod).HasConversion<int>();
                 entity.Property(sp => sp.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                // ✅ SỬA: Explicitly specify navigation properties to avoid shadow property
-                entity.HasOne(sp => sp.User)
-                    .WithMany() // Không tạo navigation property ngược lại
-                    .HasForeignKey(sp => sp.UserId)
-                    .OnDelete(DeleteBehavior.NoAction);
-
-                entity.HasOne(sp => sp.Subscription)
-                    .WithMany(s => s.SubscriptionPayments)
-                    .HasForeignKey(sp => sp.SubscriptionId)
-                    .OnDelete(DeleteBehavior.NoAction);
             });
             #endregion
 
@@ -258,35 +147,14 @@ namespace BusinessObject
                 entity.Property(p => p.Status).HasConversion<int>();
                 entity.Property(p => p.PaymentMethod).HasConversion<int>();
                 entity.Property(p => p.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(p => p.User)
-                    .WithMany(u => u.Payments)
-                    .HasForeignKey(p => p.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(p => p.BatterySwap)
-                    .WithMany()
-                    .HasForeignKey(p => p.SwapId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
-            #region Reviews Configuration - ✅ SỬA CHÍNH Ở ĐÂY
+            #region Reviews Configuration
             modelBuilder.Entity<Review>(entity =>
             {
                 entity.HasKey(r => r.ReviewId);
                 entity.Property(r => r.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                // ✅ SỬA: NO ACTION thay vì Restrict để tránh cascade conflicts
-                entity.HasOne(r => r.User)
-                    .WithMany(u => u.Reviews)
-                    .HasForeignKey(r => r.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(r => r.Station)
-                    .WithMany(s => s.Reviews)
-                    .HasForeignKey(r => r.StationId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
             });
             #endregion
 
@@ -297,41 +165,23 @@ namespace BusinessObject
                 entity.Property(st => st.Priority).HasConversion<int>();
                 entity.Property(st => st.Status).HasConversion<int>();
                 entity.Property(st => st.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(st => st.User)
-                    .WithMany(u => u.SupportTickets)
-                    .HasForeignKey(st => st.UserId)
-                    .OnDelete(DeleteBehavior.NoAction); // ✅ THAY ĐỔI
-
-                entity.HasOne(st => st.Station)
-                    .WithMany() // ✅ Bỏ navigation property
-                    .HasForeignKey(st => st.StationId)
-                    .OnDelete(DeleteBehavior.SetNull);
             });
             #endregion
 
-            #region StationInventory and Reservation Configuration
+            #region StationInventory Configuration
             modelBuilder.Entity<StationInventory>(entity =>
             {
                 entity.HasKey(si => si.StationInventoryId);
                 entity.Property(si => si.LastUpdate).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(si => si.Station)
-                    .WithMany(s => s.StationInventories)
-                    .HasForeignKey(si => si.StationId)
-                    .OnDelete(DeleteBehavior.Cascade); // Giữ Cascade cho relationship này
             });
+            #endregion
 
+            #region Reservation Configuration
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(r => r.ReservationId);
                 entity.Property(r => r.Status).HasConversion<int>();
                 entity.Property(r => r.ReservedAt).HasDefaultValueSql("GETUTCDATE()");
-
-                entity.HasOne(r => r.StationInventory)
-                    .WithMany(si => si.Reservations)
-                    .HasForeignKey(r => r.StationInventoryId)
-                    .OnDelete(DeleteBehavior.Cascade); // Giữ Cascade cho relationship này
             });
             #endregion
 
@@ -363,7 +213,7 @@ namespace BusinessObject
                 new BatteryType { BatteryTypeId = "type-003", BatteryTypeName = "Fast Charge Li-ion" }
             );
 
-            // ✅ SỬA: Seed subscription plans với correct type
+            // Seed subscription plans
             modelBuilder.Entity<SubscriptionPlan>().HasData(
                 new SubscriptionPlan
                 {
@@ -371,7 +221,7 @@ namespace BusinessObject
                     Name = "Basic Plan",
                     Description = "Basic battery swap plan",
                     MonthlyFee = 199000,
-                    SwapsIncluded = "10", // int không phải string
+                    SwapsIncluded = "10",
                     Active = true,
                     CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 },
@@ -381,7 +231,7 @@ namespace BusinessObject
                     Name = "Premium Plan",
                     Description = "Premium battery swap plan",
                     MonthlyFee = 399000,
-                    SwapsIncluded = "25", // int không phải string
+                    SwapsIncluded = "25",
                     Active = true,
                     CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }

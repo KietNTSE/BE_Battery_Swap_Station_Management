@@ -7,60 +7,40 @@
       "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\ev_driver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|solutionrelative:ev_driver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\ev_driver\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|solutionrelative:ev_driver\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\ev_driver\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|solutionrelative:ev_driver\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\ev_driver\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|solutionrelative:ev_driver\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\ev_driver\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|solutionrelative:ev_driver\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\enums\\batterystatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\enums\\batterystatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\battery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\battery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\dtos\\userdtos\\authresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\dtos\\userdtos\\authresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\service\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\service\\implementations\\batteryswapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\implementations\\batteryswapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\service\\implementations\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\implementations\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\service\\implementations\\batteryswapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\implementations\\batteryswapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\service\\helpers\\jwthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\helpers\\jwthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\subscriptionpayment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\subscriptionpayment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\booking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\booking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\batteryswap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\batteryswap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\ev_driver\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3663C03D-71BD-457B-B051-383B8094B1E3}|EV_Driver\\EV_Driver.csproj|solutionrelative:ev_driver\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\dtos\\userdtos\\authresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\dtos\\userdtos\\authresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\service\\interfaces\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -145,10 +125,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\dtos\\bookingdtos\\bookingbasedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\dtos\\bookingdtos\\bookingbasedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|f:\\f\\battery_swap_station_management_system_be\\ev_driver\\businessobject\\entities\\batteryswap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\batteryswap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -158,58 +134,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "EV_Driver\\appsettings.Development.json",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\appsettings.Development.json",
-              "RelativeToolTip": "EV_Driver\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-02T03:05:10.862Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "EV_Driver\\Properties\\launchSettings.json",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\Properties\\launchSettings.json",
-              "RelativeToolTip": "EV_Driver\\Properties\\launchSettings.json",
+              "Title": "JwtHelper.cs",
+              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Helpers\\JwtHelper.cs",
+              "RelativeDocumentMoniker": "Service\\Helpers\\JwtHelper.cs",
+              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Helpers\\JwtHelper.cs",
+              "RelativeToolTip": "Service\\Helpers\\JwtHelper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-02T03:04:59.836Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\appsettings.json",
-              "RelativeDocumentMoniker": "EV_Driver\\appsettings.json",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\appsettings.json",
-              "RelativeToolTip": "EV_Driver\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-02T03:03:49.288Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\Program.cs",
-              "RelativeDocumentMoniker": "EV_Driver\\Program.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\Program.cs",
-              "RelativeToolTip": "EV_Driver\\Program.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAAAEEAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:47:12.805Z",
+              "WhenOpened": "2025-10-02T14:05:40.221Z",
               "EditorCaption": ""
             },
             {
@@ -220,72 +157,46 @@
               "RelativeDocumentMoniker": "BusinessObject\\ApplicationDbContext.cs",
               "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\ApplicationDbContext.cs*",
               "RelativeToolTip": "BusinessObject\\ApplicationDbContext.cs*",
-              "ViewState": "AgIAAHABAAAAAAAAAAAzwH8BAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAuwBcAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-01T16:00:20.199Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "BatteryStatus.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Enums\\BatteryStatus.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Enums\\BatteryStatus.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Enums\\BatteryStatus.cs",
-              "RelativeToolTip": "BusinessObject\\Enums\\BatteryStatus.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\AuthService.cs",
+              "RelativeDocumentMoniker": "Service\\Implementations\\AuthService.cs",
+              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\AuthService.cs",
+              "RelativeToolTip": "Service\\Implementations\\AuthService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-02T02:46:41.004Z",
+              "WhenOpened": "2025-10-01T16:48:26.082Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Vehicle.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Vehicle.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\Vehicle.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Vehicle.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\Vehicle.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "BatterySwapService.cs",
+              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\BatterySwapService.cs",
+              "RelativeDocumentMoniker": "Service\\Implementations\\BatterySwapService.cs",
+              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\BatterySwapService.cs*",
+              "RelativeToolTip": "Service\\Implementations\\BatterySwapService.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-02T02:46:02.882Z",
+              "WhenOpened": "2025-10-01T17:03:19.921Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "User.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\User.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\User.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\User.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\User.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAAUwDYAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-02T02:44:06.072Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Battery.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Battery.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\Battery.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Battery.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\Battery.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-02T02:42:48.264Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 1,
               "Title": "BookingService.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\BookingService.cs",
               "RelativeDocumentMoniker": "Service\\Implementations\\BookingService.cs",
               "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\BookingService.cs",
               "RelativeToolTip": "Service\\Implementations\\BookingService.cs",
-              "ViewState": "AgIAADICAAAAAAAAAAAuwF4CAAALAAAAAAAAAA==",
+              "ViewState": "AgIAAF0BAAAAAAAAAAAAAF4CAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-01T16:32:15.902Z",
               "EditorCaption": ""
@@ -293,6 +204,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "SubscriptionPayment.cs",
+              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T14:01:09.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Booking.cs",
+              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Booking.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\Booking.cs",
+              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Booking.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\Booking.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-01T15:24:20.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "BookingController.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\EV_Driver\\Controllers\\BookingController.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Controllers\\BookingController.cs",
@@ -300,25 +237,11 @@
               "RelativeToolTip": "EV_Driver\\Controllers\\BookingController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAOoAAABoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:45:31.742Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:45:31.742Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Booking.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Booking.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\Booking.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\Booking.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\Booking.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T15:24:20.303Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 10,
               "Title": "IBookingService.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Interfaces\\IBookingService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IBookingService.cs",
@@ -326,38 +249,24 @@
               "RelativeToolTip": "Service\\Interfaces\\IBookingService.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAAkwAEAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:30:30.203Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:30:30.203Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "BatterySwapService.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\BatterySwapService.cs",
-              "RelativeDocumentMoniker": "Service\\Implementations\\BatterySwapService.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\BatterySwapService.cs",
-              "RelativeToolTip": "Service\\Implementations\\BatterySwapService.cs",
-              "ViewState": "AgIAAJcAAAAAAAAAAMBSwKIAAAAqAAAAAAAAAA==",
+              "DocumentIndex": 7,
+              "Title": "BatterySwap.cs",
+              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\BatterySwap.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\BatterySwap.cs",
+              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\BatterySwap.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\BatterySwap.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAA5wBsAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T17:03:19.921Z",
+              "WhenOpened": "2025-10-01T15:39:47.371Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\AuthService.cs",
-              "RelativeDocumentMoniker": "Service\\Implementations\\AuthService.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Implementations\\AuthService.cs",
-              "RelativeToolTip": "Service\\Implementations\\AuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAMBSwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:48:26.082Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "AuthResponseDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\UserDtos\\AuthResponseDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\UserDtos\\AuthResponseDto.cs",
@@ -365,12 +274,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\UserDtos\\AuthResponseDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:05:01.848Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:05:01.848Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 11,
               "Title": "IBatterySwapService.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Interfaces\\IBatterySwapService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IBatterySwapService.cs",
@@ -378,12 +286,11 @@
               "RelativeToolTip": "Service\\Interfaces\\IBatterySwapService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T17:03:59.741Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T17:03:59.741Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 12,
               "Title": "CreateBatterySwapDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BatterySwapDtos\\CreateBatterySwapDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BatterySwapDtos\\CreateBatterySwapDto.cs",
@@ -391,12 +298,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BatterySwapDtos\\CreateBatterySwapDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T17:04:58.582Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T17:04:58.582Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 13,
               "Title": "BatterySwapDetailDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapDetailDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapDetailDto.cs",
@@ -404,12 +310,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapDetailDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:59:45.195Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:59:45.195Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 15,
               "Title": "BBRStatus.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Enums\\BBRStatus.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Enums\\BBRStatus.cs",
@@ -417,12 +322,11 @@
               "RelativeToolTip": "BusinessObject\\Enums\\BBRStatus.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:57:06.596Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:57:06.596Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 14,
               "Title": "BatterySwapSummaryDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapSummaryDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapSummaryDto.cs",
@@ -430,12 +334,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapSummaryDto.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAABCwBMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:50:32.71Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:50:32.71Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 16,
               "Title": "BatterySwapResponseDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapResponseDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapResponseDto.cs",
@@ -443,12 +346,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BatterySwapDtos\\BatterySwapResponseDto.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAA5wBIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:51:25.274Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:51:25.274Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 17,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\Service\\Interfaces\\IAuthService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IAuthService.cs",
@@ -456,12 +358,11 @@
               "RelativeToolTip": "Service\\Interfaces\\IAuthService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAABJwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:48:30.321Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:48:30.321Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 18,
               "Title": "BookingStatisticsDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\BookingStatisticsDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\BookingStatisticsDto.cs",
@@ -469,12 +370,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\BookingStatisticsDto.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAIBBwBUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:29:07.944Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:29:07.944Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 19,
               "Title": "AvailableTimeSlotDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\AvailableTimeSlotDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\AvailableTimeSlotDto.cs",
@@ -482,12 +382,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\AvailableTimeSlotDto.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAA5wAQAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:27:45.341Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:27:45.341Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 20,
               "Title": "TimeSlotDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\TimeSlotDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\TimeSlotDto.cs",
@@ -495,12 +394,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\TimeSlotDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAMBSwA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:26:59.754Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:26:59.754Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 21,
               "Title": "BookingDetailDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\BookingDetailDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\BookingDetailDto.cs",
@@ -508,12 +406,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\BookingDetailDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:25:20.005Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:25:20.005Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 22,
               "Title": "BookingSummaryDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\BookingSummaryDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\BookingSummaryDto.cs",
@@ -521,12 +418,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\BookingSummaryDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:24:45.596Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:24:45.596Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 23,
               "Title": "BookingResponseDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\BookingResponseDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\BookingResponseDto.cs",
@@ -534,12 +430,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\BookingResponseDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:22:53.085Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:22:53.085Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 25,
               "Title": "LoginDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\UserDtos\\LoginDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\UserDtos\\LoginDto.cs",
@@ -547,12 +442,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\UserDtos\\LoginDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAMBSwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:22:09.023Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:22:09.023Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 26,
               "Title": "RegisterDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\UserDtos\\RegisterDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\UserDtos\\RegisterDto.cs",
@@ -560,12 +454,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\UserDtos\\RegisterDto.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:22:02.276Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:22:02.276Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 27,
               "Title": "UserProfileDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\UserDtos\\UserProfileDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\UserDtos\\UserProfileDto.cs",
@@ -573,12 +466,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\UserDtos\\UserProfileDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAMBSwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:21:54.784Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:21:54.784Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 24,
               "Title": "BookingFilterDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\BookingFilterDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\BookingFilterDto.cs",
@@ -586,12 +478,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\BookingFilterDto.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAkwAQAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:20:46.467Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:20:46.467Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 28,
               "Title": "UpdateBookingStatusDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\UpdateBookingStatusDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\UpdateBookingStatusDto.cs",
@@ -599,12 +490,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\UpdateBookingStatusDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:17:26.16Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:17:26.16Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 30,
               "Title": "BookingBaseDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\BookingBaseDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\BookingBaseDto.cs",
@@ -612,12 +502,11 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\BookingBaseDto.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAIBBwA4AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:14:20.039Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:14:20.039Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 29,
               "Title": "CreateBookingDto.cs",
               "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Dtos\\BookingDtos\\CreateBookingDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDtos\\CreateBookingDto.cs",
@@ -625,21 +514,7 @@
               "RelativeToolTip": "BusinessObject\\Dtos\\BookingDtos\\CreateBookingDto.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAkwBQAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T16:07:58.47Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "BatterySwap.cs",
-              "DocumentMoniker": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\BatterySwap.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\BatterySwap.cs",
-              "ToolTip": "F:\\F\\Battery_Swap_Station_Management_System_BE\\EV_Driver\\BusinessObject\\Entities\\BatterySwap.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\BatterySwap.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T15:39:47.371Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T16:07:58.47Z"
             }
           ]
         }
