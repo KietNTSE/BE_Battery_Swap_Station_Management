@@ -104,6 +104,41 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
                 StatusCode = HttpStatusCode.BadRequest,
             };
         }
-        
+        var isOldPasswordCorrect = BCrypt.Net.BCrypt.Verify(request.OldPassword, user.Password);
+        if (!isOldPasswordCorrect)
+        {
+            throw new ValidationException
+            {
+                ErrorMessage = "Old password is incorrect",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest,
+            };
+        }
+
+        if (!request.NewPassword.Equals(request.ConfirmPassword))
+        {
+            throw new ValidationException
+            {
+                ErrorMessage = "New password and confirm password are not match",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest,
+            };
+        }
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        user.Password = hashedPassword;
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new ValidationException
+            {
+                ErrorMessage = ex.Message,
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest,
+            };
+        }
+
     }
 }

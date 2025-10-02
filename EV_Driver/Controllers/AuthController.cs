@@ -1,6 +1,7 @@
 ﻿using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Exceptions;
 using Service.Interfaces;
 
 namespace EV_Driver.Controllers
@@ -14,20 +15,17 @@ namespace EV_Driver.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                throw new InvalidModelStateException(ModelState);
             }
 
             var result = await authService.RegisterAsync(registerDto);
 
-            if (result == null)
+            return Ok(new ResponseObject<AuthResponseDto>
             {
-                return BadRequest(new { message = "Email already exists or registration failed" });
-            }
-
-            return Ok(new
-            {
-                message = "Registration successful",
-                data = result
+                Content = result,
+                Message = "Register account successful",
+                Code = "200",
+                Success = true
             });
         }
 
@@ -41,15 +39,12 @@ namespace EV_Driver.Controllers
 
             var result = await authService.LoginAsync(loginDto);
 
-            if (result == null)
+            return Ok(new ResponseObject<AuthResponseDto>
             {
-                return Unauthorized(new { message = "Invalid email, password, or account is not active" });
-            }
-
-            return Ok(new
-            {
-                message = "Login successful",
-                data = result
+                Content = result,
+                Message = "Login successful",
+                Code = "200",
+                Success = true
             });
         }
 
@@ -57,7 +52,12 @@ namespace EV_Driver.Controllers
         [Authorize]
         public IActionResult Logout()
         {
-            return Ok(new { message = "Logged out successfully" });
+            return Ok(new ResponseObject<object>
+            {
+                Message = "Logout successful",
+                Code = "200",
+                Success = true
+            });
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using BusinessObject;
+﻿using System.Net;
+using BusinessObject;
 using BusinessObject.DTOs;
 using BusinessObject.Entities;
 using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;
+using Service.Exceptions;
 using Service.Interfaces;
 
 namespace Service.Implementations
@@ -13,7 +15,12 @@ namespace Service.Implementations
         {
             if (await context.Users.AnyAsync(u => u.Email == registerDto.Email))
             {
-                return null;
+                throw new ValidationException
+                {
+                    ErrorMessage = "This email is already exists",
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400"
+                };
             }
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
@@ -28,35 +35,64 @@ namespace Service.Implementations
                 Password = passwordHash
             };
 
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
-            
-            var token =  jwtService.GenerateJwtToken(user.UserId, user.Role.ToString());
-
-            return new AuthResponseDto
+            try
             {
-                UserId = user.UserId,
-                FullName = user.FullName,
-                Email = user.Email,
-                Role = user.Role,
-                Status = user.Status,
-                Token = token,
-                ExpiresAt = DateTime.UtcNow.AddHours(24)
-            };
+                context.Users.Add(user);
+                await context.SaveChangesAsync();
+                var token =  jwtService.GenerateJwtToken(user.UserId, user.Role.ToString());
+                return new AuthResponseDto
+                {
+                    UserId = user.UserId,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    Role = user.Role,
+                    Status = user.Status,
+                    Token = token,
+                    ExpiresAt = DateTime.UtcNow.AddHours(24)
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException
+                {
+                    ErrorMessage = ex.Message,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400"
+                };
+            }
         }
 
         public async Task<AuthResponseDto?> LoginAsync(LoginDto loginDto)
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+            if (user == null)
             {
-                return null;
+                throw new ValidationException
+                {
+                    ErrorMessage = "Invalid email",
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Code = "401"
+                };
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+            {
+                throw new ValidationException
+                {
+                    ErrorMessage = "Invalid email or password",
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Code = "401"
+                };
             }
             
             if (user.Status != UserStatus.Active)
             {
-                return null;
+                throw new ValidationException {
+                    ErrorMessage = "User is disabled or banned, please contact admin",
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Code = "401"
+                };           
             }
             
             var token = jwtService.GenerateJwtToken(user.UserId, user.Role.ToString());
