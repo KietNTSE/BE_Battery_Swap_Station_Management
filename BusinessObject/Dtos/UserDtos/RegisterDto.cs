@@ -1,7 +1,7 @@
 ﻿using BusinessObject.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinessObject.DTOs
+namespace BusinessObject.Dtos.UserDtos
 {
     public class RegisterDto
     {

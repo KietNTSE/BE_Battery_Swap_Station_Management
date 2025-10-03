@@ -1,4 +1,4 @@
-﻿using BusinessObject.DTOs;
+﻿using BusinessObject.Dtos.UserDtos;
 
 namespace Service.Interfaces
 {

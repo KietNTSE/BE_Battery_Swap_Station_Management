@@ -4,6 +4,7 @@ using BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251001091054_InitBaseEntity")]
+    partial class InitBaseEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,10 +123,6 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("station_id");
 
-                    b.Property<string>("StationId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("StationStaffId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
@@ -142,10 +141,6 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("VehicleId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
@@ -157,13 +152,9 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("StationId");
 
-                    b.HasIndex("StationId1");
-
                     b.HasIndex("StationStaffId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.HasIndex("VehicleId");
 
@@ -226,37 +217,24 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("battery_type_id");
 
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("booking_date");
-
                     b.Property<string>("BookingId")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("booking_id");
-
-                    b.Property<DateTime?>("CompleteAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("complete_at");
-
-                    b.Property<string>("ConfirmBy")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("confirm_by");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("date");
+
                     b.Property<int>("Status")
                         .HasColumnType("int")
                         .HasColumnName("status");
 
-                    b.Property<TimeSpan>("TimeSlot")
-                        .HasColumnType("time")
-                        .HasColumnName("time_slot");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("updated_at");
+                    b.Property<string>("VehiclesId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("StationId", "UserId", "VehicleId", "BatteryId", "BatteryTypeId");
 
@@ -266,7 +244,7 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("VehicleId");
+                    b.HasIndex("VehiclesId");
 
                     b.ToTable("Booking");
                 });
@@ -280,9 +258,6 @@ namespace BusinessObject.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float")
                         .HasColumnName("amount");
-
-                    b.Property<string>("BatterySwapSwapId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
@@ -310,7 +285,7 @@ namespace BusinessObject.Migrations
 
                     b.Property<string>("SwapId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("swap_id");
 
                     b.Property<string>("UserId")
@@ -320,7 +295,7 @@ namespace BusinessObject.Migrations
 
                     b.HasKey("PayId");
 
-                    b.HasIndex("BatterySwapSwapId");
+                    b.HasIndex("SwapId");
 
                     b.HasIndex("UserId");
 
@@ -537,7 +512,7 @@ namespace BusinessObject.Migrations
 
                     b.Property<string>("PlanId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("plan_id");
 
                     b.Property<DateTime>("StartDate")
@@ -548,9 +523,6 @@ namespace BusinessObject.Migrations
                         .HasColumnType("int")
                         .HasColumnName("status");
 
-                    b.Property<string>("SubscriptionPlanPlanId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
@@ -558,7 +530,7 @@ namespace BusinessObject.Migrations
 
                     b.HasKey("SubscriptionId");
 
-                    b.HasIndex("SubscriptionPlanPlanId");
+                    b.HasIndex("PlanId");
 
                     b.HasIndex("UserId");
 
@@ -609,17 +581,11 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("SubPayId");
 
                     b.HasIndex("SubscriptionId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("SubscriptionPayment");
                 });
@@ -667,7 +633,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-001",
                             Active = true,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 10, 1, 9, 10, 54, 245, DateTimeKind.Utc).AddTicks(2381),
                             Description = "Basic battery swap plan",
                             MonthlyFee = 199000.0,
                             Name = "Basic Plan",
@@ -677,7 +643,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-002",
                             Active = true,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 10, 1, 9, 10, 54, 245, DateTimeKind.Utc).AddTicks(2409),
                             Description = "Premium battery swap plan",
                             MonthlyFee = 399000.0,
                             Name = "Premium Plan",
@@ -708,9 +674,6 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("station_id");
 
-                    b.Property<string>("StationId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int")
                         .HasColumnName("status");
@@ -730,19 +693,11 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("TicketId");
 
                     b.HasIndex("StationId");
 
-                    b.HasIndex("StationId1");
-
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("SupportTicket");
                 });
@@ -801,10 +756,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 10, 1, 9, 10, 54, 245, DateTimeKind.Utc).AddTicks(1374),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$pDMVBuBf.cieLNUB/aCT1.FYbxwR/wEcQz22Qgl6r.SXBdq2zBxSO",
+                            Password = "$2a$11$SymoTl0N6SBGODyfgObM/uuZfEiYKftoeeEhUKbp6i3HTD/9Jp8rS",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1
@@ -821,10 +776,6 @@ namespace BusinessObject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("battery_id");
-
-                    b.Property<string>("BatteryId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BatteryTypeId")
                         .IsRequired()
@@ -861,8 +812,6 @@ namespace BusinessObject.Migrations
                     b.HasKey("VehicleId");
 
                     b.HasIndex("BatteryId");
-
-                    b.HasIndex("BatteryId1");
 
                     b.HasIndex("BatteryTypeId");
 
@@ -915,15 +864,9 @@ namespace BusinessObject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObject.Entities.Station", null)
+                    b.HasOne("BusinessObject.Entities.Station", "Station")
                         .WithMany("BatterySwaps")
                         .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObject.Entities.Station", "Station")
-                        .WithMany()
-                        .HasForeignKey("StationId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -933,15 +876,9 @@ namespace BusinessObject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObject.Entities.User", null)
+                    b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("BatterySwaps")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObject.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -990,9 +927,7 @@ namespace BusinessObject.Migrations
 
                     b.HasOne("BusinessObject.Entities.Vehicle", "Vehicle")
                         .WithMany("Bookings")
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VehiclesId");
 
                     b.Navigation("Battery");
 
@@ -1009,7 +944,9 @@ namespace BusinessObject.Migrations
                 {
                     b.HasOne("BusinessObject.Entities.BatterySwap", "BatterySwap")
                         .WithMany("Payments")
-                        .HasForeignKey("BatterySwapSwapId");
+                        .HasForeignKey("SwapId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Payments")
@@ -1038,13 +975,13 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.Station", "Station")
                         .WithMany("Reviews")
                         .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Station");
@@ -1057,7 +994,7 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Stations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1097,7 +1034,9 @@ namespace BusinessObject.Migrations
                 {
                     b.HasOne("BusinessObject.Entities.SubscriptionPlan", "SubscriptionPlan")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("SubscriptionPlanPlanId");
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Subscriptions")
@@ -1118,15 +1057,9 @@ namespace BusinessObject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObject.Entities.User", null)
+                    b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("SubscriptionPayments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObject.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1137,24 +1070,13 @@ namespace BusinessObject.Migrations
 
             modelBuilder.Entity("BusinessObject.Entities.SupportTicket", b =>
                 {
-                    b.HasOne("BusinessObject.Entities.Station", null)
-                        .WithMany("SupportTickets")
-                        .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("BusinessObject.Entities.Station", "Station")
-                        .WithMany()
-                        .HasForeignKey("StationId1");
-
-                    b.HasOne("BusinessObject.Entities.User", null)
                         .WithMany("SupportTickets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("StationId");
 
                     b.HasOne("BusinessObject.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
+                        .WithMany("SupportTickets")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1165,15 +1087,9 @@ namespace BusinessObject.Migrations
 
             modelBuilder.Entity("BusinessObject.Entities.Vehicle", b =>
                 {
-                    b.HasOne("BusinessObject.Entities.Battery", null)
-                        .WithMany()
-                        .HasForeignKey("BatteryId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
                     b.HasOne("BusinessObject.Entities.Battery", "Battery")
                         .WithMany("Vehicles")
-                        .HasForeignKey("BatteryId1")
+                        .HasForeignKey("BatteryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -35,10 +35,8 @@ namespace BusinessObject.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Foreign key navigation properties
-        [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
 
-        [ForeignKey("PlanId")]
         public virtual SubscriptionPlan SubscriptionPlan { get; set; } = null!;
 
         // Navigation properties

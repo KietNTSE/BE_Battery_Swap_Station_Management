@@ -1,11 +1,16 @@
 ﻿using BusinessObject.Entities;
-using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;
+using BusinessObject.Enums;
 
 namespace BusinessObject
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+
+        // DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<Station> Stations { get; set; }
         public DbSet<BatteryType> BatteryTypes { get; set; }
@@ -58,66 +63,58 @@ namespace BusinessObject
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reviews)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Station -> Review relationship (One-to-Many) - NO CASCADE  
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Station)
-                .WithMany(u => u.Reviews)
+                .WithMany(s => s.Reviews)
                 .HasForeignKey(r => r.StationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Fix other problematic relationships based on shadow properties
+
             // BatterySwap relationships
             modelBuilder.Entity<BatterySwap>()
-                .HasOne(bs => bs.User)
+                .HasOne<User>()
                 .WithMany(u => u.BatterySwaps)
-                .HasForeignKey(bs => bs.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey("UserId")
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BatterySwap>()
-                .HasOne(bs => bs.Station)
+                .HasOne<Station>()
                 .WithMany(s => s.BatterySwaps)
-                .HasForeignKey(bs => bs.StationId)
+                .HasForeignKey("StationId")
                 .OnDelete(DeleteBehavior.Restrict);
-            
-            modelBuilder.Entity<BatterySwap>()
-                .HasOne(bs => bs.StationStaff)
-                .WithMany(s => s.BatterySwaps)
-                .HasForeignKey(bs => bs.StationStaffId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<BatterySwap>()
-                .HasOne(bs => bs.Vehicle)
-                .WithMany(v => v.BatterySwaps)
-                .HasForeignKey(bs => bs.VehicleId)
-                .OnDelete(DeleteBehavior.NoAction);
 
             // SubscriptionPayment relationships
             modelBuilder.Entity<SubscriptionPayment>()
-                .HasOne(sp => sp.User)
+                .HasOne<User>()
                 .WithMany(u => u.SubscriptionPayments)
-                .HasForeignKey(sp => sp.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey("UserId")
+                .OnDelete(DeleteBehavior.Restrict);
 
             // SupportTicket relationships
             modelBuilder.Entity<SupportTicket>()
-                .HasOne(st => st.User)
+                .HasOne<User>()
                 .WithMany(u => u.SupportTickets)
-                .HasForeignKey(st => st.UserId)
+                .HasForeignKey("UserId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<SupportTicket>()
-                .HasOne(st => st.Station)
+                .HasOne<Station>()
                 .WithMany(s => s.SupportTickets)
-                .HasForeignKey(st => st.StationId)
+                .HasForeignKey("StationId")
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
+            // Vehicle -> Battery relationship (nullable)
             modelBuilder.Entity<Vehicle>()
-                .HasOne(v => v.Battery)
-                .WithMany(b => b.Vehicles)
-                .HasForeignKey(v => v.BatteryId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
+                .HasOne<Battery>()
+                .WithMany()
+                .HasForeignKey("BatteryId")
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Configure default values
             modelBuilder.Entity<User>()
                 .Property(u => u.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -125,48 +122,6 @@ namespace BusinessObject
             modelBuilder.Entity<Station>()
                 .Property(s => s.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
-            
-            modelBuilder.Entity<Booking>()
-                .HasOne(b => b.Battery)
-                .WithMany(b => b.Bookings)
-                .HasForeignKey(b => b.BatteryId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Booking>()
-                .HasOne(b => b.BatteryType)
-                .WithMany(bt => bt.Bookings)
-                .HasForeignKey(b => b.BatteryTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Booking>()
-                .HasOne(b => b.Station)
-                .WithMany(s => s.Bookings)
-                .HasForeignKey(b => b.StationId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Booking>()
-                .HasOne(b => b.Vehicle)
-                .WithMany(v => v.Bookings)
-                .HasForeignKey(b => b.VehicleId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Booking>()
-                .HasOne(b => b.User)
-                .WithMany(u => u.Bookings)
-                .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Payment>()
-                .HasOne(p => p.User)
-                .WithMany(u => u.Payments)
-                .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Payment>()
-                .HasOne(p => p.BatterySwap)
-                .WithMany(bs => bs.Payments)
-                .HasForeignKey(p => p.SwapId)
-                .OnDelete(DeleteBehavior.NoAction);
 
             // Seed data
             SeedData(modelBuilder);
@@ -182,10 +137,10 @@ namespace BusinessObject
                     FullName = "System Administrator",
                     Email = "admin@evdriver.com",
                     Phone = "0123456789",
-                    Role = UserRole.Admin,
-                    Status = UserStatus.Active,
+                    Role = UserRole.Admin, // Admin
+                    Status = UserStatus.Active, // Active
                     Password = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
 
@@ -206,7 +161,7 @@ namespace BusinessObject
                     MonthlyFee = 199000,
                     SwapsIncluded = "10",
                     Active = true,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new SubscriptionPlan
                 {
@@ -216,7 +171,7 @@ namespace BusinessObject
                     MonthlyFee = 399000,
                     SwapsIncluded = "25",
                     Active = true,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
         }
