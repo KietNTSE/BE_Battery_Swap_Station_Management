@@ -15,7 +15,7 @@ namespace BusinessObject.Entities
         [StringLength(255)]
         public string BatteryTypeName { get; set; } = string.Empty;
 
-        // Navigation properties
+        // Navigation properties.
         public virtual ICollection<Battery> Batteries { get; set; } = new List<Battery>();
         public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
