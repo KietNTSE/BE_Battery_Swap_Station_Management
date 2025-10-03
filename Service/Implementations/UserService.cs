@@ -1,15 +1,15 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using BusinessObject;
 using BusinessObject.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Service.Exceptions;
 using Service.Interfaces;
+using Service.Utils;
 
 namespace Service.Implementations;
 
-public class UserService(ApplicationDbContext context, ILogger<UserService> logger) : IUserService
+public class UserService(ApplicationDbContext context, IHttpContextAccessor accessor) : IUserService
 {
 
     public async Task<PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>> GetAllUsersAsync(int page,
@@ -60,7 +60,7 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
     
     public async Task<UserProfileResponse?> GetMeProfileAsync()
     {
-        const string userId = JwtRegisteredClaimNames.Sub;
+        var userId = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(userId))
         {
             throw new ValidationException
@@ -78,7 +78,12 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
         var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user is null)
         {
-            return null;
+            throw new ValidationException
+            {
+                ErrorMessage = "User not found",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest,
+            };
         }
         user.FullName = userProfileDto.FullName;
         user.Email = userProfileDto.Email;
@@ -100,7 +105,7 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
     
     public async Task<UserProfileResponse?> UpdateMeProfileAsync(UserProfileRequest userProfile)
     {
-        const string userId = JwtRegisteredClaimNames.Sub;
+        var userId = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(userId))
         {
             throw new ValidationException
@@ -115,7 +120,7 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
 
     public async Task UpdatePassword(ChangePasswordRequest request)
     {
-        const string id = JwtRegisteredClaimNames.Sub;
+        var id = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(id))
         {
             throw new ValidationException
