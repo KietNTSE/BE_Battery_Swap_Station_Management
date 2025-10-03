@@ -56,16 +56,12 @@ namespace BusinessObject.Entities
         public DateTime? UpdatedAt { get; set; }
 
         // Foreign key navigation properties
-        [ForeignKey("StationId")]
         public virtual Station Station { get; set; } = null!;
 
-        [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
 
-        [ForeignKey("BatteryTypeId")]
         public virtual BatteryType BatteryType { get; set; } = null!;
 
-        [ForeignKey("ReservationId")]
         public virtual Reservation? Reservation { get; set; }
 
         // Navigation properties

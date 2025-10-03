@@ -27,7 +27,6 @@ namespace BusinessObject.Entities
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         // Foreign key navigation properties
-        [ForeignKey("StationId")]
         public virtual Station Station { get; set; } = null!;
 
         // Navigation properties

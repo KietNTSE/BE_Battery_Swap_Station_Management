@@ -40,10 +40,8 @@ namespace BusinessObject.Entities
         public DateTime? UpdatedAt { get; set; }
 
         // Foreign key navigation properties
-        [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
 
-        [ForeignKey("StationId")]
         public virtual Station? Station { get; set; }
     }
 }

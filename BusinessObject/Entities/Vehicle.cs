@@ -40,13 +40,10 @@ namespace BusinessObject.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Foreign key navigation properties
-        [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
 
-        [ForeignKey("BatteryId")]
         public virtual Battery Battery { get; set; } = null!;
 
-        [ForeignKey("BatteryTypeId")]
         public virtual BatteryType BatteryType { get; set; } = null!;
 
         // Navigation properties

@@ -32,158 +32,96 @@ namespace BusinessObject
         {
             base.OnModelCreating(modelBuilder);
 
-            #region User Configuration
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(u => u.UserId);
-                entity.HasIndex(u => u.Email).IsUnique();
-                entity.Property(u => u.Role).HasConversion<int>();
-                entity.Property(u => u.Status).HasConversion<int>();
-                entity.Property(u => u.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // Configure composite key for Booking
+            modelBuilder.Entity<Booking>()
+                .HasKey(b => new { b.StationId, b.UserId, b.VehicleId, b.BatteryId, b.BatteryTypeId });
 
-            #region BatteryType Configuration
-            modelBuilder.Entity<BatteryType>(entity =>
-            {
-                entity.HasKey(bt => bt.BatteryTypeId);
-            });
-            #endregion
+            // Configure unique indexes
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
 
-            #region Station Configuration
-            modelBuilder.Entity<Station>(entity =>
-            {
-                entity.HasKey(s => s.StationId);
-                entity.Property(s => s.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-                entity.Property(s => s.Latitude).HasPrecision(18, 6);
-                entity.Property(s => s.Longitude).HasPrecision(18, 6);
-            });
-            #endregion
+            modelBuilder.Entity<Battery>()
+                .HasIndex(b => b.SerialNo)
+                .IsUnique();
 
-            #region Battery Configuration
-            modelBuilder.Entity<Battery>(entity =>
-            {
-                entity.HasKey(b => b.BatteryId);
-                entity.Property(b => b.Status).HasConversion<int>();
-                entity.Property(b => b.Owner).HasConversion<int>();
-                entity.HasIndex(b => b.SerialNo).IsUnique();
-                entity.Property(b => b.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            modelBuilder.Entity<Vehicle>()
+                .HasIndex(v => v.LicensePlate)
+                .IsUnique();
 
-            #region Vehicles Configuration
-            modelBuilder.Entity<Vehicle>(entity =>
-            {
-                entity.HasKey(v => v.VehicleId);
-                entity.HasIndex(v => v.LicensePlate).IsUnique();
-                entity.Property(v => v.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // ======= FIX ALL FOREIGN KEY RELATIONSHIPS =======
 
-            #region Booking Configuration
-            modelBuilder.Entity<Booking>(entity =>
-            {
-                entity.HasKey(b => b.BookingId);
-                entity.Property(b => b.Status).HasConversion<int>();
-                entity.Property(b => b.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            // User -> Station relationship (One-to-Many)
+            modelBuilder.Entity<Station>()
+                .HasOne(s => s.User)
+                .WithMany(u => u.Stations)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasIndex(b => new { b.StationId, b.BookingDate, b.TimeSlot })
-                    .HasDatabaseName("IX_Booking_Station_Date_TimeSlot");
-            });
-            #endregion
+            // User -> Review relationship (One-to-Many) - NO CASCADE
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region StationStaff Configuration
-            modelBuilder.Entity<StationStaff>(entity =>
-            {
-                entity.HasKey(ss => ss.StationStaffId);
-                entity.Property(ss => ss.AssignedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // Station -> Review relationship (One-to-Many) - NO CASCADE  
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Station)
+                .WithMany(s => s.Reviews)
+                .HasForeignKey(r => r.StationId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region BatterySwaps Configuration
-            modelBuilder.Entity<BatterySwap>(entity =>
-            {
-                entity.HasKey(bs => bs.SwapId);
-                entity.Property(bs => bs.Status).HasConversion<int>();
-                entity.Property(bs => bs.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-                entity.Property(bs => bs.SwappedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // Fix other problematic relationships based on shadow properties
 
-            #region SubscriptionPlans Configuration
-            modelBuilder.Entity<SubscriptionPlan>(entity =>
-            {
-                entity.HasKey(sp => sp.PlanId);
-                entity.Property(sp => sp.MonthlyFee).HasPrecision(18, 2);
-                entity.Property(sp => sp.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // BatterySwap relationships
+            modelBuilder.Entity<BatterySwap>()
+                .HasOne<User>()
+                .WithMany(u => u.BatterySwaps)
+                .HasForeignKey("UserId")
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region Subscriptions Configuration
-            modelBuilder.Entity<Subscription>(entity =>
-            {
-                entity.HasKey(s => s.SubscriptionId);
-                entity.Property(s => s.Status).HasConversion<int>();
-                entity.Property(s => s.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            modelBuilder.Entity<BatterySwap>()
+                .HasOne<Station>()
+                .WithMany(s => s.BatterySwaps)
+                .HasForeignKey("StationId")
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region SubscriptionPayment Configuration
-            modelBuilder.Entity<SubscriptionPayment>(entity =>
-            {
-                entity.HasKey(sp => sp.SubPayId);
-                entity.Property(sp => sp.Amount).HasPrecision(18, 2);
-                entity.Property(sp => sp.Status).HasConversion<int>();
-                entity.Property(sp => sp.PaymentMethod).HasConversion<int>();
-                entity.Property(sp => sp.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // SubscriptionPayment relationships
+            modelBuilder.Entity<SubscriptionPayment>()
+                .HasOne<User>()
+                .WithMany(u => u.SubscriptionPayments)
+                .HasForeignKey("UserId")
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region Payment Configuration
-            modelBuilder.Entity<Payment>(entity =>
-            {
-                entity.HasKey(p => p.PayId);
-                entity.Property(p => p.Amount).HasPrecision(18, 2);
-                entity.Property(p => p.Status).HasConversion<int>();
-                entity.Property(p => p.PaymentMethod).HasConversion<int>();
-                entity.Property(p => p.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // SupportTicket relationships
+            modelBuilder.Entity<SupportTicket>()
+                .HasOne<User>()
+                .WithMany(u => u.SupportTickets)
+                .HasForeignKey("UserId")
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region Reviews Configuration
-            modelBuilder.Entity<Review>(entity =>
-            {
-                entity.HasKey(r => r.ReviewId);
-                entity.Property(r => r.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            modelBuilder.Entity<SupportTicket>()
+                .HasOne<Station>()
+                .WithMany(s => s.SupportTickets)
+                .HasForeignKey("StationId")
+                .OnDelete(DeleteBehavior.Restrict);
 
-            #region SupportTickets Configuration
-            modelBuilder.Entity<SupportTicket>(entity =>
-            {
-                entity.HasKey(st => st.TicketId);
-                entity.Property(st => st.Priority).HasConversion<int>();
-                entity.Property(st => st.Status).HasConversion<int>();
-                entity.Property(st => st.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // Vehicle -> Battery relationship (nullable)
+            modelBuilder.Entity<Vehicle>()
+                .HasOne<Battery>()
+                .WithMany()
+                .HasForeignKey("BatteryId")
+                .OnDelete(DeleteBehavior.SetNull);
 
-            #region StationInventory Configuration
-            modelBuilder.Entity<StationInventory>(entity =>
-            {
-                entity.HasKey(si => si.StationInventoryId);
-                entity.Property(si => si.LastUpdate).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            // Configure default values
+            modelBuilder.Entity<User>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
 
-            #region Reservation Configuration
-            modelBuilder.Entity<Reservation>(entity =>
-            {
-                entity.HasKey(r => r.ReservationId);
-                entity.Property(r => r.Status).HasConversion<int>();
-                entity.Property(r => r.ReservedAt).HasDefaultValueSql("GETUTCDATE()");
-            });
-            #endregion
+            modelBuilder.Entity<Station>()
+                .Property(s => s.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
 
             // Seed data
             SeedData(modelBuilder);

@@ -25,7 +25,6 @@ namespace BusinessObject.Entities
         public DateTime ExpiredAt { get; set; }
 
         // Foreign key navigation properties
-        [ForeignKey("StationInventoryId")]
         public virtual StationInventory StationInventory { get; set; } = null!;
 
         // Navigation properties

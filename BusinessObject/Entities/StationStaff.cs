@@ -22,10 +22,8 @@ namespace BusinessObject.Entities
         public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
 
         // Foreign key navigation properties
-        [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
 
-        [ForeignKey("StationId")]
         public virtual Station Station { get; set; } = null!;
 
         // Navigation properties
