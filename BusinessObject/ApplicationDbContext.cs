@@ -1,15 +1,11 @@
 ﻿using BusinessObject.Entities;
-using Microsoft.EntityFrameworkCore;
 using BusinessObject.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessObject
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Station> Stations { get; set; }
         public DbSet<BatteryType> BatteryTypes { get; set; }
@@ -66,30 +62,28 @@ namespace BusinessObject
 
             // Station -> Review relationship (One-to-Many) - NO CASCADE  
             modelBuilder.Entity<Review>()
-                .HasOne(r => r.User)
+                .HasOne(r => r.Station)
                 .WithMany(u => u.Reviews)
-                .HasForeignKey(r => r.UserId)  // ← Lambda expression
+                .HasForeignKey(r => r.StationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Station)
                 .WithMany(s => s.Reviews)
-                .HasForeignKey(r => r.StationId)  // ← Lambda expression
+                .HasForeignKey(r => r.StationId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            // Fix other problematic relationships based on shadow properties
 
             // BatterySwap relationships
             modelBuilder.Entity<BatterySwap>()
                 .HasOne(bs => bs.User)
                 .WithMany(u => u.BatterySwaps)
-                .HasForeignKey(bs => bs.UserId)  // ← Lambda expression thay vì string
+                .HasForeignKey(bs => bs.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BatterySwap>()
                 .HasOne(bs => bs.Station)
                 .WithMany(s => s.BatterySwaps)
-                .HasForeignKey(bs => bs.StationId)  // ← Lambda expression
+                .HasForeignKey(bs => bs.StationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // SubscriptionPayment relationships
