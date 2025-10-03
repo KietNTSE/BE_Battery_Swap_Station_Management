@@ -97,7 +97,7 @@ namespace BusinessObject
                 .HasOne(sp => sp.User)
                 .WithMany(u => u.SubscriptionPayments)
                 .HasForeignKey(sp => sp.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // SupportTicket relationships
             modelBuilder.Entity<SupportTicket>()

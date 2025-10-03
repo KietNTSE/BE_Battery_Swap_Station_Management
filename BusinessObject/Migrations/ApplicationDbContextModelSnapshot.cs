@@ -631,7 +631,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-001",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3889),
+                            CreatedAt = new DateTime(2025, 10, 3, 14, 56, 57, 764, DateTimeKind.Utc).AddTicks(7217),
                             Description = "Basic battery swap plan",
                             MonthlyFee = 199000.0,
                             Name = "Basic Plan",
@@ -641,7 +641,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-002",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3918),
+                            CreatedAt = new DateTime(2025, 10, 3, 14, 56, 57, 764, DateTimeKind.Utc).AddTicks(7241),
                             Description = "Premium battery swap plan",
                             MonthlyFee = 399000.0,
                             Name = "Premium Plan",
@@ -754,10 +754,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(2977),
+                            CreatedAt = new DateTime(2025, 10, 3, 14, 56, 57, 764, DateTimeKind.Utc).AddTicks(6079),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$hXEJuB5Bu3n3dUjcJAgXae2FyC4zEJ43ZJ.h1S8WHQu5sY5BFeUAu",
+                            Password = "$2a$11$XDP5/Wu.jsfVAN/vbvxTm.3CpjPJeyoleJAbYVXITXfKETIk5yGea",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1
@@ -1060,7 +1060,7 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("SubscriptionPayments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Subscription");

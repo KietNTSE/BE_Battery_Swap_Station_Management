@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BusinessObject.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTable : Migration
+    public partial class InitDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,6 +23,41 @@ namespace BusinessObject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BatteryType", x => x.battery_type_id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubscriptionPlan",
+                columns: table => new
+                {
+                    plan_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    monthly_fee = table.Column<double>(type: "float", nullable: false),
+                    swaps_included = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubscriptionPlan", x => x.plan_id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    full_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    role = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.user_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,20 +87,33 @@ namespace BusinessObject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionPlan",
+                name: "Subscription",
                 columns: table => new
                 {
+                    subscription_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     plan_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    monthly_fee = table.Column<double>(type: "float", nullable: false),
-                    swaps_included = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    active = table.Column<bool>(type: "bit", nullable: false),
+                    start_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    end_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    number_of_swaps = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionPlan", x => x.plan_id);
+                    table.PrimaryKey("PK_Subscription", x => x.subscription_id);
+                    table.ForeignKey(
+                        name: "FK_Subscription_SubscriptionPlan_plan_id",
+                        column: x => x.plan_id,
+                        principalTable: "SubscriptionPlan",
+                        principalColumn: "plan_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Subscription_User_user_id",
+                        column: x => x.user_id,
+                        principalTable: "User",
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,57 +223,6 @@ namespace BusinessObject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscription",
-                columns: table => new
-                {
-                    subscription_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    plan_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    start_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    end_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false),
-                    number_of_swaps = table.Column<int>(type: "int", nullable: false),
-                    created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription", x => x.subscription_id);
-                    table.ForeignKey(
-                        name: "FK_Subscription_SubscriptionPlan_plan_id",
-                        column: x => x.plan_id,
-                        principalTable: "SubscriptionPlan",
-                        principalColumn: "plan_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Subscription_User_user_id",
-                        column: x => x.user_id,
-                        principalTable: "User",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservation",
-                columns: table => new
-                {
-                    reservation_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    station_inventory_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false),
-                    reserved_at = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    expired_at = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservation", x => x.reservation_id);
-                    table.ForeignKey(
-                        name: "FK_Reservation_StationInventory_station_inventory_id",
-                        column: x => x.station_inventory_id,
-                        principalTable: "StationInventory",
-                        principalColumn: "station_inventory_id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SubscriptionPayment",
                 columns: table => new
                 {
@@ -252,8 +249,28 @@ namespace BusinessObject.Migrations
                         name: "FK_SubscriptionPayment_User_user_id",
                         column: x => x.user_id,
                         principalTable: "User",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "user_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservation",
+                columns: table => new
+                {
+                    reservation_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    station_inventory_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    reserved_at = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    expired_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservation", x => x.reservation_id);
+                    table.ForeignKey(
+                        name: "FK_Reservation_StationInventory_station_inventory_id",
+                        column: x => x.station_inventory_id,
+                        principalTable: "StationInventory",
+                        principalColumn: "station_inventory_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -472,16 +489,14 @@ namespace BusinessObject.Migrations
                 columns: new[] { "plan_id", "active", "created_at", "description", "monthly_fee", "name", "swaps_included" },
                 values: new object[,]
                 {
-                    { "plan-001", true, new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3889), "Basic battery swap plan", 199000.0, "Basic Plan", "10" },
-                    { "plan-002", true, new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3918), "Premium battery swap plan", 399000.0, "Premium Plan", "25" }
+                    { "plan-001", true, new DateTime(2025, 10, 3, 14, 56, 57, 764, DateTimeKind.Utc).AddTicks(7217), "Basic battery swap plan", 199000.0, "Basic Plan", "10" },
+                    { "plan-002", true, new DateTime(2025, 10, 3, 14, 56, 57, 764, DateTimeKind.Utc).AddTicks(7241), "Premium battery swap plan", 399000.0, "Premium Plan", "25" }
                 });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "User",
-                keyColumn: "user_id",
-                keyValue: "admin-001",
-                columns: new[] { "created_at", "password" },
-                values: new object[] { new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(2977), "$2a$11$hXEJuB5Bu3n3dUjcJAgXae2FyC4zEJ43ZJ.h1S8WHQu5sY5BFeUAu" });
+                columns: new[] { "user_id", "created_at", "email", "full_name", "password", "phone", "role", "status" },
+                values: new object[] { "admin-001", new DateTime(2025, 10, 3, 14, 56, 57, 764, DateTimeKind.Utc).AddTicks(6079), "admin@evdriver.com", "System Administrator", "$2a$11$XDP5/Wu.jsfVAN/vbvxTm.3CpjPJeyoleJAbYVXITXfKETIk5yGea", "0123456789", 3, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Battery_battery_type_id",
@@ -630,6 +645,12 @@ namespace BusinessObject.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_email",
+                table: "User",
+                column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vehicle_battery_id",
                 table: "Vehicle",
                 column: "battery_id");
@@ -699,12 +720,8 @@ namespace BusinessObject.Migrations
             migrationBuilder.DropTable(
                 name: "Station");
 
-            migrationBuilder.UpdateData(
-                table: "User",
-                keyColumn: "user_id",
-                keyValue: "admin-001",
-                columns: new[] { "created_at", "password" },
-                values: new object[] { new DateTime(2025, 9, 30, 16, 54, 54, 302, DateTimeKind.Utc).AddTicks(6370), "$2a$11$0rFCreodawCYZEmfJzexjeOKftGH4.JTAQOLbBUHX3g0EcZM5vDde" });
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }
