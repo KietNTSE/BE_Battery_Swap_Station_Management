@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using BusinessObject;
 using BusinessObject.DTOs;
-using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Service.Exceptions;
@@ -38,9 +37,14 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
     public async Task<UserProfileResponse?> GetUserProfileAsync(string userId)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-        if (user is not { Status: UserStatus.Active })
+        if (user is null)
         {
-            return null;
+            throw new ValidationException
+            {
+                ErrorMessage = "User not found",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest,
+            };
         }
         return new UserProfileResponse
         {
@@ -83,10 +87,14 @@ public class UserService(ApplicationDbContext context, ILogger<UserService> logg
         {
             await context.SaveChangesAsync();
             return await GetUserProfileAsync(id);
-        } catch
+        } catch (Exception ex)
         {
-            logger.LogError("Error when try to update user profile");
-            throw;
+            throw new ValidationException
+            {
+                ErrorMessage = ex.Message,
+                Code = "500",
+                StatusCode = HttpStatusCode.InternalServerError,
+            };
         }
     }
     
