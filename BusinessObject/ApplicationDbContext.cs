@@ -88,32 +88,30 @@ namespace BusinessObject
 
             // SubscriptionPayment relationships
             modelBuilder.Entity<SubscriptionPayment>()
-                .HasOne<User>()
+                .HasOne(sp => sp.User)
                 .WithMany(u => u.SubscriptionPayments)
-                .HasForeignKey("UserId")
+                .HasForeignKey(sp => sp.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // SupportTicket relationships
             modelBuilder.Entity<SupportTicket>()
-                .HasOne<User>()
+                .HasOne(st => st.User)
                 .WithMany(u => u.SupportTickets)
-                .HasForeignKey("UserId")
+                .HasForeignKey(st => st.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<SupportTicket>()
-                .HasOne<Station>()
+                .HasOne(st => st.Station)
                 .WithMany(s => s.SupportTickets)
-                .HasForeignKey("StationId")
+                .HasForeignKey(st => st.StationId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            // Vehicle -> Battery relationship (nullable)
+            
             modelBuilder.Entity<Vehicle>()
-                .HasOne<Battery>()
-                .WithMany()
-                .HasForeignKey("BatteryId")
+                .HasOne(v => v.Battery)
+                .WithMany(b => b.Vehicles)
+                .HasForeignKey(v => v.BatteryId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-            // Configure default values
+            
             modelBuilder.Entity<User>()
                 .Property(u => u.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
