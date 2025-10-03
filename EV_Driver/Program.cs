@@ -90,6 +90,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

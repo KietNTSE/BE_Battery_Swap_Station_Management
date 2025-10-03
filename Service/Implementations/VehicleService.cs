@@ -2,14 +2,15 @@ using System.Net;
 using BusinessObject;
 using BusinessObject.DTOs;
 using BusinessObject.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Service.Exceptions;
 using Service.Interfaces;
+using Service.Utils;
 
 namespace Service.Implementations;
 
-public class VehicleService(ApplicationDbContext context): IVehicleService
+public class VehicleService(ApplicationDbContext context, IHttpContextAccessor accessor): IVehicleService
 {
     public async Task<VehicleResponse> GetVehicleAsync(string vehicleId)
     {
@@ -43,7 +44,7 @@ public class VehicleService(ApplicationDbContext context): IVehicleService
 
     public async Task<VehicleResponse> CreateVehicleAsync(VehicleRequest vehicleRequest)
     {
-        const string userId = JwtRegisteredClaimNames.Sub;
+        var userId = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(userId))
         {
             throw new ValidationException

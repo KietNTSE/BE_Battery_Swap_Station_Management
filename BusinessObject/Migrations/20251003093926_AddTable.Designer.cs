@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251003023447_RelationshipFix")]
-    partial class RelationshipFix
+    [Migration("20251003093926_AddTable")]
+    partial class AddTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,7 +234,8 @@ namespace BusinessObject.Migrations
                         .HasColumnName("status");
 
                     b.Property<string>("VehiclesId")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StationId", "UserId", "VehicleId", "BatteryId", "BatteryTypeId");
 
@@ -244,7 +245,7 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("VehiclesId");
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Booking");
                 });
@@ -633,7 +634,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-001",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 3, 2, 34, 47, 175, DateTimeKind.Utc).AddTicks(2520),
+                            CreatedAt = new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3889),
                             Description = "Basic battery swap plan",
                             MonthlyFee = 199000.0,
                             Name = "Basic Plan",
@@ -643,7 +644,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-002",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 3, 2, 34, 47, 175, DateTimeKind.Utc).AddTicks(2543),
+                            CreatedAt = new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3918),
                             Description = "Premium battery swap plan",
                             MonthlyFee = 399000.0,
                             Name = "Premium Plan",
@@ -756,10 +757,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2025, 10, 3, 2, 34, 47, 175, DateTimeKind.Utc).AddTicks(1881),
+                            CreatedAt = new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(2977),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$gToH27KJYlNhSHjB2IV5d.m5cO/nlIc7Ze5JdkblNnTflzmYCG7kK",
+                            Password = "$2a$11$hXEJuB5Bu3n3dUjcJAgXae2FyC4zEJ43ZJ.h1S8WHQu5sY5BFeUAu",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1
@@ -873,19 +874,19 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.StationStaff", "StationStaff")
                         .WithMany("BatterySwaps")
                         .HasForeignKey("StationStaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("BatterySwaps")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.Vehicle", "Vehicle")
                         .WithMany("BatterySwaps")
                         .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Battery");
@@ -904,30 +905,32 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.Battery", "Battery")
                         .WithMany("Bookings")
                         .HasForeignKey("BatteryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.BatteryType", "BatteryType")
                         .WithMany("Bookings")
                         .HasForeignKey("BatteryTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.Station", "Station")
                         .WithMany("Bookings")
                         .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.Vehicle", "Vehicle")
                         .WithMany("Bookings")
-                        .HasForeignKey("VehiclesId");
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Battery");
 
@@ -945,13 +948,13 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.BatterySwap", "BatterySwap")
                         .WithMany("Payments")
                         .HasForeignKey("SwapId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("BatterySwap");
@@ -981,7 +984,7 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Station");
@@ -1091,7 +1094,7 @@ namespace BusinessObject.Migrations
                     b.HasOne("BusinessObject.Entities.Battery", "Battery")
                         .WithMany("Vehicles")
                         .HasForeignKey("BatteryId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusinessObject.Entities.BatteryType", "BatteryType")

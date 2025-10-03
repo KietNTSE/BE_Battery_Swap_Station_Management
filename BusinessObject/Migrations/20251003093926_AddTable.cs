@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BusinessObject.Migrations
 {
     /// <inheritdoc />
-    public partial class InitBaseEntity : Migration
+    public partial class AddTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,7 +48,7 @@ namespace BusinessObject.Migrations
                         column: x => x.user_id,
                         principalTable: "User",
                         principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,13 +87,12 @@ namespace BusinessObject.Migrations
                         column: x => x.station_id,
                         principalTable: "Station",
                         principalColumn: "station_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Review_User_user_id",
                         column: x => x.user_id,
                         principalTable: "User",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "user_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -165,13 +164,14 @@ namespace BusinessObject.Migrations
                         name: "FK_SupportTicket_Station_station_id",
                         column: x => x.station_id,
                         principalTable: "Station",
-                        principalColumn: "station_id");
+                        principalColumn: "station_id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SupportTicket_User_user_id",
                         column: x => x.user_id,
                         principalTable: "User",
                         principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,7 +253,7 @@ namespace BusinessObject.Migrations
                         column: x => x.user_id,
                         principalTable: "User",
                         principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -328,8 +328,7 @@ namespace BusinessObject.Migrations
                         name: "FK_Vehicle_Battery_battery_id",
                         column: x => x.battery_id,
                         principalTable: "Battery",
-                        principalColumn: "battery_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "battery_id");
                     table.ForeignKey(
                         name: "FK_Vehicle_User_user_id",
                         column: x => x.user_id,
@@ -365,26 +364,23 @@ namespace BusinessObject.Migrations
                         name: "FK_BatterySwap_StationStaff_station_staff_id",
                         column: x => x.station_staff_id,
                         principalTable: "StationStaff",
-                        principalColumn: "station_staff_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "station_staff_id");
                     table.ForeignKey(
                         name: "FK_BatterySwap_Station_station_id",
                         column: x => x.station_id,
                         principalTable: "Station",
                         principalColumn: "station_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BatterySwap_User_user_id",
                         column: x => x.user_id,
                         principalTable: "User",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "user_id");
                     table.ForeignKey(
                         name: "FK_BatterySwap_Vehicle_vehicle_id",
                         column: x => x.vehicle_id,
                         principalTable: "Vehicle",
-                        principalColumn: "vehicles_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "vehicles_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -400,7 +396,7 @@ namespace BusinessObject.Migrations
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VehiclesId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    VehiclesId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -409,29 +405,25 @@ namespace BusinessObject.Migrations
                         name: "FK_Booking_BatteryType_battery_type_id",
                         column: x => x.battery_type_id,
                         principalTable: "BatteryType",
-                        principalColumn: "battery_type_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "battery_type_id");
                     table.ForeignKey(
                         name: "FK_Booking_Battery_battery_id",
                         column: x => x.battery_id,
                         principalTable: "Battery",
-                        principalColumn: "battery_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "battery_id");
                     table.ForeignKey(
                         name: "FK_Booking_Station_station_id",
                         column: x => x.station_id,
                         principalTable: "Station",
-                        principalColumn: "station_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "station_id");
                     table.ForeignKey(
                         name: "FK_Booking_User_user_id",
                         column: x => x.user_id,
                         principalTable: "User",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "user_id");
                     table.ForeignKey(
-                        name: "FK_Booking_Vehicle_VehiclesId",
-                        column: x => x.VehiclesId,
+                        name: "FK_Booking_Vehicle_vehicle_id",
+                        column: x => x.vehicle_id,
                         principalTable: "Vehicle",
                         principalColumn: "vehicles_id");
                 });
@@ -457,14 +449,12 @@ namespace BusinessObject.Migrations
                         name: "FK_Payment_BatterySwap_swap_id",
                         column: x => x.swap_id,
                         principalTable: "BatterySwap",
-                        principalColumn: "swap_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "swap_id");
                     table.ForeignKey(
                         name: "FK_Payment_User_user_id",
                         column: x => x.user_id,
                         principalTable: "User",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "user_id");
                 });
 
             migrationBuilder.InsertData(
@@ -482,8 +472,8 @@ namespace BusinessObject.Migrations
                 columns: new[] { "plan_id", "active", "created_at", "description", "monthly_fee", "name", "swaps_included" },
                 values: new object[,]
                 {
-                    { "plan-001", true, new DateTime(2025, 10, 1, 9, 10, 54, 245, DateTimeKind.Utc).AddTicks(2381), "Basic battery swap plan", 199000.0, "Basic Plan", "10" },
-                    { "plan-002", true, new DateTime(2025, 10, 1, 9, 10, 54, 245, DateTimeKind.Utc).AddTicks(2409), "Premium battery swap plan", 399000.0, "Premium Plan", "25" }
+                    { "plan-001", true, new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3889), "Basic battery swap plan", 199000.0, "Basic Plan", "10" },
+                    { "plan-002", true, new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(3918), "Premium battery swap plan", 399000.0, "Premium Plan", "25" }
                 });
 
             migrationBuilder.UpdateData(
@@ -491,7 +481,7 @@ namespace BusinessObject.Migrations
                 keyColumn: "user_id",
                 keyValue: "admin-001",
                 columns: new[] { "created_at", "password" },
-                values: new object[] { new DateTime(2025, 10, 1, 9, 10, 54, 245, DateTimeKind.Utc).AddTicks(1374), "$2a$11$SymoTl0N6SBGODyfgObM/uuZfEiYKftoeeEhUKbp6i3HTD/9Jp8rS" });
+                values: new object[] { new DateTime(2025, 10, 3, 9, 39, 26, 390, DateTimeKind.Utc).AddTicks(2977), "$2a$11$hXEJuB5Bu3n3dUjcJAgXae2FyC4zEJ43ZJ.h1S8WHQu5sY5BFeUAu" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Battery_battery_type_id",
@@ -560,9 +550,9 @@ namespace BusinessObject.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Booking_VehiclesId",
+                name: "IX_Booking_vehicle_id",
                 table: "Booking",
-                column: "VehiclesId");
+                column: "vehicle_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_swap_id",
