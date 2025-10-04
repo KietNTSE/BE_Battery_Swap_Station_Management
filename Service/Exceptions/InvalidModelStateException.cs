@@ -2,10 +2,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Service.Exceptions;
 
-public class InvalidModelStateException: Exception
+public class InvalidModelStateException : Exception
 {
-    public object Errors { get; }
-
     public InvalidModelStateException(ModelStateDictionary modelState)
         : base("Validation failed")
     {
@@ -18,4 +16,6 @@ public class InvalidModelStateException: Exception
             })
             .ToArray();
     }
+
+    public object Errors { get; }
 }

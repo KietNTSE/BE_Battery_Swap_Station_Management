@@ -1,10 +1,9 @@
-﻿namespace BusinessObject.Enums
+﻿namespace BusinessObject.Enums;
+
+public enum BBRStatus
 {
-    public enum BBRStatus
-    {
-        Pending = 1,
-        Confirmed = 2,
-        Cancelled = 3,
-        Completed = 4
-    }
+    Pending = 1,
+    Confirmed = 2,
+    Cancelled = 3,
+    Completed = 4
 }

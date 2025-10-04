@@ -1,10 +1,9 @@
-﻿namespace BusinessObject.Enums
+﻿namespace BusinessObject.Enums;
+
+public enum SupportTicketStatus
 {
-    public enum SupportTicketStatus
-    {
-        Open = 1,
-        InProgress = 2,
-        Resolved = 3,
-        Closed = 4
-    }
+    Open = 1,
+    InProgress = 2,
+    Resolved = 3,
+    Closed = 4
 }

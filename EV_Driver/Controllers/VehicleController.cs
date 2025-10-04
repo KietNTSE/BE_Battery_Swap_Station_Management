@@ -6,10 +6,11 @@ namespace EV_Driver.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class VehicleController(IVehicleService vehicleService): ControllerBase
+public class VehicleController(IVehicleService vehicleService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<ResponseObject<List<VehicleResponse>>>> GetUserVehicle(int page, int pageSize, string? search)
+    public async Task<ActionResult<ResponseObject<List<VehicleResponse>>>> GetUserVehicle(int page, int pageSize,
+        string? search)
     {
         var vehicle = await vehicleService.GetAllVehiclesAsync(page, pageSize, search);
         return Ok(new ResponseObject<List<VehicleResponse>>
@@ -19,9 +20,10 @@ public class VehicleController(IVehicleService vehicleService): ControllerBase
             Success = true
         }.UnwrapPagination(vehicle));
     }
-    
+
     [HttpPost]
-    public async Task<ActionResult<ResponseObject<VehicleResponse>>> CreateUserVehicle([FromBody] VehicleRequest request)
+    public async Task<ActionResult<ResponseObject<VehicleResponse>>> CreateUserVehicle(
+        [FromBody] VehicleRequest request)
     {
         var vehicle = await vehicleService.CreateVehicleAsync(request);
         return Ok(new ResponseObject<VehicleResponse>
@@ -32,9 +34,10 @@ public class VehicleController(IVehicleService vehicleService): ControllerBase
             Success = true
         });
     }
-    
+
     [HttpPut("{id}")]
-    public async Task<ActionResult<ResponseObject<VehicleResponse>>> UpdateUserVehicle(string id, [FromBody] VehicleRequest request)
+    public async Task<ActionResult<ResponseObject<VehicleResponse>>> UpdateUserVehicle(string id,
+        [FromBody] VehicleRequest request)
     {
         var vehicle = await vehicleService.UpdateVehicleAsync(id, request);
         return Ok(new ResponseObject<VehicleResponse>
@@ -45,7 +48,7 @@ public class VehicleController(IVehicleService vehicleService): ControllerBase
             Success = true
         });
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<ResponseObject<VehicleResponse>>> GetUserVehicle(string id)
     {

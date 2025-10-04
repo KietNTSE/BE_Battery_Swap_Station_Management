@@ -1,9 +1,8 @@
-﻿namespace BusinessObject.Enums
+﻿namespace BusinessObject.Enums;
+
+public enum UserRole
 {
-    public enum UserRole
-    {
-        Driver = 1,
-        Staff = 2,
-        Admin = 3
-    }
+    Driver = 1,
+    Staff = 2,
+    Admin = 3
 }

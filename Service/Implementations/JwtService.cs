@@ -9,7 +9,6 @@ namespace Service.Implementations;
 
 public class JwtService(IConfiguration config) : IJwtService
 {
-    
     public string GenerateJwtToken(string userId, string role)
     {
         var jwtSettings = config.GetSection("JwtSettings");
@@ -23,9 +22,9 @@ public class JwtService(IConfiguration config) : IJwtService
         var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: jwtSettings["Issuer"],
-            audience: jwtSettings["Audience"],
-            claims: claims,
+            jwtSettings["Issuer"],
+            jwtSettings["Audience"],
+            claims,
             expires: DateTime.UtcNow.AddHours(Convert.ToDouble(jwtSettings["ExpiryInHours"])),
             signingCredentials: credential
         );
@@ -61,7 +60,7 @@ public class JwtService(IConfiguration config) : IJwtService
             };
 
             var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-            
+
             userId = principal.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? string.Empty;
             role = principal.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
 
@@ -72,5 +71,4 @@ public class JwtService(IConfiguration config) : IJwtService
             return false;
         }
     }
-
 }
