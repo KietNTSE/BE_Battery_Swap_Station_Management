@@ -1,10 +1,9 @@
 ﻿using BusinessObject.DTOs;
 
-namespace Service.Interfaces
+namespace Service.Interfaces;
+
+public interface IAuthService
 {
-    public interface IAuthService
-    {
-        Task<AuthResponseDto?> RegisterAsync(RegisterDto registerDto);
-        Task<AuthResponseDto?> LoginAsync(LoginDto loginDto);
-    }
+    Task<AuthResponseDto?> RegisterAsync(RegisterDto registerDto);
+    Task<AuthResponseDto?> LoginAsync(LoginDto loginDto);
 }

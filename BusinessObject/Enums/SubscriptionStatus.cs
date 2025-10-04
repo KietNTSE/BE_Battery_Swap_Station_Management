@@ -1,10 +1,9 @@
-﻿namespace BusinessObject.Enums
+﻿namespace BusinessObject.Enums;
+
+public enum SubscriptionStatus
 {
-    public enum SubscriptionStatus
-    {
-        Active = 1,
-        Inactive = 2,
-        Suspended = 3,
-        Cancelled = 4
-    }
+    Active = 1,
+    Inactive = 2,
+    Suspended = 3,
+    Cancelled = 4
 }

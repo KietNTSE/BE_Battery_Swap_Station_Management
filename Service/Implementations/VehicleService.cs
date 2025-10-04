@@ -10,7 +10,7 @@ using Service.Utils;
 
 namespace Service.Implementations;
 
-public class VehicleService(ApplicationDbContext context, IHttpContextAccessor accessor): IVehicleService
+public class VehicleService(ApplicationDbContext context, IHttpContextAccessor accessor) : IVehicleService
 {
     public async Task<VehicleResponse> GetVehicleAsync(string vehicleId)
     {
@@ -19,14 +19,12 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
             .Include(v => v.User)
             .FirstOrDefaultAsync(v => v.VehicleId == vehicleId);
         if (vehicle is null)
-        {
-            throw new ValidationException()
+            throw new ValidationException
             {
                 ErrorMessage = "Vehicle not found",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
-        }
 
         return new VehicleResponse
         {
@@ -46,14 +44,12 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
     {
         var userId = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(userId))
-        {
             throw new ValidationException
             {
                 StatusCode = HttpStatusCode.Unauthorized,
                 ErrorMessage = "Unauthorized",
                 Code = "401"
             };
-        }
 
         await ValidateVehicleRequest(vehicleRequest);
 
@@ -83,7 +79,8 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
                 Model = vehicleEntity.Model,
                 LicensePlate = vehicleEntity.LicensePlate
             };
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             throw new ValidationException
             {
@@ -96,18 +93,16 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
 
     public async Task<VehicleResponse> UpdateVehicleAsync(string vehicleId, VehicleRequest vehicleRequest)
     {
-        var vehicleEntity =  await context.Vehicles.Include(v => v.BatteryType)
+        var vehicleEntity = await context.Vehicles.Include(v => v.BatteryType)
             .Include(v => v.User)
             .FirstOrDefaultAsync(v => v.VehicleId == vehicleId);
         if (vehicleEntity is null)
-        {
             throw new ValidationException
             {
                 ErrorMessage = "Vehicle not found",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
-        }
         await ValidateVehicleRequest(vehicleRequest);
         vehicleEntity.BatteryId = vehicleRequest.BatteryId;
         vehicleEntity.BatteryTypeId = vehicleRequest.BatteryTypeId;
@@ -146,13 +141,11 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
         throw new NotImplementedException();
     }
 
-    public async Task<PaginationWrapper<List<VehicleResponse>, VehicleResponse>> GetAllVehiclesAsync(int page, int pageSize, string? search)
+    public async Task<PaginationWrapper<List<VehicleResponse>, VehicleResponse>> GetAllVehiclesAsync(int page,
+        int pageSize, string? search)
     {
         var query = context.Vehicles.AsQueryable();
-        if (search is not null)
-        {
-            query = query.Where(v => v.Model.Contains(search) || v.LicensePlate.Contains(search));
-        }
+        if (search is not null) query = query.Where(v => v.Model.Contains(search) || v.LicensePlate.Contains(search));
         var totalItems = await query.CountAsync();
         var users = await query.Skip((page - 1) * pageSize).Take(pageSize).OrderByDescending(v => v.CreatedAt)
             .Select(v => new VehicleResponse
@@ -172,33 +165,27 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
     private async Task ValidateVehicleRequest(VehicleRequest vehicleRequest)
     {
         if (!await context.Batteries.AnyAsync(b => b.BatteryId == vehicleRequest.BatteryId))
-        {
             throw new ValidationException
             {
                 ErrorMessage = "Battery not found",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
-        }
 
         if (!await context.BatteryTypes.AnyAsync(bt => bt.BatteryTypeId == vehicleRequest.BatteryTypeId))
-        {
             throw new ValidationException
             {
                 ErrorMessage = "Battery type not found",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
-        }
 
         if (await context.Vehicles.AnyAsync(v => v.LicensePlate == vehicleRequest.LicensePlate))
-        {
             throw new ValidationException
             {
                 ErrorMessage = "LicensePlate is already existed in our system",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
-        }
     }
 }

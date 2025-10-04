@@ -1,9 +1,8 @@
-﻿namespace BusinessObject.Enums
+﻿namespace BusinessObject.Enums;
+
+public enum UserStatus
 {
-    public enum UserStatus
-    {
-        Active = 1,
-        Inactive = 2,
-        Suspended = 3
-    }
+    Active = 1,
+    Inactive = 2,
+    Suspended = 3
 }

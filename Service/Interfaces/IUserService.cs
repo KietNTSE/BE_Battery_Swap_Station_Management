@@ -9,6 +9,7 @@ public interface IUserService
     Task<UserProfileResponse?> UpdateUserProfileResponse(string id, UserProfileRequest userProfileDto);
     Task<UserProfileResponse?> UpdateMeProfileAsync(UserProfileRequest userProfile);
     Task UpdatePassword(ChangePasswordRequest request);
+
     Task<PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>> GetAllUsersAsync(int page,
         int pageSize, string? search);
 }

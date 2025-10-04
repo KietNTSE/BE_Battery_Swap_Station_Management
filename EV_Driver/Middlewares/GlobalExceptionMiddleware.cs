@@ -33,7 +33,8 @@ public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExcep
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception ex, HttpStatusCode statusCode, string code, object? content = null)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception ex, HttpStatusCode statusCode,
+        string code, object? content = null)
     {
         var response = new ResponseObject<object>
         {

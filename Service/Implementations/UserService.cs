@@ -11,41 +11,37 @@ namespace Service.Implementations;
 
 public class UserService(ApplicationDbContext context, IHttpContextAccessor accessor) : IUserService
 {
-
     public async Task<PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>> GetAllUsersAsync(int page,
         int pageSize, string? search)
     {
         var query = context.Users.AsQueryable();
         if (!string.IsNullOrEmpty(search))
-        {
             query = query.Where(u => u.FullName.Contains(search) || u.Email.Contains(search));
-        }
         var totalItem = await query.CountAsync();
-        var users = await query.Skip((page - 1) * pageSize).Take(pageSize).OrderByDescending(u => u.CreatedAt).Select(u => new UserProfileResponse
-        {
-            UserId = u.UserId,
-            FullName = u.FullName,
-            Email = u.Email,
-            Phone = u.Phone,
-            Role = u.Role,
-            Status = u.Status,
-            CreatedAt = u.CreatedAt
-        }).ToListAsync();
+        var users = await query.Skip((page - 1) * pageSize).Take(pageSize).OrderByDescending(u => u.CreatedAt)
+            .Select(u => new UserProfileResponse
+            {
+                UserId = u.UserId,
+                FullName = u.FullName,
+                Email = u.Email,
+                Phone = u.Phone,
+                Role = u.Role,
+                Status = u.Status,
+                CreatedAt = u.CreatedAt
+            }).ToListAsync();
         return new PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>(users, page, totalItem, pageSize);
-    } 
-    
+    }
+
     public async Task<UserProfileResponse?> GetUserProfileAsync(string userId)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         if (user is null)
-        {
             throw new ValidationException
             {
                 ErrorMessage = "User not found",
                 Code = "400",
-                StatusCode = HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest
             };
-        }
         return new UserProfileResponse
         {
             UserId = user.UserId,
@@ -57,19 +53,17 @@ public class UserService(ApplicationDbContext context, IHttpContextAccessor acce
             CreatedAt = user.CreatedAt
         };
     }
-    
+
     public async Task<UserProfileResponse?> GetMeProfileAsync()
     {
         var userId = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(userId))
-        {
             throw new ValidationException
             {
                 StatusCode = HttpStatusCode.Unauthorized,
                 Code = "401",
                 ErrorMessage = "Unauthorized"
             };
-        }
         return await GetUserProfileAsync(userId);
     }
 
@@ -77,14 +71,12 @@ public class UserService(ApplicationDbContext context, IHttpContextAccessor acce
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user is null)
-        {
             throw new ValidationException
             {
                 ErrorMessage = "User not found",
                 Code = "400",
-                StatusCode = HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest
             };
-        }
         user.FullName = userProfileDto.FullName;
         user.Email = userProfileDto.Email;
         user.Phone = userProfileDto.Phone;
@@ -92,29 +84,28 @@ public class UserService(ApplicationDbContext context, IHttpContextAccessor acce
         {
             await context.SaveChangesAsync();
             return await GetUserProfileAsync(id);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             throw new ValidationException
             {
                 ErrorMessage = ex.Message,
                 Code = "500",
-                StatusCode = HttpStatusCode.InternalServerError,
+                StatusCode = HttpStatusCode.InternalServerError
             };
         }
     }
-    
+
     public async Task<UserProfileResponse?> UpdateMeProfileAsync(UserProfileRequest userProfile)
     {
         var userId = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(userId))
-        {
             throw new ValidationException
             {
                 StatusCode = HttpStatusCode.Unauthorized,
                 Code = "401",
                 ErrorMessage = "Unauthorized"
             };
-        }
         return await UpdateUserProfileResponse(userId, userProfile);
     }
 
@@ -122,44 +113,36 @@ public class UserService(ApplicationDbContext context, IHttpContextAccessor acce
     {
         var id = JwtUtils.GetUserId(accessor);
         if (string.IsNullOrEmpty(id))
-        {
             throw new ValidationException
             {
                 Code = "401",
                 StatusCode = HttpStatusCode.Unauthorized,
                 ErrorMessage = "Unauthorized"
             };
-        }
         var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user is null)
-        {
             throw new ValidationException
             {
                 ErrorMessage = "User not found",
                 Code = "400",
-                StatusCode = HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest
             };
-        }
         var isOldPasswordCorrect = BCrypt.Net.BCrypt.Verify(request.OldPassword, user.Password);
         if (!isOldPasswordCorrect)
-        {
             throw new ValidationException
             {
                 ErrorMessage = "Old password is incorrect",
                 Code = "400",
-                StatusCode = HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest
             };
-        }
 
         if (!request.NewPassword.Equals(request.ConfirmPassword))
-        {
             throw new ValidationException
             {
                 ErrorMessage = "New password and confirm password are not match",
                 Code = "400",
-                StatusCode = HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest
             };
-        }
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
         user.Password = hashedPassword;
         try
@@ -172,9 +155,8 @@ public class UserService(ApplicationDbContext context, IHttpContextAccessor acce
             {
                 ErrorMessage = ex.Message,
                 Code = "400",
-                StatusCode = HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest
             };
         }
-
     }
 }

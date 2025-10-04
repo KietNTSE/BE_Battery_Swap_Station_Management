@@ -1,8 +1,7 @@
-﻿namespace BusinessObject.Enums
+﻿namespace BusinessObject.Enums;
+
+public enum BatteryOwner
 {
-    public enum BatteryOwner
-    {
-        Station = 1,
-        Driver = 2
-    }
+    Station = 1,
+    Driver = 2
 }

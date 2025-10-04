@@ -1,6 +1,6 @@
 namespace BusinessObject.DTOs;
 
-public class ResponseObject <T>
+public class ResponseObject<T>
 {
     public T? Content { get; set; }
     public string Message { get; set; } = string.Empty;

@@ -8,7 +8,7 @@ namespace EV_Driver.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class UserController(IUserService userService): ControllerBase
+public class UserController(IUserService userService) : ControllerBase
 {
     [HttpGet("me")]
     public async Task<ActionResult<ResponseObject<UserProfileResponse>>> GetMeUserProfile()
@@ -37,7 +37,8 @@ public class UserController(IUserService userService): ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateUserProfile(string id, [FromBody] UserProfileRequest request)
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateUserProfile(string id,
+        [FromBody] UserProfileRequest request)
     {
         var user = await userService.UpdateUserProfileResponse(id, request);
         return Ok(new ResponseObject<UserProfileResponse>
@@ -48,8 +49,10 @@ public class UserController(IUserService userService): ControllerBase
             Success = true
         });
     }
+
     [HttpPut("me")]
-    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateMeProfile([FromBody] UserProfileRequest request)
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateMeProfile(
+        [FromBody] UserProfileRequest request)
     {
         var user = await userService.UpdateMeProfileAsync(request);
         return Ok(new ResponseObject<UserProfileResponse>
@@ -60,7 +63,7 @@ public class UserController(IUserService userService): ControllerBase
             Success = true
         });
     }
-    
+
     [HttpPut("me/password")]
     public async Task<ActionResult<ResponseObject<object>>> UpdateMePassword([FromBody] ChangePasswordRequest request)
     {

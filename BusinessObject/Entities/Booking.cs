@@ -2,48 +2,30 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessObject.Enums;
 
-namespace BusinessObject.Entities
+namespace BusinessObject.Entities;
+
+[Table("Booking")]
+public class Booking
 {
-    [Table("Booking")]
-    public class Booking
-    {
-        [Key]
-        [Column("booking_id")]
-        public string BookingId { get; set; } = Guid.NewGuid().ToString();
+    [Key] [Column("booking_id")] public string BookingId { get; set; } = Guid.NewGuid().ToString();
 
-        [Required]
-        [Column("station_id")]
-        public string StationId { get; set; } = string.Empty;
+    [Required] [Column("station_id")] public string StationId { get; set; } = string.Empty;
 
-        [Required]
-        [Column("user_id")]
-        public string UserId { get; set; } = string.Empty;
+    [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
 
-        [Required]
-        [Column("vehicle_id")]
-        public string VehicleId { get; set; } = string.Empty;
+    [Required] [Column("vehicle_id")] public string VehicleId { get; set; } = string.Empty;
 
-        [Required]
-        [Column("date")]
-        public DateTime Date { get; set; }
+    [Required] [Column("date")] public DateTime Date { get; set; }
 
-        [Required]
-        [Column("status")]
-        public BBRStatus Status { get; set; } = BBRStatus.Pending;
+    [Required] [Column("status")] public BBRStatus Status { get; set; } = BBRStatus.Pending;
 
-        [Required]
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    [Required] [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("StationId")]
-        public virtual Station Station { get; set; } = null!;
+    [ForeignKey("StationId")] public virtual Station Station { get; set; } = null!;
 
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; } = null!;
+    [ForeignKey("UserId")] public virtual User User { get; set; } = null!;
 
-        [ForeignKey("VehicleId")]
-        public virtual Vehicle Vehicle { get; set; } = null!;
+    [ForeignKey("VehicleId")] public virtual Vehicle Vehicle { get; set; } = null!;
 
-        public virtual ICollection<BatteryBookingSlot> BatteryBookingSlots { get; set; } = new List<BatteryBookingSlot>();
-    }
+    public virtual ICollection<BatteryBookingSlot> BatteryBookingSlots { get; set; } = new List<BatteryBookingSlot>();
 }
