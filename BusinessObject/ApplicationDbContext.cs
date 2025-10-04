@@ -27,10 +27,6 @@ namespace BusinessObject
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure composite key for Booking
-            modelBuilder.Entity<Booking>()
-                .HasKey(b => new { b.StationId, b.UserId, b.VehicleId, b.BatteryId, b.BatteryTypeId });
-
             // Configure unique indexes
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
@@ -127,18 +123,6 @@ namespace BusinessObject
                 .HasDefaultValueSql("GETUTCDATE()");
             
             modelBuilder.Entity<Booking>()
-                .HasOne(b => b.Battery)
-                .WithMany(b => b.Bookings)
-                .HasForeignKey(b => b.BatteryId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Booking>()
-                .HasOne(b => b.BatteryType)
-                .WithMany(bt => bt.Bookings)
-                .HasForeignKey(b => b.BatteryTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
-            
-            modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Station)
                 .WithMany(s => s.Bookings)
                 .HasForeignKey(b => b.StationId)
@@ -168,8 +152,59 @@ namespace BusinessObject
                 .HasForeignKey(p => p.SwapId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Seed data
+            modelBuilder.Entity<StationBatterySlot>()
+                .HasOne(sb => sb.Battery)
+                .WithOne(b => b.StationBatterySlot)
+                .HasForeignKey<StationBatterySlot>(sb => sb.BatteryId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<StationBatterySlot>()
+                .HasOne(sb => sb.Station)
+                .WithMany(s => s.StationBatterySlots)
+                .HasForeignKey(sb => sb.StationId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<StationBatterySlot>()
+                .Property(s => s.LastUpdated)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("GETUTCDATE()");
+            
+            modelBuilder.Entity<BatteryBookingSlot>()
+                .HasOne(b => b.Battery)
+                .WithMany(b => b.BatteryBookingSlots)
+                .HasForeignKey(b => b.BatteryId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<BatteryBookingSlot>()
+                .HasOne(b => b.Booking)
+                .WithMany(b => b.BatteryBookingSlots)
+                .HasForeignKey(b => b.BookingId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<BatteryBookingSlot>()
+                .HasOne(b => b.StationBatterySlot)
+                .WithMany(b => b.BatteryBookingSlots)
+                .HasForeignKey(b => b.StationSlotId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<BatteryBookingSlot>()
+                .Property(s => s.CreatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("GETUTCDATE()");
+            
+            modelBuilder.Entity<BatterySwap>()
+                .HasOne(bs => bs.ToBattery)
+                .WithMany(b => b.ToBatterySwaps)
+                .HasForeignKey(bs => bs.ToBatteryId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            // ======= END OF FIX ALL FOREIGN KEY RELATIONSHIPS =======
+            
+            
+            // ======= SEED DATA =======
             SeedData(modelBuilder);
+            
+            // ======= END OF SEED DATA =======
         }
 
         private void SeedData(ModelBuilder modelBuilder)
