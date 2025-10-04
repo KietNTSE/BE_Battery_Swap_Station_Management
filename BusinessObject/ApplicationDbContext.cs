@@ -22,6 +22,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<SupportTicket> SupportTickets { get; set; }
     public DbSet<StationInventory> StationInventories { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
+    public DbSet<StationBatterySlot> StationBatterySlots { get; set; }
+    public DbSet<BatteryBookingSlot> BatteryBookingSlots { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -108,10 +110,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(st => st.StationId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Vehicle>()
-            .HasOne(v => v.Battery)
-            .WithMany(b => b.Vehicles)
-            .HasForeignKey(v => v.BatteryId)
+        modelBuilder.Entity<Battery>()
+            .HasOne(b => b.Vehicle)
+            .WithMany(v => v.Batteries)
+            .HasForeignKey(b => b.VehicleId)
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<User>()
