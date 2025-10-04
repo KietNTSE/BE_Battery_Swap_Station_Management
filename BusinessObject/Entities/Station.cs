@@ -55,5 +55,6 @@ namespace BusinessObject.Entities
         public virtual ICollection<StationInventory> StationInventories { get; set; } = new List<StationInventory>();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
+        public virtual ICollection<StationBatterySlot> StationBatterySlots { get; set; } = new List<StationBatterySlot>();
     }
 }

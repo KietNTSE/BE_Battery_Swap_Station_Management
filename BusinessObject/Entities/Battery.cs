@@ -71,6 +71,10 @@ namespace BusinessObject.Entities
         // Navigation properties
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         public virtual ICollection<BatterySwap> BatterySwaps { get; set; } = new List<BatterySwap>();
+        public virtual ICollection<BatterySwap> ToBatterySwaps { get; set; } = new List<BatterySwap>();
         public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public virtual StationBatterySlot? StationBatterySlot { get; set; } = null!;
+        public virtual ICollection<BatteryBookingSlot> BatteryBookingSlots { get; set; } = new List<BatteryBookingSlot>();
+        
     }
 }
