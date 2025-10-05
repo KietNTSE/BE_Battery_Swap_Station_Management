@@ -725,7 +725,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-001",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 5, 7, 26, 32, 941, DateTimeKind.Utc).AddTicks(762),
+                            CreatedAt = new DateTime(2025, 10, 5, 7, 46, 8, 948, DateTimeKind.Utc).AddTicks(8990),
                             Description = "Basic battery swap plan",
                             MonthlyFee = 199000.0,
                             Name = "Basic Plan",
@@ -735,7 +735,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-002",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 5, 7, 26, 32, 941, DateTimeKind.Utc).AddTicks(786),
+                            CreatedAt = new DateTime(2025, 10, 5, 7, 46, 8, 948, DateTimeKind.Utc).AddTicks(9014),
                             Description = "Premium battery swap plan",
                             MonthlyFee = 399000.0,
                             Name = "Premium Plan",
@@ -848,10 +848,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2025, 10, 5, 7, 26, 32, 940, DateTimeKind.Utc).AddTicks(9951),
+                            CreatedAt = new DateTime(2025, 10, 5, 7, 46, 8, 948, DateTimeKind.Utc).AddTicks(8021),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$M08n.oTl6MOU5uAdmZgk8.orpSVPQaWLkdon34XIfhML19VcPAvKW",
+                            Password = "$2a$11$B0.QWB7azsFaf/YElJ1BfeKpz2vOpTv1ve6crw3Y0R2zOGVup21SK",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1
@@ -869,9 +869,7 @@ namespace BusinessObject.Migrations
                         .HasColumnName("battery_capacity");
 
                     b.Property<string>("BatteryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("battery_id");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BatteryTypeId")
                         .IsRequired()
@@ -1240,9 +1238,7 @@ namespace BusinessObject.Migrations
                 {
                     b.HasOne("BusinessObject.Entities.Battery", null)
                         .WithMany("Vehicles")
-                        .HasForeignKey("BatteryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BatteryId");
 
                     b.HasOne("BusinessObject.Entities.BatteryType", "BatteryType")
                         .WithMany("Vehicles")

@@ -2,7 +2,6 @@ namespace BusinessObject.DTOs;
 
 public class VehicleRequest
 {
-    public string BatteryId { get; set; } = string.Empty;
     public string BatteryTypeId { get; set; } = string.Empty;
     public string VBrand { get; set; } = string.Empty;
     public string Model { get; set; } = string.Empty;

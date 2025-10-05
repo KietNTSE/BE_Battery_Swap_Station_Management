@@ -10,8 +10,6 @@ public class Vehicle
 
     [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
 
-    [Required] [Column("battery_id")] public string BatteryId { get; set; } = string.Empty;
-
     [Required] [Column("battery_type_id")] public string BatteryTypeId { get; set; } = string.Empty;
 
     [Required]

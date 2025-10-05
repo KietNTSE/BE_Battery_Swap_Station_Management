@@ -109,7 +109,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany(s => s.SupportTickets)
             .HasForeignKey(st => st.StationId)
             .OnDelete(DeleteBehavior.Restrict);
-
+        
         modelBuilder.Entity<Battery>()
             .HasOne(b => b.Vehicle)
             .WithMany(v => v.Batteries)
@@ -199,7 +199,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany(b => b.ToBatterySwaps)
             .HasForeignKey(bs => bs.ToBatteryId)
             .OnDelete(DeleteBehavior.NoAction);
-
         // ======= END OF FIX ALL FOREIGN KEY RELATIONSHIPS =======
 
 
