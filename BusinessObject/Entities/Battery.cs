@@ -20,7 +20,7 @@ public class Battery
     [Required]
     [Column("serial_no")]
     [StringLength(255)]
-    public string SerialNo { get; set; } = string.Empty;
+    public int SerialNo { get; set; }
 
     [Column("owner")] public BatteryOwner Owner { get; set; } = BatteryOwner.Station;
 
@@ -31,6 +31,8 @@ public class Battery
     [Column("capacity_wh")]
     [StringLength(50)]
     public string? CapacityWh { get; set; }
+
+    public int Quantity { get; set; } = 1;
 
     [Column("image_url")]
     [StringLength(500)]

@@ -22,6 +22,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IStationService, StationService>();
+builder.Services.AddScoped<IBatteryService, BatteryService>();
+
 
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
