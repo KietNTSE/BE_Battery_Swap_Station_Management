@@ -24,8 +24,6 @@ public class Station
 
     [Required] [Column("longitude")] public double Longitude { get; set; }
 
-    [Column("maximum_slot")] public int MaximumSlot { get; set; }
-
     [Column("is_active")] public bool IsActive { get; set; } = true;
 
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
