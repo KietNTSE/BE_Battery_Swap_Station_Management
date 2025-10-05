@@ -36,6 +36,8 @@ public class Battery
     [StringLength(500)]
     public string? ImageUrl { get; set; }
 
+    [Column("vehicle_id")] public string? VehicleId { get; set; }
+
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Column("updated_at")] public DateTime? UpdatedAt { get; set; }
@@ -48,6 +50,8 @@ public class Battery
     [ForeignKey("BatteryTypeId")] public virtual BatteryType BatteryType { get; set; } = null!;
 
     [ForeignKey("ReservationId")] public virtual Reservation? Reservation { get; set; }
+
+    [ForeignKey("VehicleId")] public virtual Vehicle? Vehicle { get; set; }
 
     // Navigation properties
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();

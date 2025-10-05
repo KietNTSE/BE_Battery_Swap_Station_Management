@@ -10,8 +10,6 @@ public class Vehicle
 
     [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
 
-    [Required] [Column("battery_id")] public string BatteryId { get; set; } = string.Empty;
-
     [Required] [Column("battery_type_id")] public string BatteryTypeId { get; set; } = string.Empty;
 
     [Required]
@@ -25,6 +23,10 @@ public class Vehicle
     public string Model { get; set; } = string.Empty;
 
     [Required]
+    [Column("battery_capacity")]
+    public int BatteryCapacity { get; set; } = 1;
+
+    [Required]
     [Column("license_plate")]
     [StringLength(50)]
     public string LicensePlate { get; set; } = string.Empty;
@@ -34,11 +36,9 @@ public class Vehicle
     // Foreign key navigation properties
     [ForeignKey("UserId")] public virtual User User { get; set; } = null!;
 
-    [ForeignKey("BatteryId")] public virtual Battery Battery { get; set; } = null!;
-
     [ForeignKey("BatteryTypeId")] public virtual BatteryType BatteryType { get; set; } = null!;
 
-    // Navigation properties
+    public virtual ICollection<Battery> Batteries { get; set; } = new List<Battery>();
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     public virtual ICollection<BatterySwap> BatterySwaps { get; set; } = new List<BatterySwap>();
 }

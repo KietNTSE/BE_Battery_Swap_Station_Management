@@ -31,7 +31,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
             VehicleId = vehicle.VehicleId,
             UserId = vehicle.UserId,
             UserName = vehicle.User.FullName,
-            BatteryId = vehicle.BatteryId,
             BatteryTypeId = vehicle.BatteryTypeId,
             BatteryTypeName = vehicle.BatteryType.BatteryTypeName,
             VBrand = vehicle.VBrand,
@@ -55,7 +54,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
 
         var vehicleEntity = new Vehicle
         {
-            BatteryId = vehicleRequest.BatteryId,
             BatteryTypeId = vehicleRequest.BatteryTypeId,
             VBrand = vehicleRequest.VBrand,
             Model = vehicleRequest.Model,
@@ -72,7 +70,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
                 VehicleId = vehicleEntity.VehicleId,
                 UserId = vehicleEntity.UserId,
                 UserName = vehicleEntity.User.FullName,
-                BatteryId = vehicleEntity.BatteryId,
                 BatteryTypeId = vehicleEntity.BatteryTypeId,
                 BatteryTypeName = vehicleEntity.BatteryType.BatteryTypeName,
                 VBrand = vehicleEntity.VBrand,
@@ -104,7 +101,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
                 StatusCode = HttpStatusCode.BadRequest
             };
         await ValidateVehicleRequest(vehicleRequest);
-        vehicleEntity.BatteryId = vehicleRequest.BatteryId;
         vehicleEntity.BatteryTypeId = vehicleRequest.BatteryTypeId;
         vehicleEntity.VBrand = vehicleRequest.VBrand;
         vehicleEntity.Model = vehicleRequest.Model;
@@ -117,7 +113,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
                 VehicleId = vehicleEntity.VehicleId,
                 UserId = vehicleEntity.UserId,
                 UserName = vehicleEntity.User.FullName,
-                BatteryId = vehicleEntity.BatteryId,
                 BatteryTypeId = vehicleEntity.BatteryTypeId,
                 BatteryTypeName = vehicleEntity.BatteryType.BatteryTypeName,
                 VBrand = vehicleEntity.VBrand,
@@ -152,7 +147,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
             {
                 UserId = v.UserId,
                 UserName = v.User.FullName,
-                BatteryId = v.BatteryId,
                 BatteryTypeId = v.BatteryTypeId,
                 BatteryTypeName = v.BatteryType.BatteryTypeName,
                 VBrand = v.VBrand,
@@ -164,14 +158,6 @@ public class VehicleService(ApplicationDbContext context, IHttpContextAccessor a
 
     private async Task ValidateVehicleRequest(VehicleRequest vehicleRequest)
     {
-        if (!await context.Batteries.AnyAsync(b => b.BatteryId == vehicleRequest.BatteryId))
-            throw new ValidationException
-            {
-                ErrorMessage = "Battery not found",
-                Code = "400",
-                StatusCode = HttpStatusCode.BadRequest
-            };
-
         if (!await context.BatteryTypes.AnyAsync(bt => bt.BatteryTypeId == vehicleRequest.BatteryTypeId))
             throw new ValidationException
             {
