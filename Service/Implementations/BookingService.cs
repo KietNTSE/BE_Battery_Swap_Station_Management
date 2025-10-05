@@ -110,13 +110,20 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
             }
 
             if (bookingSlot.Count == 0)
+            {
                 throw new ValidationException
                 {
                     ErrorMessage = "No available battery",
                     Code = "400",
                     StatusCode = HttpStatusCode.BadRequest
                 };
+            }
             context.BatteryBookingSlots.AddRange(bookingSlot);
+            await context.StationBatterySlots
+                .Where(s => request.BatteryIds.Contains(s.BatteryId ?? ""))
+                .ExecuteUpdateAsync(s => 
+                    s.SetProperty(b => b.Status, 2)
+                        .SetProperty(b => b.LastUpdated, DateTime.UtcNow));
             await context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
