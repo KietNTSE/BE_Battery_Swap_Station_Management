@@ -15,8 +15,6 @@ public class Booking
 
     [Required] [Column("vehicle_id")] public string VehicleId { get; set; } = string.Empty;
 
-    [Required] [Column("date")] public DateTime Date { get; set; }
-
     [Required] [Column("status")] public BBRStatus Status { get; set; } = BBRStatus.Pending;
 
     [Required] [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

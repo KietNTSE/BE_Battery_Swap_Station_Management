@@ -24,7 +24,7 @@ namespace Service.Implementations
             return batteries.Select(ToResponse);
         }
 
-        // 🟢 Lấy pin theo ID
+        //Lấy pin theo ID
         public async Task<BatteryResponse?> GetByIdAsync(string id)
         {
             var battery = await context.Batteries
@@ -35,7 +35,7 @@ namespace Service.Implementations
             return battery == null ? null : ToResponse(battery);
         }
 
-        // 🟢 Lấy pin theo số serial
+        //Lấy pin theo số serial
         public async Task<BatteryResponse?> GetBySerialAsync(int serialNo)
         {
             var battery = await context.Batteries
@@ -46,7 +46,7 @@ namespace Service.Implementations
             return battery == null ? null : ToResponse(battery);
         }
 
-        // 🟢 Lấy pin theo trạm
+        //Lấy pin theo trạm
         public async Task<IEnumerable<BatteryResponse>> GetByStationAsync(string stationId)
         {
             var batteries = await context.Batteries
@@ -59,7 +59,7 @@ namespace Service.Implementations
             return batteries.Select(ToResponse);
         }
 
-        // 🟢 Lấy danh sách pin có sẵn (Available)
+        //Lấy danh sách pin có sẵn (Available)
         public async Task<IEnumerable<BatteryResponse>> GetAvailableAsync(string? stationId = null)
         {
             var query = context.Batteries
@@ -75,7 +75,7 @@ namespace Service.Implementations
             return list.Select(ToResponse);
         }
 
-        // 🟢 Thêm mới pin
+        //Thêm mới pin
         public async Task AddAsync(BatteryRequest request)
         {
             var entity = new Battery
@@ -99,7 +99,7 @@ namespace Service.Implementations
             await context.SaveChangesAsync();
         }
 
-        // 🟡 Cập nhật pin
+        //Cập nhật pin
         public async Task UpdateAsync(BatteryRequest request)
         {
             var battery = await context.Batteries.FirstOrDefaultAsync(b => b.SerialNo == request.SerialNo);
@@ -122,7 +122,7 @@ namespace Service.Implementations
             await context.SaveChangesAsync();
         }
 
-        // 🔴 Xóa pin
+        //Xóa pin
         public async Task DeleteAsync(string id)
         {
             var battery = await context.Batteries.FirstOrDefaultAsync(b => b.BatteryId == id);
@@ -133,7 +133,7 @@ namespace Service.Implementations
             await context.SaveChangesAsync();
         }
 
-        // 🧩 Hàm chuyển đổi Entity → DTO
+        //Hàm chuyển đổi Entity → DTO
         private static BatteryResponse ToResponse(Battery b)
         {
             return new BatteryResponse
