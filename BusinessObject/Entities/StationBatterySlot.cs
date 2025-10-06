@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using BusinessObject.Enums;
 namespace BusinessObject.Entities;
 
 [Table("StationBatterySlot")]
@@ -14,7 +14,7 @@ public class StationBatterySlot
 
     [Required] [Column("slot_no")] public int SlotNo { get; set; }
 
-    [Required] [Column("status")] public int Status { get; set; }
+    [Required][Column("status")] public SBSStatus Status { get; set; } = SBSStatus.Available;
 
     [Column("last_updated")] public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
 

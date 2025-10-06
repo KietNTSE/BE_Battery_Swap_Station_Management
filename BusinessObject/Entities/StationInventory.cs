@@ -6,7 +6,7 @@ namespace BusinessObject.Entities;
 [Table("StationInventory")]
 public class StationInventory
 {
-    [Key] [Column("station_inventory_id")] public string StationInventoryId { get; set; } = Guid.NewGuid().ToString();
+    [Key] [Column("station_inventory_id")] public string StationInventoryId { get; set; } = Guid.NewGuid().ToString();  
 
     [Required] [Column("station_id")] public string StationId { get; set; } = string.Empty;
 

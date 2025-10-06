@@ -66,7 +66,7 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
             b.BatteryTypeId == vehicle.BatteryTypeId &&
             b.StationBatterySlot != null
             && b.StationBatterySlot.StationId == request.StationId
-            && b.StationBatterySlot.Status == 1
+            && b.StationBatterySlot.Status == SBSStatus.Available
         ).ToListAsync();
         if (validBatteries.Count == 0 || validBatteries.Count < request.BatteryIds.Count)
             throw new ValidationException
@@ -122,7 +122,7 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
             await context.StationBatterySlots
                 .Where(s => request.BatteryIds.Contains(s.BatteryId ?? ""))
                 .ExecuteUpdateAsync(s => 
-                    s.SetProperty(b => b.Status, 2)
+                    s.SetProperty(b => b.Status, SBSStatus.Full_slot)
                         .SetProperty(b => b.LastUpdated, DateTime.UtcNow));
             await context.SaveChangesAsync();
             await transaction.CommitAsync();
