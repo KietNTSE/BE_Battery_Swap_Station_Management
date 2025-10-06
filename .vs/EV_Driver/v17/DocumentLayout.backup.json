@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|d:\\swp_project\\be_battery_swap_station_management\\service\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|d:\\swp_project\\be_battery_swap_station_management\\businessobject\\entities\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\entities\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -195,10 +199,6 @@
       "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\dtos\\authresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|d:\\swp_project\\be_battery_swap_station_management\\service\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A85C41E7-0789-474E-B91E-860D9E22384F}|Service\\Service.csproj|solutionrelative:service\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|d:\\swp_project\\be_battery_swap_station_management\\businessobject\\dtos\\responseobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F787902B-0116-42E3-82C0-AB5BD91E2790}|BusinessObject\\BusinessObject.csproj|solutionrelative:businessobject\\dtos\\responseobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -249,64 +249,12 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "StationInventory.cs",
-              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationInventory.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\StationInventory.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationInventory.cs*",
-              "RelativeToolTip": "BusinessObject\\Entities\\StationInventory.cs*",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAQwA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T00:58:46.466Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "StationStaff.cs",
-              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationStaff.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\StationStaff.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationStaff.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\StationStaff.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T00:58:35.403Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Subscription.cs",
-              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Subscription.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\Subscription.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Subscription.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\Subscription.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAA3wCEAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T00:57:01.031Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "SubscriptionPayment.cs",
-              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPayment.cs",
-              "RelativeDocumentMoniker": "BusinessObject\\Entities\\SubscriptionPayment.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPayment.cs",
-              "RelativeToolTip": "BusinessObject\\Entities\\SubscriptionPayment.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAowCQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-02T14:01:09.503Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "SubscriptionPlan.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPlan.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\SubscriptionPlan.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPlan.cs*",
-              "RelativeToolTip": "BusinessObject\\Entities\\SubscriptionPlan.cs*",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPlan.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\SubscriptionPlan.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAA3wBkAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-03T00:56:38.012Z",
@@ -314,7 +262,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SupportTicket.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SupportTicket.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\SupportTicket.cs",
@@ -327,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\User.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\User.cs",
@@ -340,12 +288,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Vehicle.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Vehicle.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Vehicle.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Vehicle.cs*",
-              "RelativeToolTip": "BusinessObject\\Entities\\Vehicle.cs*",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Vehicle.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\Vehicle.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-03T00:55:54.764Z",
@@ -353,12 +301,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "StationBatterySlot.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationBatterySlot.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\StationBatterySlot.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationBatterySlot.cs*",
-              "RelativeToolTip": "BusinessObject\\Entities\\StationBatterySlot.cs*",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationBatterySlot.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\StationBatterySlot.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAAQwBAAAABdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T03:17:10.244Z",
@@ -366,7 +314,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Station.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Station.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Station.cs",
@@ -379,12 +327,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "SBSStatus.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\SBSStatus.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Enums\\SBSStatus.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\SBSStatus.cs*",
-              "RelativeToolTip": "BusinessObject\\Enums\\SBSStatus.cs*",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\SBSStatus.cs",
+              "RelativeToolTip": "BusinessObject\\Enums\\SBSStatus.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T03:10:52.622Z",
@@ -392,7 +340,76 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 0,
+              "Title": "BookingService.cs",
+              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\BookingService.cs",
+              "RelativeDocumentMoniker": "Service\\Implementations\\BookingService.cs",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\BookingService.cs*",
+              "RelativeToolTip": "Service\\Implementations\\BookingService.cs*",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAAwHwAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T12:51:44.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SubscriptionPayment.cs",
+              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\SubscriptionPayment.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAowCQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-02T14:01:09.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Subscription.cs",
+              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Subscription.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\Subscription.cs",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Subscription.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\Subscription.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA3wCEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-03T00:57:01.031Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "StationStaff.cs",
+              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationStaff.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\StationStaff.cs",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationStaff.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\StationStaff.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-03T00:58:35.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "StationInventory.cs",
+              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationInventory.cs",
+              "RelativeDocumentMoniker": "BusinessObject\\Entities\\StationInventory.cs",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\StationInventory.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\StationInventory.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAQwA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-03T00:58:46.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "BBRStatus.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\BBRStatus.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Enums\\BBRStatus.cs",
@@ -405,7 +422,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "SubscriptionStatus.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\SubscriptionStatus.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Enums\\SubscriptionStatus.cs",
@@ -418,7 +435,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Payment.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Payment.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Payment.cs",
@@ -431,12 +448,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Booking.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Booking.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Booking.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Booking.cs*",
-              "RelativeToolTip": "BusinessObject\\Entities\\Booking.cs*",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Booking.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\Booking.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAA7wA8AAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-01T15:24:20.303Z",
@@ -444,7 +461,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "BatteryType.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\BatteryType.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\BatteryType.cs",
@@ -457,7 +474,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "BatteryOwner.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\BatteryOwner.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Enums\\BatteryOwner.cs",
@@ -470,7 +487,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "BatterySwap.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\BatterySwap.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\BatterySwap.cs",
@@ -483,7 +500,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "BatteryBookingSlot.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\BatteryBookingSlot.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\BatteryBookingSlot.cs",
@@ -496,7 +513,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Reservation.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Reservation.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Reservation.cs",
@@ -509,7 +526,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "BatteryService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\BatteryService.cs",
               "RelativeDocumentMoniker": "Service\\Implementations\\BatteryService.cs",
@@ -522,12 +539,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Review.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Review.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Review.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Review.cs*",
-              "RelativeToolTip": "BusinessObject\\Entities\\Review.cs*",
+              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Review.cs",
+              "RelativeToolTip": "BusinessObject\\Entities\\Review.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAQwAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-03T00:54:41.64Z",
@@ -535,7 +552,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "IBatteryService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Interfaces\\IBatteryService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IBatteryService.cs",
@@ -548,7 +565,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "IUserService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Interfaces\\IUserService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IUserService.cs",
@@ -560,7 +577,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "IBatterySwapService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Interfaces\\IBatterySwapService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IBatterySwapService.cs",
@@ -572,7 +589,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "BatterySwapService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\BatterySwapService.cs",
               "RelativeDocumentMoniker": "Service\\Implementations\\BatterySwapService.cs",
@@ -584,7 +601,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "BusinessObject\\ApplicationDbContext.cs",
@@ -596,7 +613,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "IStationService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Interfaces\\IStationService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IStationService.cs",
@@ -609,7 +626,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "20251005074609_UpdateVehicleField.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Migrations\\20251005074609_UpdateVehicleField.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Migrations\\20251005074609_UpdateVehicleField.cs",
@@ -621,7 +638,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "ApplicationDbContextModelSnapshot.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Migrations\\ApplicationDbContextModelSnapshot.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Migrations\\ApplicationDbContextModelSnapshot.cs",
@@ -633,7 +650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "20251005085429_RemoveMaxSlotStation.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Migrations\\20251005085429_RemoveMaxSlotStation.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Migrations\\20251005085429_RemoveMaxSlotStation.cs",
@@ -645,7 +662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "20251004181248_AddBooking.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Migrations\\20251004181248_AddBooking.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Migrations\\20251004181248_AddBooking.cs",
@@ -657,7 +674,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "BatteryController.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\Controllers\\BatteryController.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Controllers\\BatteryController.cs",
@@ -669,7 +686,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "JwtService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\JwtService.cs",
               "RelativeDocumentMoniker": "Service\\Implementations\\JwtService.cs",
@@ -681,7 +698,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 45,
               "Title": "UserProfileDto.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Dtos\\UserProfileDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\UserProfileDto.cs",
@@ -693,7 +710,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "Battery.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Entities\\Battery.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Entities\\Battery.cs",
@@ -705,7 +722,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "BatteryStatus.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Enums\\BatteryStatus.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Enums\\BatteryStatus.cs",
@@ -717,7 +734,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 39,
               "Title": "BookingController.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\Controllers\\BookingController.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Controllers\\BookingController.cs",
@@ -729,7 +746,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\appsettings.json",
               "RelativeDocumentMoniker": "EV_Driver\\appsettings.json",
@@ -741,7 +758,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 38,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\Program.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Program.cs",
@@ -753,7 +770,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 42,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Controllers\\UserController.cs",
@@ -765,7 +782,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 41,
               "Title": "VehicleController.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\Controllers\\VehicleController.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Controllers\\VehicleController.cs",
@@ -777,7 +794,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 40,
               "Title": "StationController.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\EV_Driver\\Controllers\\StationController.cs",
               "RelativeDocumentMoniker": "EV_Driver\\Controllers\\StationController.cs",
@@ -789,7 +806,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 43,
               "Title": "BatteryDto.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Dtos\\BatteryDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BatteryDto.cs",
@@ -801,7 +818,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 44,
               "Title": "StationService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\StationService.cs",
               "RelativeDocumentMoniker": "Service\\Implementations\\StationService.cs",
@@ -813,7 +830,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 46,
               "Title": "IBookingService.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Interfaces\\IBookingService.cs",
               "RelativeDocumentMoniker": "Service\\Interfaces\\IBookingService.cs",
@@ -826,18 +843,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 48,
-              "Title": "BookingService.cs",
-              "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\BookingService.cs",
-              "RelativeDocumentMoniker": "Service\\Implementations\\BookingService.cs",
-              "ToolTip": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\Service\\Implementations\\BookingService.cs",
-              "RelativeToolTip": "Service\\Implementations\\BookingService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-05T12:51:44.511Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 47,
               "Title": "AuthResponseDto.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Dtos\\AuthResponseDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\AuthResponseDto.cs",
@@ -849,7 +854,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 47,
               "Title": "BookingDto.cs",
               "DocumentMoniker": "D:\\SWP_Project\\BE_Battery_Swap_Station_Management\\BusinessObject\\Dtos\\BookingDto.cs",
               "RelativeDocumentMoniker": "BusinessObject\\Dtos\\BookingDto.cs",
@@ -976,10 +981,6 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-01T16:48:26.082Z"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
             }
           ]
         }
