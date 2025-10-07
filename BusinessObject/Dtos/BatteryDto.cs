@@ -25,8 +25,6 @@ namespace BusinessObject.Dtos
         [Required]
         public string CapacityWh { get; set; } = null!;
 
-        public int Quantity { get; set; } = 1;
-
         public string? ImageUrl { get; set; }
 
         public string? StationId { get; set; }
@@ -45,7 +43,6 @@ namespace BusinessObject.Dtos
         public BatteryStatus Status { get; set; }
         public string Voltage { get; set; } = null!;
         public string CapacityWh { get; set; } = null!;
-        public int Quantity { get; set; }
         public string? ImageUrl { get; set; }
         public string? StationId { get; set; }
         public string? StationName { get; set; }

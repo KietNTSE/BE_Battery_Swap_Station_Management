@@ -24,7 +24,7 @@ public class SubscriptionPlan
     [Column("active")] public bool Active { get; set; } = true;
 
     [Required]
-    [Column("swapAmount")] public string SwapAmount { get; set; }
+    [Column("swap_amount")] public int SwapAmount { get; set; }
 
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -17,6 +17,8 @@ public class Battery
 
     [Column("reservation_id")] public string? ReservationId { get; set; }
 
+    [Column("vehicle_id")] public string? VehicleId { get; set; }
+
     [Required]
     [Column("serial_no")]
     [StringLength(255)]
@@ -32,13 +34,9 @@ public class Battery
     [StringLength(50)]
     public string? CapacityWh { get; set; }
 
-    public int Quantity { get; set; } = 1;
-
     [Column("image_url")]
     [StringLength(500)]
     public string? ImageUrl { get; set; }
-
-    [Column("vehicle_id")] public string? VehicleId { get; set; }
 
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
