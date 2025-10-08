@@ -1,4 +1,5 @@
 ﻿// Service/Implementations/BatterySwapService.cs
+using System.Linq; // THÊM để dùng Where method cho char
 using BusinessObject;
 using BusinessObject.DTOs;
 using BusinessObject.Entities;
@@ -153,10 +154,10 @@ namespace Service.Implementations
                 oldBattery.Status = BatteryStatus.Charging;
                 newBattery.Status = BatteryStatus.InUse;
 
-                // Update station battery slot status (FIX: Cast to proper enum type)
+                // Update station battery slot status
                 if (newBattery.StationBatterySlot != null)
                 {
-                    newBattery.StationBatterySlot.Status = SBSStatus.Full_slot; // Assuming this should be int based on your schema
+                    newBattery.StationBatterySlot.Status = SBSStatus.Full_slot; // Use int instead of enum
                     newBattery.StationBatterySlot.LastUpdated = DateTime.UtcNow;
                 }
 
@@ -256,8 +257,6 @@ namespace Service.Implementations
                     if (relatedBooking != null)
                     {
                         relatedBooking.Status = BBRStatus.Completed;
-                        // FIX: Remove UpdatedAt as it doesn't exist in Booking entity
-                        // relatedBooking.UpdatedAt = DateTime.UtcNow;
                     }
                 }
 
@@ -402,13 +401,11 @@ namespace Service.Implementations
                 .Include(bs => bs.Payments)
                 .Where(bs => bs.StationId == stationId);
 
-            // FIX: Remove Contains on int - only search string fields
+            // FIX: Chỉ search trên string fields, bỏ serial number search
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(bs => bs.User.FullName.Contains(search) ||
-                                         bs.Vehicle.LicensePlate.Contains(search) ||
-                                         bs.Battery.SerialNo.Contains(search) ||
-                                         bs.ToBattery.SerialNo.Contains(search));
+                                         bs.Vehicle.LicensePlate.Contains(search));
             }
 
             var totalItems = await query.CountAsync();
@@ -543,9 +540,9 @@ namespace Service.Implementations
                 StationId = batterySwap.StationId,
                 StationName = batterySwap.Station.Name,
                 BatteryId = batterySwap.BatteryId,
-                BatterySerial = ParseSerialNumber(batterySwap.Battery.SerialNo),
+                BatterySerial = batterySwap.Battery.SerialNo, // Parse từ string SerialNo
                 ToBatteryId = batterySwap.ToBatteryId,
-                ToBatterySerial = ParseSerialNumber(batterySwap.ToBattery.SerialNo),
+                ToBatterySerial = batterySwap.ToBattery.SerialNo, // Parse từ string SerialNo
                 Status = batterySwap.Status,
                 SwappedAt = batterySwap.SwappedAt,
                 CreatedAt = batterySwap.CreatedAt,
@@ -581,22 +578,6 @@ namespace Service.Implementations
                 PaymentId = response.PaymentId
             };
         }
-
-        // FIX: Helper method to parse serial number from string to int?
-        private static int? ParseSerialNumber(string serialNo)
-        {
-            if (string.IsNullOrEmpty(serialNo))
-                return null;
-
-            // Try to extract numeric part from serial number
-            var numbers = new string(serialNo.Where(char.IsDigit).ToArray());
-
-            if (int.TryParse(numbers, out var result))
-                return result;
-
-            return null;
-        }
-
         #endregion
     }
 }
