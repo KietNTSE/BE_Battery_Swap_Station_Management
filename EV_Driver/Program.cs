@@ -23,6 +23,7 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IBatteryService, BatteryService>();
+builder.Services.AddScoped<IStationStaffService, StationStaffService>();
 
 
 // Add JWT authentication
