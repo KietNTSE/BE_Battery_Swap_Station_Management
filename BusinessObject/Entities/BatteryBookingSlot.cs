@@ -1,3 +1,4 @@
+using BusinessObject.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,7 +15,7 @@ public class BatteryBookingSlot
 
     [Required] [Column("station_slot_id")] public string StationSlotId { get; set; }
 
-    [Required] [Column("status")] public int Status { get; set; }
+    [Required] [Column("status")] public SBSStatus Status { get; set; } = SBSStatus.Available;
 
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

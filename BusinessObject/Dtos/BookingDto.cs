@@ -46,13 +46,6 @@ public class BookingSummaryResponse
     public DateTime CreatedAt { get; set; }
 }
 
-public class BookingDetailResponse : BookingResponse
-{
-    public List<BatterySwapSummaryResponse> RelatedSwaps { get; set; } = new();
-    public bool HasSwaps => RelatedSwaps.Any();
-    public DateTime? LastSwapTime => RelatedSwaps.OrderByDescending(s => s.SwappedAt).FirstOrDefault()?.SwappedAt;
-}
-
 public class DailyBookingCountResponse
 {
     public DateTime Date { get; set; }

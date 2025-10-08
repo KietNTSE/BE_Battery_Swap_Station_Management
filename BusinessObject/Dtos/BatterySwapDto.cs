@@ -1,58 +1,45 @@
-using System.ComponentModel.DataAnnotations;
+// BusinessObject/DTOs/BatterySwapDto.cs
 using BusinessObject.Enums;
 
-namespace BusinessObject.DTOs;
-
-public class BatterySwapSummaryResponse
+namespace BusinessObject.DTOs
 {
-    public string SwapId { get; set; } = string.Empty;
-    public string VehicleId { get; set; } = string.Empty;
-    public string VehicleLicensePlate { get; set; } = string.Empty;
-    public string BatteryId { get; set; } = string.Empty;
-    public string BatterySerialNo { get; set; } = string.Empty;
-    public string StationId { get; set; } = string.Empty;
-    public string StationName { get; set; } = string.Empty;
-    public string StaffId { get; set; } = string.Empty;
-    public string StaffName { get; set; } = string.Empty;
-    public BBRStatus Status { get; set; }
-    public DateTime SwappedAt { get; set; }
-    public DateTime CreatedAt { get; set; }
-}
+    public class CreateBatterySwapRequest
+    {
+        public string BookingId { get; set; } = string.Empty;
+        public string ToBatteryId { get; set; } = string.Empty; // New battery to give to customer
+    }
 
-public class BatterySwapResponse : BatterySwapSummaryResponse
-{
-    public string UserId { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
-    public string UserEmail { get; set; } = string.Empty;
-    public string UserPhone { get; set; } = string.Empty;
-    public string VehicleBrand { get; set; } = string.Empty;
-    public string VehicleModel { get; set; } = string.Empty;
-    public string BatteryTypeId { get; set; } = string.Empty;
-    public string BatteryTypeName { get; set; } = string.Empty;
-    public string? BatteryVoltage { get; set; }
-    public string? BatteryCapacity { get; set; }
-    public string StationAddress { get; set; } = string.Empty;
-    public DateTime? UpdatedAt { get; set; }
-    public string? Notes { get; set; }
-}
+    public class BatterySwapResponse
+    {
+        public string SwapId { get; set; } = string.Empty;
+        public string VehicleId { get; set; } = string.Empty;
+        public string LicensePlate { get; set; } = string.Empty;
+        public string VehicleBrand { get; set; } = string.Empty;
+        public string VehicleModel { get; set; } = string.Empty;
+        public string StationStaffId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string UserPhone { get; set; } = string.Empty;
+        public string StationId { get; set; } = string.Empty;
+        public string StationName { get; set; } = string.Empty;
+        public string BatteryId { get; set; } = string.Empty; // Old battery from vehicle
+        public int BatterySerial { get; set; }
+        public string ToBatteryId { get; set; } = string.Empty; // New battery to give
+        public int? ToBatterySerial { get; set; } 
+        public BBRStatus Status { get; set; }
+        public DateTime SwappedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool HasPayment { get; set; }
+        public string PaymentId { get; set; }
+    }
 
-public class BatterySwapDetailDto : BatterySwapSummaryResponse
-{
-    public string UserId { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
-    public string UserEmail { get; set; } = string.Empty;
-    public string UserPhone { get; set; } = string.Empty;
-    public string VehicleBrand { get; set; } = string.Empty;
-    public string VehicleModel { get; set; } = string.Empty;
-    public string BatteryTypeName { get; set; } = string.Empty;
-    public string BatteryVoltage { get; set; } = string.Empty;
-    public string BatteryCapacity { get; set; } = string.Empty;
-    public string StationAddress { get; set; } = string.Empty;
-    public string? Notes { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-}
+    public class UpdateBatterySwapStatusRequest
+    {
+        public BBRStatus Status { get; set; }
+    }
 
-public class CreateBatterySwapRequest
-{
-    [Required] public string NewBatteryId { get; set; } = string.Empty;
+    public class BatterySwapDetailResponse : BatterySwapResponse
+    {
+        public PaymentResponse? Payment { get; set; }
+    }
 }

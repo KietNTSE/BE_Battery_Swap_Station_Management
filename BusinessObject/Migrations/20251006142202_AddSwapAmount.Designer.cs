@@ -4,6 +4,7 @@ using BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251006142202_AddSwapAmount")]
+    partial class AddSwapAmount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +53,9 @@ namespace BusinessObject.Migrations
                     b.Property<int>("Owner")
                         .HasColumnType("int")
                         .HasColumnName("owner");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("ReservationId")
                         .HasColumnType("nvarchar(450)")
@@ -515,20 +521,23 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("station_inventory_id");
 
-                    b.Property<int>("ChargingCount")
-                        .HasColumnType("int")
+                    b.Property<string>("ChargingCount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("charging_count");
 
-                    b.Property<int>("FullCount")
-                        .HasColumnType("int")
+                    b.Property<string>("FullCount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("full_count");
 
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2")
                         .HasColumnName("last_update");
 
-                    b.Property<int>("MaintenanceCount")
-                        .HasColumnType("int")
+                    b.Property<string>("MaintenanceCount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("maintenance_count");
 
                     b.Property<string>("StationId")
@@ -717,7 +726,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-001",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 8, 5, 59, 49, 670, DateTimeKind.Utc).AddTicks(535),
+                            CreatedAt = new DateTime(2025, 10, 6, 14, 22, 2, 221, DateTimeKind.Utc).AddTicks(7479),
                             Description = "Basic battery swap plan",
                             MonthlyFee = 199000.0,
                             Name = "Basic Plan",
@@ -728,7 +737,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-002",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 8, 5, 59, 49, 670, DateTimeKind.Utc).AddTicks(539),
+                            CreatedAt = new DateTime(2025, 10, 6, 14, 22, 2, 221, DateTimeKind.Utc).AddTicks(7483),
                             Description = "Premium battery swap plan",
                             MonthlyFee = 399000.0,
                             Name = "Premium Plan",
@@ -842,10 +851,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2025, 10, 8, 5, 59, 49, 669, DateTimeKind.Utc).AddTicks(9684),
+                            CreatedAt = new DateTime(2025, 10, 6, 14, 22, 2, 221, DateTimeKind.Utc).AddTicks(6542),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$Zh8rCER9Cp5EAqF.QT.0cOuyUmcCVUuYObujbgyzNu0wGZhWno4VK",
+                            Password = "$2a$11$TC0F9RUk7Z9MZpLfTpr4S.hhI.nkhE4f5MU6gepAXSOs08PtFDMOe",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1

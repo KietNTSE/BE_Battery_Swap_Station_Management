@@ -8,8 +8,6 @@ public class Vehicle
 {
     [Key] [Column("vehicles_id")] public string VehicleId { get; set; } = Guid.NewGuid().ToString();
 
-    [Required]
-    [Column("battery_id")] public string BatteryId {  get; set; }
     [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
 
     [Required] [Column("battery_type_id")] public string BatteryTypeId { get; set; } = string.Empty;

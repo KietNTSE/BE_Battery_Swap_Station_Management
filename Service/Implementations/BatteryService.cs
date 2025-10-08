@@ -5,9 +5,6 @@ using BusinessObject.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Service.Implementations
 {
@@ -86,7 +83,6 @@ namespace Service.Implementations
                 Status = request.Status,
                 Voltage = request.Voltage,
                 CapacityWh = request.CapacityWh,
-                Quantity = request.Quantity,
                 ImageUrl = request.ImageUrl,
                 StationId = request.StationId,
                 BatteryTypeId = request.BatteryTypeId,
@@ -110,7 +106,6 @@ namespace Service.Implementations
             battery.Status = request.Status;
             battery.Voltage = request.Voltage;
             battery.CapacityWh = request.CapacityWh;
-            battery.Quantity = request.Quantity;
             battery.ImageUrl = request.ImageUrl;
             battery.StationId = request.StationId;
             battery.BatteryTypeId = request.BatteryTypeId;
@@ -144,7 +139,6 @@ namespace Service.Implementations
                 Status = b.Status,
                 Voltage = b.Voltage,
                 CapacityWh = b.CapacityWh,
-                Quantity = b.Quantity,
                 ImageUrl = b.ImageUrl,
                 StationId = b.StationId,
                 StationName = b.Station?.Name,
