@@ -104,7 +104,7 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
                     BatteryId = battery.BatteryId,
                     StationSlotId = battery.StationBatterySlot.StationSlotId,
                     CreatedAt = DateTime.UtcNow,
-                    Status = 1
+                    Status = SBSStatus.Available
                 };
                 bookingSlot.Add(slot);
             }
