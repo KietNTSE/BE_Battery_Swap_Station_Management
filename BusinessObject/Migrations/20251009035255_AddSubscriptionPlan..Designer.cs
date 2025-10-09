@@ -4,6 +4,7 @@ using BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251009035255_AddSubscriptionPlan.")]
+    partial class AddSubscriptionPlan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -656,9 +659,16 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("subscription_id");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("user_id");
+
                     b.HasKey("SubPayId");
 
                     b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SubscriptionPayment");
                 });
@@ -1192,7 +1202,15 @@ namespace BusinessObject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusinessObject.Entities.User", "User")
+                        .WithMany("SubscriptionPayments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Subscription");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BusinessObject.Entities.SupportTicket", b =>
@@ -1334,6 +1352,8 @@ namespace BusinessObject.Migrations
                     b.Navigation("StationStaffs");
 
                     b.Navigation("Stations");
+
+                    b.Navigation("SubscriptionPayments");
 
                     b.Navigation("Subscriptions");
 

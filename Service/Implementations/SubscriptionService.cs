@@ -21,6 +21,7 @@ namespace Service.Implementations
                 {
                     SubscriptionId = s.SubscriptionId,
                     UserId = s.UserId,
+                    PlanId = s.PlanId,
                     StartDate = s.StartDate,
                     EndDate = s.EndDate,
                     Status = s.Status,
@@ -39,6 +40,7 @@ namespace Service.Implementations
             {
                 SubscriptionId = s.SubscriptionId,
                 UserId = s.UserId,
+                PlanId = s.PlanId,
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
                 Status = s.Status,
@@ -55,6 +57,7 @@ namespace Service.Implementations
                 {
                     SubscriptionId = s.SubscriptionId,
                     UserId = s.UserId,
+                    PlanId = s.PlanId,
                     StartDate = s.StartDate,
                     EndDate = s.EndDate,
                     Status = s.Status,
@@ -70,6 +73,7 @@ namespace Service.Implementations
             {
                 SubscriptionId = Guid.NewGuid().ToString(),
                 UserId = request.UserId,
+                PlanId = request.PlanId,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
                 Status = request.Status,
@@ -86,6 +90,7 @@ namespace Service.Implementations
             var s = await context.Subscriptions.FindAsync(request.SubscriptionId);
             if (s == null) throw new Exception("Subscription not found.");
 
+            s.PlanId = request.PlanId;
             s.StartDate = request.StartDate;
             s.EndDate = request.EndDate;
             s.Status = request.Status;
