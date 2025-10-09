@@ -4,6 +4,7 @@ using BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008144049_UpdateSubscriptionPayment")]
+    partial class UpdateSubscriptionPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -710,7 +713,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-001",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 9, 3, 52, 54, 735, DateTimeKind.Utc).AddTicks(6193),
+                            CreatedAt = new DateTime(2025, 10, 8, 14, 40, 48, 901, DateTimeKind.Utc).AddTicks(7357),
                             Description = "Basic battery swap plan",
                             MonthlyFee = 199000.0,
                             Name = "Basic Plan",
@@ -721,7 +724,7 @@ namespace BusinessObject.Migrations
                         {
                             PlanId = "plan-002",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 10, 9, 3, 52, 54, 735, DateTimeKind.Utc).AddTicks(6197),
+                            CreatedAt = new DateTime(2025, 10, 8, 14, 40, 48, 901, DateTimeKind.Utc).AddTicks(7361),
                             Description = "Premium battery swap plan",
                             MonthlyFee = 399000.0,
                             Name = "Premium Plan",
@@ -835,10 +838,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2025, 10, 9, 3, 52, 54, 735, DateTimeKind.Utc).AddTicks(5247),
+                            CreatedAt = new DateTime(2025, 10, 8, 14, 40, 48, 901, DateTimeKind.Utc).AddTicks(6556),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$jZzaYcWk2PV3Jjpz31QC/.KxCbm1hLJvGMlXP6m/Xo4KyODhb0epa",
+                            Password = "$2a$11$bFyYfwKA/El8vfOEFRGWPu5Ea8dHAWlbWK2LAcI8EyFbzY.goOfMe",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1

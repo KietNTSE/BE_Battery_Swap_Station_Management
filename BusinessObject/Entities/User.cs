@@ -44,7 +44,4 @@ public class User
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
-
-    public virtual ICollection<SubscriptionPayment> SubscriptionPayments { get; set; } =
-        new List<SubscriptionPayment>();
 }
