@@ -11,8 +11,6 @@ public class Subscription
 
     [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
 
-    [Required] [Column("plan_id")] public string PlanId { get; set; } = string.Empty;
-
     [Column("start_date")] public DateTime StartDate { get; set; }
 
     [Column("end_date")] public DateTime EndDate { get; set; }
@@ -26,7 +24,7 @@ public class Subscription
     // Foreign key navigation properties
     [ForeignKey("UserId")] public virtual User User { get; set; } = null!;
 
-    [ForeignKey("PlanId")] public virtual SubscriptionPlan SubscriptionPlan { get; set; } = null!;
+  
 
     // Navigation properties
     public virtual ICollection<SubscriptionPayment> SubscriptionPayments { get; set; } =

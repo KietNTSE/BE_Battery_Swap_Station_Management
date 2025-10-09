@@ -14,7 +14,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<StationStaff> StationStaffs { get; set; }
     public DbSet<BatterySwap> BatterySwaps { get; set; }
-    public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
     public DbSet<Payment> Payments { get; set; }
@@ -233,27 +232,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         );
 
         // Seed subscription plans
-        modelBuilder.Entity<SubscriptionPlan>().HasData(
-            new SubscriptionPlan
-            {
-                PlanId = "plan-001",
-                Name = "Basic Plan",
-                Description = "Basic battery swap plan",
-                MonthlyFee = 199000,
-                SwapsIncluded = "10",
-                Active = true,
-                CreatedAt = DateTime.UtcNow
-            },
-            new SubscriptionPlan
-            {
-                PlanId = "plan-002",
-                Name = "Premium Plan",
-                Description = "Premium battery swap plan",
-                MonthlyFee = 399000,
-                SwapsIncluded = "25",
-                Active = true,
-                CreatedAt = DateTime.UtcNow
-            }
-        );
     }
 }
