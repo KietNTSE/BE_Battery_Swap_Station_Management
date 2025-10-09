@@ -32,7 +32,7 @@ builder.Services.AddScoped<IBatterySwapService, BatterySwapService>();
 builder.Services.AddScoped<IBatteryTypeService, BatteryTypeService>();
 builder.Services.AddScoped<IStationBatterySlotService, StationBatterySlotService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-
+builder.Services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
 
 
 // Add JWT authentication
