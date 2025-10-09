@@ -29,6 +29,11 @@ builder.Services.AddScoped<IStationInventoryService, StationInventoryService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IStationStaffService, StationStaffService>();
 builder.Services.AddScoped<IBatterySwapService, BatterySwapService>();
+builder.Services.AddScoped<IBatteryTypeService, BatteryTypeService>();
+builder.Services.AddScoped<IStationBatterySlotService, StationBatterySlotService>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
+
 
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
