@@ -1,4 +1,6 @@
 ﻿// Service/Implementations/StationStaffService.cs
+
+using System.Net;
 using BusinessObject;
 using BusinessObject.DTOs;
 using BusinessObject.Entities;
@@ -8,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Service.Exceptions;
 using Service.Interfaces;
 using Service.Utils;
-using System.Net;
 
 namespace Service.Implementations
 {
@@ -27,7 +28,7 @@ namespace Service.Implementations
 
             // Validate admin role
             var admin = await context.Users.FindAsync(adminUserId);
-            if (admin == null || admin.Role != UserRole.Admin)
+            if (admin is not { Role: UserRole.Admin })
                 throw new ValidationException
                 {
                     ErrorMessage = "Only admin can assign staff to stations",
@@ -119,7 +120,7 @@ namespace Service.Implementations
 
             // Validate admin role
             var admin = await context.Users.FindAsync(adminUserId);
-            if (admin == null || admin.Role != UserRole.Admin)
+            if (admin is not { Role: UserRole.Admin })
                 throw new ValidationException
                 {
                     ErrorMessage = "Only admin can remove staff from stations",

@@ -4,6 +4,7 @@ using BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251009032223_Remove")]
+    partial class Remove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -590,11 +593,6 @@ namespace BusinessObject.Migrations
                         .HasColumnType("int")
                         .HasColumnName("number_of_swaps");
 
-                    b.Property<string>("PlanId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("plan_id");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("start_date");
@@ -609,8 +607,6 @@ namespace BusinessObject.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("SubscriptionId");
-
-                    b.HasIndex("PlanId");
 
                     b.HasIndex("UserId");
 
@@ -656,78 +652,18 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("subscription_id");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("user_id");
+
                     b.HasKey("SubPayId");
 
                     b.HasIndex("SubscriptionId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("SubscriptionPayment");
-                });
-
-            modelBuilder.Entity("BusinessObject.Entities.SubscriptionPlan", b =>
-                {
-                    b.Property<string>("PlanId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("plan_id");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnName("active");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasColumnName("description");
-
-                    b.Property<double>("MonthlyFee")
-                        .HasColumnType("float")
-                        .HasColumnName("monthly_fee");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("name");
-
-                    b.Property<int>("SwapAmount")
-                        .HasColumnType("int")
-                        .HasColumnName("swap_amount");
-
-                    b.Property<string>("SwapsIncluded")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("swaps_included");
-
-                    b.HasKey("PlanId");
-
-                    b.ToTable("SubscriptionPlan");
-
-                    b.HasData(
-                        new
-                        {
-                            PlanId = "plan-001",
-                            Active = true,
-                            CreatedAt = new DateTime(2025, 10, 9, 3, 52, 54, 735, DateTimeKind.Utc).AddTicks(6193),
-                            Description = "Basic battery swap plan",
-                            MonthlyFee = 199000.0,
-                            Name = "Basic Plan",
-                            SwapAmount = 0,
-                            SwapsIncluded = "10"
-                        },
-                        new
-                        {
-                            PlanId = "plan-002",
-                            Active = true,
-                            CreatedAt = new DateTime(2025, 10, 9, 3, 52, 54, 735, DateTimeKind.Utc).AddTicks(6197),
-                            Description = "Premium battery swap plan",
-                            MonthlyFee = 399000.0,
-                            Name = "Premium Plan",
-                            SwapAmount = 0,
-                            SwapsIncluded = "25"
-                        });
                 });
 
             modelBuilder.Entity("BusinessObject.Entities.SupportTicket", b =>
@@ -835,10 +771,10 @@ namespace BusinessObject.Migrations
                         new
                         {
                             UserId = "admin-001",
-                            CreatedAt = new DateTime(2025, 10, 9, 3, 52, 54, 735, DateTimeKind.Utc).AddTicks(5247),
+                            CreatedAt = new DateTime(2025, 10, 9, 3, 22, 22, 800, DateTimeKind.Utc).AddTicks(5671),
                             Email = "admin@evdriver.com",
                             FullName = "System Administrator",
-                            Password = "$2a$11$jZzaYcWk2PV3Jjpz31QC/.KxCbm1hLJvGMlXP6m/Xo4KyODhb0epa",
+                            Password = "$2a$11$Z0b85qwvxtD7Fxyz1zl4TuvRjGjGC3J8j.gvnaeIhICNO647jsxWa",
                             Phone = "0123456789",
                             Role = 3,
                             Status = 1
@@ -1167,19 +1103,11 @@ namespace BusinessObject.Migrations
 
             modelBuilder.Entity("BusinessObject.Entities.Subscription", b =>
                 {
-                    b.HasOne("BusinessObject.Entities.SubscriptionPlan", "SubscriptionPlan")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("PlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BusinessObject.Entities.User", "User")
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("SubscriptionPlan");
 
                     b.Navigation("User");
                 });
@@ -1192,7 +1120,15 @@ namespace BusinessObject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusinessObject.Entities.User", "User")
+                        .WithMany("SubscriptionPayments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Subscription");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BusinessObject.Entities.SupportTicket", b =>
@@ -1314,11 +1250,6 @@ namespace BusinessObject.Migrations
                     b.Navigation("SubscriptionPayments");
                 });
 
-            modelBuilder.Entity("BusinessObject.Entities.SubscriptionPlan", b =>
-                {
-                    b.Navigation("Subscriptions");
-                });
-
             modelBuilder.Entity("BusinessObject.Entities.User", b =>
                 {
                     b.Navigation("Batteries");
@@ -1334,6 +1265,8 @@ namespace BusinessObject.Migrations
                     b.Navigation("StationStaffs");
 
                     b.Navigation("Stations");
+
+                    b.Navigation("SubscriptionPayments");
 
                     b.Navigation("Subscriptions");
 
