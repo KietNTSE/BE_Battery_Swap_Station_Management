@@ -9,8 +9,6 @@ public class SubscriptionPayment
 {
     [Key] [Column("sub_pay_id")] public string SubPayId { get; set; } = Guid.NewGuid().ToString();
 
-    [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
-
     [Required] [Column("subscription_id")] public string SubscriptionId { get; set; } = string.Empty;
 
     [Required]
@@ -31,7 +29,6 @@ public class SubscriptionPayment
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Foreign key navigation properties
-    [ForeignKey("UserId")] public virtual User User { get; set; } = null!;
 
     [ForeignKey("SubscriptionId")] public virtual Subscription Subscription { get; set; } = null!;
 }

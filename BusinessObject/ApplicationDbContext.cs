@@ -89,13 +89,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(bs => bs.VehicleId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        // SubscriptionPayment relationships
-        modelBuilder.Entity<SubscriptionPayment>()
-            .HasOne(sp => sp.User)
-            .WithMany(u => u.SubscriptionPayments)
-            .HasForeignKey(sp => sp.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         // SupportTicket relationships
         modelBuilder.Entity<SupportTicket>()
             .HasOne(st => st.User)
