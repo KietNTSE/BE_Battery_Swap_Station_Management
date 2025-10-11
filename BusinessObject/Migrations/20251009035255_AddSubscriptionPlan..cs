@@ -13,9 +13,7 @@ namespace BusinessObject.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_SubscriptionPayment_User_user_id",
-                table: "SubscriptionPayment");
+           
 
             migrationBuilder.AddColumn<string>(
                 name: "plan_id",

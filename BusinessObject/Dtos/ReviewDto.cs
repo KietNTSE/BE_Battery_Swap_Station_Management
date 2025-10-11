@@ -11,6 +11,7 @@ namespace BusinessObject.Dtos
         public string? ReviewId { get; set; }
         public string UserId { get; set; }
         public string StationId { get; set; }
+        public string SwapId { get; set; }
         public int Rating { get; set; }
         public string? Comment { get; set; }
     }
@@ -20,6 +21,7 @@ namespace BusinessObject.Dtos
         public string ReviewId { get; set; }
         public string UserId { get; set; }
         public string StationId { get; set; }
+        public string SwapId { get; set; }
         public int Rating { get; set; }
         public string? Comment { get; set; }
         public DateTime CreatedAt { get; set; }

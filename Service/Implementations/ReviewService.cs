@@ -1,14 +1,12 @@
 ﻿using BusinessObject;
 using BusinessObject.Dtos;
 using BusinessObject.Entities;
+using BusinessObject.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Service.Exceptions;
+using System.Net;
 
 namespace Service.Implementations
 {
@@ -22,6 +20,7 @@ namespace Service.Implementations
                     ReviewId = r.ReviewId,
                     UserId = r.UserId,
                     StationId = r.StationId,
+                    SwapId = r.SwapId,
                     Rating = r.Rating,
                     Comment = r.Comment,
                     CreatedAt = r.CreatedAt
@@ -38,6 +37,7 @@ namespace Service.Implementations
                     ReviewId = r.ReviewId,
                     UserId = r.UserId,
                     StationId = r.StationId,
+                    SwapId = r.SwapId,
                     Rating = r.Rating,
                     Comment = r.Comment,
                     CreatedAt = r.CreatedAt
@@ -54,6 +54,7 @@ namespace Service.Implementations
                     ReviewId = r.ReviewId,
                     UserId = r.UserId,
                     StationId = r.StationId,
+                    SwapId = r.SwapId,
                     Rating = r.Rating,
                     Comment = r.Comment,
                     CreatedAt = r.CreatedAt
@@ -70,6 +71,7 @@ namespace Service.Implementations
                 ReviewId = r.ReviewId,
                 UserId = r.UserId,
                 StationId = r.StationId,
+                SwapId = r.SwapId,
                 Rating = r.Rating,
                 Comment = r.Comment,
                 CreatedAt = r.CreatedAt
@@ -78,26 +80,91 @@ namespace Service.Implementations
 
         public async Task AddAsync(ReviewRequest review)
         {
+            // Validate
+            if (review.Rating < 1 || review.Rating > 5)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "Rating must be between 1-5"
+                };
+            if (string.IsNullOrWhiteSpace(review.UserId) ||
+                string.IsNullOrWhiteSpace(review.StationId) ||
+                string.IsNullOrWhiteSpace(review.SwapId))
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "UserId, StationId và SwapId is obligatory"
+                };
+
+            //Kiểm tra swap tồn tại, đúng user, đúng station và đã Completed
+            var swap = await context.BatterySwaps
+                .FirstOrDefaultAsync(bs => bs.SwapId == review.SwapId
+                                           && bs.UserId == review.UserId
+                                           && bs.StationId == review.StationId
+                                           && bs.Status == BBRStatus.Completed);
+            if (swap == null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "You must successfully change the battery to review."
+                };
+
+            //Mỗi swap chỉ review 1 lần
+            var exists = await context.Reviews
+                .AnyAsync(r => r.SwapId == review.SwapId && r.UserId == review.UserId);
+            if (exists)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "You have already reviewed this battery swap."
+                };
+
             var entity = new Review
             {
                 ReviewId = Guid.NewGuid().ToString(),
                 UserId = review.UserId,
                 StationId = review.StationId,
+                SwapId = review.SwapId,
                 Rating = review.Rating,
                 Comment = review.Comment,
                 CreatedAt = DateTime.UtcNow
             };
+
             context.Reviews.Add(entity);
             await context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ReviewRequest review)
         {
+            if (string.IsNullOrWhiteSpace(review.ReviewId))
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "ReviewId is obligatory"
+                };
+
             var entity = await context.Reviews.FindAsync(review.ReviewId);
             if (entity == null)
-            {
-                throw new Exception("Review not found.");
-            }
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Review is not exist"
+                };
+
+            if (review.Rating < 1 || review.Rating > 5)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "Rating must be between 1-5"
+                };
+
             entity.Rating = review.Rating;
             entity.Comment = review.Comment;
             await context.SaveChangesAsync();
@@ -107,9 +174,13 @@ namespace Service.Implementations
         {
             var entity = await context.Reviews.FindAsync(id);
             if (entity == null)
-            {
-                throw new Exception("Review not found.");
-            }
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Review is not exist"
+                };
+
             context.Reviews.Remove(entity);
             await context.SaveChangesAsync();
         }

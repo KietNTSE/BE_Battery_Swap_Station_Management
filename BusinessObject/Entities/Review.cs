@@ -11,6 +11,7 @@ public class Review
     [Required] [Column("user_id")] public string UserId { get; set; } = string.Empty;
 
     [Required] [Column("station_id")] public string StationId { get; set; } = string.Empty;
+    [Required][Column("swap_id")] public string SwapId { get; set; } = string.Empty;
 
     [Column("rating")] public int Rating { get; set; } // 1-5 stars
 
@@ -24,4 +25,5 @@ public class Review
     [ForeignKey("UserId")] public virtual User User { get; set; } = null!;
 
     [ForeignKey("StationId")] public virtual Station Station { get; set; } = null!;
+    [ForeignKey("SwapId")] public virtual BatterySwap BatterySwap { get; set; } = null!;
 }
