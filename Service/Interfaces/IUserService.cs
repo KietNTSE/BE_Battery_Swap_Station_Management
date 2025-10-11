@@ -1,4 +1,5 @@
 using BusinessObject.DTOs;
+using BusinessObject.Dtos;
 
 namespace Service.Interfaces;
 
@@ -12,4 +13,8 @@ public interface IUserService
 
     Task<PaginationWrapper<List<UserProfileResponse>, UserProfileResponse>> GetAllUsersAsync(int page,
         int pageSize, string? search);
+
+    //Update avatar, email
+    Task<UserProfileResponse?> UpdateUserAvatarAndEmailAsync(string userId, UpdateAvatarEmailRequest request);
+    Task<UserProfileResponse?> UpdateMeAvatarAndEmailAsync(UpdateAvatarEmailRequest request);
 }

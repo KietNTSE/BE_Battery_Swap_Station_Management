@@ -1,7 +1,9 @@
+using BusinessObject.Dtos;
 using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
+using Service.Exceptions;
 
 namespace EV_Driver.Controllers;
 
@@ -87,5 +89,59 @@ public class UserController(IUserService userService) : ControllerBase
             Code = "200",
             Success = true
         }.UnwrapPagination(response));
+    }
+
+    //Update email + avatar cho chính mình
+    [HttpPut("me/avatar-email")]
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateMeAvatarAndEmail(
+        [FromBody] UpdateAvatarEmailRequest request)
+    {
+        try
+        {
+            var user = await userService.UpdateMeAvatarAndEmailAsync(request);
+            return Ok(new ResponseObject<UserProfileResponse>
+            {
+                Content = user,
+                Message = "Updated avatar and email successfully",
+                Code = "200",
+                Success = true
+            });
+        }
+        catch (ValidationException ex)
+        {
+            return StatusCode((int)ex.StatusCode, new ResponseObject<UserProfileResponse>
+            {
+                Message = ex.ErrorMessage,
+                Code = ex.Code,
+                Success = false
+            });
+        }
+    }
+
+    //Update email + avatar theo userId (dùng cho admin)
+    [HttpPut("{id}/avatar-email")]
+    public async Task<ActionResult<ResponseObject<UserProfileResponse>>> UpdateUserAvatarAndEmail(
+        string id, [FromBody] UpdateAvatarEmailRequest request)
+    {
+        try
+        {
+            var user = await userService.UpdateUserAvatarAndEmailAsync(id, request);
+            return Ok(new ResponseObject<UserProfileResponse>
+            {
+                Content = user,
+                Message = "Updated avatar and email successfully",
+                Code = "200",
+                Success = true
+            });
+        }
+        catch (ValidationException ex)
+        {
+            return StatusCode((int)ex.StatusCode, new ResponseObject<UserProfileResponse>
+            {
+                Message = ex.ErrorMessage,
+                Code = ex.Code,
+                Success = false
+            });
+        }
     }
 }

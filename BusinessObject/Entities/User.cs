@@ -30,6 +30,10 @@ public class User
     [StringLength(255)]
     public string Password { get; set; } = string.Empty;
 
+    [Column("avatar_url")]
+    [StringLength(500)]
+    public string? AvatarUrl { get; set; }
+
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
