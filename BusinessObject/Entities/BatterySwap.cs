@@ -44,4 +44,5 @@ public class BatterySwap
 
     // Navigation properties
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

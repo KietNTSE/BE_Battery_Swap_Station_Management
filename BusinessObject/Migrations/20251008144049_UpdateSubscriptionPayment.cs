@@ -11,17 +11,17 @@ namespace BusinessObject.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_SubscriptionPayment_User_user_id",
-                table: "SubscriptionPayment");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_SubscriptionPayment_User_user_id",
+            //    table: "SubscriptionPayment");
 
-            migrationBuilder.DropIndex(
-                name: "IX_SubscriptionPayment_user_id",
-                table: "SubscriptionPayment");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_SubscriptionPayment_user_id",
+            //    table: "SubscriptionPayment");
 
-            migrationBuilder.DropColumn(
-                name: "user_id",
-                table: "SubscriptionPayment");
+            //migrationBuilder.DropColumn(
+            //    name: "user_id",
+            //    table: "SubscriptionPayment");
 
             migrationBuilder.UpdateData(
                 table: "SubscriptionPlan",
@@ -76,17 +76,17 @@ namespace BusinessObject.Migrations
                 columns: new[] { "created_at", "password" },
                 values: new object[] { new DateTime(2025, 10, 8, 5, 59, 49, 669, DateTimeKind.Utc).AddTicks(9684), "$2a$11$Zh8rCER9Cp5EAqF.QT.0cOuyUmcCVUuYObujbgyzNu0wGZhWno4VK" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionPayment_user_id",
-                table: "SubscriptionPayment",
-                column: "user_id");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_SubscriptionPayment_user_id",
+            //    table: "SubscriptionPayment",
+            //    column: "user_id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_SubscriptionPayment_User_user_id",
-                table: "SubscriptionPayment",
-                column: "user_id",
-                principalTable: "User",
-                principalColumn: "user_id");
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_SubscriptionPayment_User_user_id",
+            //    table: "SubscriptionPayment",
+            //    column: "user_id",
+            //    principalTable: "User",
+            //    principalColumn: "user_id");
         }
     }
 }
