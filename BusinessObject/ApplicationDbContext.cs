@@ -58,6 +58,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.BatterySwap)
+            .WithMany(u => u.Reviews)
+            .HasForeignKey(r => r.SwapId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         // Station -> Review relationship (One-to-Many) - NO CASCADE  
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Station)

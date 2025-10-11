@@ -1,6 +1,8 @@
 ﻿using BusinessObject.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
+using Service.Exceptions;
+using System.Net;
 
 namespace EV_Driver.Controllers
 {
@@ -8,7 +10,6 @@ namespace EV_Driver.Controllers
     [Route("api/[controller]")]
     public class ReviewController(IReviewService reviewService) : ControllerBase
     {
-
         [HttpGet]
         public async Task<IActionResult> GetAll() =>
             Ok(await reviewService.GetAllAsync());
@@ -32,22 +33,43 @@ namespace EV_Driver.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ReviewRequest review)
         {
-            await reviewService.AddAsync(review);
-            return Ok(new { message = "Review added successfully" });
+            try
+            {
+                await reviewService.AddAsync(review);
+                return Ok(new { message = "Review added successfully" });
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode((int)ex.StatusCode, new { message = ex.ErrorMessage, code = ex.Code });
+            }
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] ReviewRequest review)
         {
-            await reviewService.UpdateAsync(review);
-            return Ok(new { message = "Review updated successfully" });
+            try
+            {
+                await reviewService.UpdateAsync(review);
+                return Ok(new { message = "Review updated successfully" });
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode((int)ex.StatusCode, new { message = ex.ErrorMessage, code = ex.Code });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            await reviewService.DeleteAsync(id);
-            return Ok(new { message = "Review deleted successfully" });
+            try
+            {
+                await reviewService.DeleteAsync(id);
+                return Ok(new { message = "Review deleted successfully" });
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode((int)ex.StatusCode, new { message = ex.ErrorMessage, code = ex.Code });
+            }
         }
     }
 }
