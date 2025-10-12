@@ -35,6 +35,8 @@ builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+
 
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
