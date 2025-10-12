@@ -1,11 +1,12 @@
-using System.Net;
 using BusinessObject;
+using BusinessObject.Dtos;
 using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Exceptions;
 using Service.Interfaces;
 using Service.Utils;
+using System.Net;
 
 namespace Service.Implementations;
 
@@ -158,5 +159,78 @@ public class UserService(ApplicationDbContext context, IHttpContextAccessor acce
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
+    }
+
+    //Check Url
+    private static bool IsValidUrl(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return true; 
+        //Just http, https
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+               (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
+    //Update avatar, email
+
+    public async Task<UserProfileResponse?> UpdateUserAvatarAndEmailAsync(string userId, UpdateAvatarEmailRequest request)
+    {
+        if (!IsValidUrl(request.AvatarUrl))
+            throw new ValidationException
+            {
+                ErrorMessage = "Invalid AvatarUrl (requires http/https)",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+        var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        if (user is null)
+            throw new ValidationException
+            {
+                ErrorMessage = "User not found",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+        // Check email 
+        var emailExists = await context.Users.AnyAsync(u => u.Email == request.Email && u.UserId != userId);
+        if (emailExists)
+            throw new ValidationException
+            {
+                ErrorMessage = "Email already in use",
+                Code = "400",
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+        user.Email = request.Email;
+        user.AvatarUrl = request.AvatarUrl;
+
+        await context.SaveChangesAsync();
+
+        return new UserProfileResponse
+        {
+            UserId = user.UserId,
+            FullName = user.FullName,
+            Email = user.Email,
+            Phone = user.Phone,
+            AvatarUrl = user.AvatarUrl,
+            Role = user.Role,
+            Status = user.Status,
+            CreatedAt = user.CreatedAt
+        };
+    }
+
+    //Update for me
+    public async Task<UserProfileResponse?> UpdateMeAvatarAndEmailAsync(UpdateAvatarEmailRequest request)
+    {
+        var meId = JwtUtils.GetUserId(accessor);
+        if (string.IsNullOrEmpty(meId))
+            throw new ValidationException
+            {
+                StatusCode = HttpStatusCode.Unauthorized,
+                Code = "401",
+                ErrorMessage = "Unauthorized"
+            };
+
+        return await UpdateUserAvatarAndEmailAsync(meId, request);
     }
 }
