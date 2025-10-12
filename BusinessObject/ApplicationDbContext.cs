@@ -24,6 +24,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<StationBatterySlot> StationBatterySlots { get; set; }
     public DbSet<BatteryBookingSlot> BatteryBookingSlots { get; set; }
+    public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,6 +42,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<Vehicle>()
             .HasIndex(v => v.LicensePlate)
             .IsUnique();
+
+        modelBuilder.Entity<PasswordResetToken>()
+            .HasIndex(p => new { p.Email, p.CreatedAt });
 
         // ======= FIX ALL FOREIGN KEY RELATIONSHIPS =======
 
@@ -198,6 +202,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany(b => b.ToBatterySwaps)
             .HasForeignKey(bs => bs.ToBatteryId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<PasswordResetToken>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.PasswordResetTokens)
+            .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         // ======= END OF FIX ALL FOREIGN KEY RELATIONSHIPS =======
 
 
