@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Service.Implementations
 {
-    public class SmtpEmailService(IConfiguration config, ILogger<SmtpEmailService> logger) : IEmailService
+    public class EmailService(IConfiguration config, ILogger<EmailService> logger) : IEmailService
     {
         public async Task SendAsync(string to, string subject, string htmlBody, CancellationToken ct = default)
         {
