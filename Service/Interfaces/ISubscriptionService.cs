@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Service.Interfaces
 {
     public interface ISubscriptionService
     {
-        Task<IEnumerable<SubscriptionResponse>> GetAllAsync();
-        Task<SubscriptionResponse?> GetByIdAsync(string id);
-        Task<IEnumerable<SubscriptionResponse>> GetByUserAsync(string userId);
+        Task<PaginationWrapper<List<SubscriptionResponse>, SubscriptionResponse>> GetAllSubscriptionAsync(int page,
+        int pageSize, string? search);
+        Task<SubscriptionResponse?> GetBySubscriptionAsync(string id);
+        Task<SubscriptionResponse> GetByUserAsync(string userId);
         Task AddAsync(SubscriptionRequest request);
         Task UpdateAsync(SubscriptionRequest request);
         Task DeleteAsync(string id);
