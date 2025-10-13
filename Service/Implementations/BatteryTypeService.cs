@@ -116,6 +116,11 @@ namespace Service.Implementations
                 };
             }
         }
+        public async Task<List<BatteryTypeResponse>> GetAllBatteryTypeAsync()
+        {
+            var entities = await context.BatteryTypes.ToListAsync();
+            return entities.Select(MapToResponse).ToList();
+        }
 
         private static BatteryTypeResponse MapToResponse(BatteryType e) => new()
         {

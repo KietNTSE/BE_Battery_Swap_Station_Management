@@ -9,74 +9,65 @@ using System.Net;
 
 namespace Service.Implementations
 {
-   
     public class StationBatterySlotService(ApplicationDbContext context) : IStationBatterySlotService
     {
-        
-        public async Task<PaginationWrapper<List<StationInventoryResponse>, StationInventoryResponse>> GetAllStationInventoryAsync(
-            int page, int pageSize, string? search)
+        public async Task<PaginationWrapper<List<StationBatterySlotResponse>, StationBatterySlotResponse>> GetAllStationSlotAsync(int page, int pageSize, string? search)
         {
             if (page <= 0) page = 1;
             if (pageSize <= 0) pageSize = 10;
 
-            var query = context.StationInventories.AsQueryable();
+            var query = context.StationBatterySlots
+                .Include(s => s.Station)
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
                 var term = search.Trim();
-                
-                query = query.Where(i =>
-                    i.StationInventoryId.Contains(term) ||
-                    i.StationId.Contains(term));
+                query = query.Where(s =>
+                    s.StationSlotId.Contains(term) ||
+                    s.StationId.Contains(term)
+                );
             }
 
             var totalItems = await query.CountAsync();
 
             var items = await query
-                .OrderByDescending(i => i.LastUpdate)
+                .OrderByDescending(s => s.StationSlotId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            var responses = items.Select(i => new StationInventoryResponse
-            {
-                StationInventoryId = i.StationInventoryId,
-                StationId = i.StationId,
-                MaintenanceCount = i.MaintenanceCount,
-                FullCount = i.FullCount,
-                ChargingCount = i.ChargingCount,
-                LastUpdated = i.LastUpdate
-            }).ToList();
+            var responses = items.Select(ToSlotResponse).ToList();
 
-           
-            return new PaginationWrapper<List<StationInventoryResponse>, StationInventoryResponse>(
-                responses, page, totalItems, pageSize);
+            return new PaginationWrapper<List<StationBatterySlotResponse>, StationBatterySlotResponse>( responses, page, totalItems, pageSize);
         }
 
-      
         public async Task<StationBatterySlotResponse?> GetByIdAsync(string id)
         {
-            var s = await context.StationBatterySlots.FirstOrDefaultAsync(x => x.StationSlotId == id);
-            return s is null ? null : ToResponse(s);
+            var slot = await context.StationBatterySlots
+                .Include(s => s.Station)
+                .FirstOrDefaultAsync(s => s.StationSlotId == id);
+
+            return slot == null ? null : ToSlotResponse(slot);
         }
 
-        
         public async Task<StationBatterySlotResponse> GetByStationAsync(string stationId)
         {
             var slot = await context.StationBatterySlots
-                .Where(x => x.StationId == stationId)
-                .OrderBy(x => x.SlotNo)
+                .Include(s => s.Station)
+                .Where(s => s.StationId == stationId)
+                .OrderByDescending(s => s.StationSlotId)
                 .FirstOrDefaultAsync();
 
-            if (slot is null)
+            if (slot == null)
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Code = "404",
-                    ErrorMessage = "No station battery slot found for this station."
+                    ErrorMessage = "No battery slot found for the given station."
                 };
 
-            return ToResponse(slot);
+            return ToSlotResponse(slot);
         }
 
         public async Task AddAsync(StationBatterySlotRequest request)
@@ -89,25 +80,25 @@ namespace Service.Implementations
                     ErrorMessage = "StationId is required."
                 };
 
-           
-            var duplicated = await context.StationBatterySlots.AnyAsync(s =>
-                s.StationId == request.StationId && s.SlotNo == request.SlotNo);
-            if (duplicated)
+            var exists = await context.StationBatterySlots.AnyAsync(s =>
+                s.StationId == request.StationId &&
+                s.SlotNo == request.SlotNo);
+
+            if (exists)
                 throw new ValidationException
                 {
-                    StatusCode = HttpStatusCode.Conflict,
-                    Code = "409",
-                    ErrorMessage = "Slot number already exists in this station."
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "StationBatterySlot with the same station and slot number already exists."
                 };
 
             var entity = new StationBatterySlot
             {
                 StationSlotId = Guid.NewGuid().ToString(),
                 StationId = request.StationId,
-                BatteryId = request.BatteryId,
                 SlotNo = request.SlotNo,
                 Status = request.Status,
-                LastUpdated = DateTime.UtcNow
+                BatteryId = request.BatteryId
             };
 
             context.StationBatterySlots.Add(entity);
@@ -121,36 +112,22 @@ namespace Service.Implementations
                 {
                     StatusCode = HttpStatusCode.BadRequest,
                     Code = "400",
-                    ErrorMessage = "StationSlotId is required."
+                    ErrorMessage = "StationBatterySlotId is required."
                 };
 
-            var entity = await context.StationBatterySlots.FirstOrDefaultAsync(s =>
-                s.StationSlotId == request.StationSlotId);
-            if (entity is null)
+            var entity = await context.StationBatterySlots.FirstOrDefaultAsync(s => s.StationSlotId == request.StationSlotId);
+            if (entity == null)
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Code = "404",
-                    ErrorMessage = "Station battery slot not found."
+                    ErrorMessage = "StationBatterySlot not found."
                 };
 
-            
-            var duplicated = await context.StationBatterySlots.AnyAsync(s =>
-                s.StationId == entity.StationId &&
-                s.SlotNo == request.SlotNo &&
-                s.StationSlotId != entity.StationSlotId);
-            if (duplicated)
-                throw new ValidationException
-                {
-                    StatusCode = HttpStatusCode.Conflict,
-                    Code = "409",
-                    ErrorMessage = "Slot number already exists in this station."
-                };
-
-            entity.BatteryId = request.BatteryId;
+            entity.StationId = request.StationId;
             entity.SlotNo = request.SlotNo;
             entity.Status = request.Status;
-            entity.LastUpdated = DateTime.UtcNow;
+            entity.BatteryId = request.BatteryId;
 
             await context.SaveChangesAsync();
         }
@@ -158,12 +135,12 @@ namespace Service.Implementations
         public async Task DeleteAsync(string id)
         {
             var entity = await context.StationBatterySlots.FirstOrDefaultAsync(s => s.StationSlotId == id);
-            if (entity is null)
+            if (entity == null)
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Code = "404",
-                    ErrorMessage = "Station battery slot not found."
+                    ErrorMessage = "StationBatterySlot not found."
                 };
 
             context.StationBatterySlots.Remove(entity);
@@ -173,7 +150,6 @@ namespace Service.Implementations
             }
             catch (DbUpdateException)
             {
-                
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.Conflict,
@@ -183,14 +159,24 @@ namespace Service.Implementations
             }
         }
 
-        private static StationBatterySlotResponse ToResponse(StationBatterySlot s) => new()
+        public async Task<List<StationBatterySlotResponse>> GetStationBatterySlotDetailAsync()
+        {
+            var slots = await context.StationBatterySlots
+                .Include(s => s.Station)
+                .ToListAsync();
+
+            return slots.Select(ToSlotResponse).ToList();
+        }
+
+        // Mapping methods
+
+        private static StationBatterySlotResponse ToSlotResponse(StationBatterySlot s) => new()
         {
             StationSlotId = s.StationSlotId,
             StationId = s.StationId,
-            BatteryId = s.BatteryId,
             SlotNo = s.SlotNo,
             Status = s.Status,
-            LastUpdated = s.LastUpdated
+            BatteryId = s.BatteryId,
         };
     }
 }
