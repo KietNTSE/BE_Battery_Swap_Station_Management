@@ -1,8 +1,8 @@
-﻿using BusinessObject.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using BusinessObject.Dtos;
 using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
-using System.ComponentModel.DataAnnotations;
 
 namespace EV_Driver.Controllers
 {
@@ -10,23 +10,29 @@ namespace EV_Driver.Controllers
     [Route("api/[controller]")]
     public class BatteryController(IBatteryService batteryService) : ControllerBase
     {
-        // Lấy danh sách toàn bộ pin (có phân trang)
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+        public async Task<ActionResult<ResponseObject<List<BatteryResponse>>>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
         {
             var result = await batteryService.GetAllBatteriesAsync(page, pageSize, search);
-            return Ok(result);
+            return Ok(new ResponseObject<List<BatteryResponse>>
+            {
+                Message = "Get batteries successfully",
+                Code = "200",
+                Success = true
+            }.UnwrapPagination(result));
         }
-
-        // Lấy pin theo ID
+        
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<ActionResult<ResponseObject<BatteryResponse>>> GetById(string id)
         {
             var battery = await batteryService.GetByBatteryAsync(id);
-            if (battery == null)
-                return NotFound(new { message = "Battery not found." });
-
-            return Ok(battery);
+            return Ok(new ResponseObject<BatteryResponse>
+            {
+                Message = "Get batteries successfully",
+                Code = "200",
+                Success = true,
+                Content = battery
+            });
         }
 
         // Lấy pin theo SerialNo 
@@ -34,13 +40,15 @@ namespace EV_Driver.Controllers
         public async Task<IActionResult> GetBySerial(int serialNo)
         {
             var battery = await batteryService.GetBySerialAsync(serialNo);
-            if (battery == null)
-                return NotFound(new { message = "Battery not found." });
-
-            return Ok(battery);
+            return Ok(new ResponseObject<BatteryResponse>
+            {
+                Message = "Get batteries successfully",
+                Code = "200",
+                Success = true,
+                Content = battery
+            });
         }
-
-        // Lấy pin mới nhất theo trạm
+        
         [HttpGet("station/{stationId}")]
         public async Task<IActionResult> GetByStation(string stationId)
         {

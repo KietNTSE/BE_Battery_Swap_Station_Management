@@ -1,0 +1,30 @@
+name: Build and Deploy
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  api-image-build:
+    name: Build / API
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Develop
+        uses: actions/checkout@v3
+
+      - name: DockerHub Login
+        uses: docker/login-action@v3.1.0
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+      - name: Lowercase repository name
+        run: |
+            REPO_LOWER=$(echo "${{ inputs.repository }}" | tr '[:upper:]' '[:lower:]')
+            echo "REGISTRY=ghcr.io/$REPO_LOWER" >> $GITHUB_ENV
+      - name: Build Image And Push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: EV_Driver/Dockerfile
+          push: true
+          tags: ${{env.REGISTRY}}/ev-driver-api:latest
