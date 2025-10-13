@@ -30,6 +30,10 @@ public class User
     [StringLength(255)]
     public string Password { get; set; } = string.Empty;
 
+    [Column("avatar_url")]
+    [StringLength(500)]
+    public string? AvatarUrl { get; set; }
+
     [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
@@ -44,4 +48,5 @@ public class User
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public virtual ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = new List<PasswordResetToken>();
 }

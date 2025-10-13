@@ -16,7 +16,7 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
     public async Task CreateBooking(CreateBookingRequest request)
     {
         var userId = JwtUtils.GetUserId(accessor);
-        if (userId is null)
+        if (string.IsNullOrEmpty(userId))
             throw new ValidationException
             {
                 ErrorMessage = "Unauthorized",
@@ -24,118 +24,213 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
                 StatusCode = HttpStatusCode.Unauthorized
             };
 
-        var vehicle =
-            await context.Vehicles.FirstOrDefaultAsync(v =>
-                v.UserId.Equals(userId) && v.VehicleId.Equals(request.VehicleId));
-
+        var vehicle = await context.Vehicles.FirstOrDefaultAsync(v =>
+            v.UserId == userId && v.VehicleId == request.VehicleId);
         if (vehicle is null)
             throw new ValidationException
             {
-                ErrorMessage = "You are not owner of this vehicle",
+                ErrorMessage = "You are not the owner of this vehicle.",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
 
+        
         if (vehicle.BatteryCapacity != request.BatteryIds.Count)
             throw new ValidationException
             {
-                ErrorMessage = "Battery capacity is not matched",
+                ErrorMessage = "Battery capacity does not match.",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
 
-        if (!await context.Batteries.AnyAsync(b => b.BatteryId.Equals(request.BatteryIds[0])))
+        var stationActive = await context.Stations.AnyAsync(s => s.IsActive && s.StationId == request.StationId);
+        if (!stationActive)
             throw new ValidationException
             {
-                ErrorMessage = "Battery is not existed",
+                ErrorMessage = "Station is not active.",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
 
-        if (!await context.Stations.AnyAsync(s => s.IsActive == true && s.StationId.Equals(request.StationId)))
+        var validBatteries = await context.Batteries
+            .Include(b => b.StationBatterySlot)
+            .Where(b =>
+                b.BatteryTypeId == vehicle.BatteryTypeId &&
+                b.StationBatterySlot != null &&
+                b.StationBatterySlot.StationId == request.StationId &&
+                b.StationBatterySlot.Status == SBSStatus.Available)
+            .ToListAsync();
+
+        var selected = validBatteries.Where(b => request.BatteryIds.Contains(b.BatteryId)).ToList();
+        if (selected.Count != request.BatteryIds.Count)
             throw new ValidationException
             {
-                ErrorMessage = "Station is not active",
+                ErrorMessage = "One or more requested batteries are not available.",
                 Code = "400",
                 StatusCode = HttpStatusCode.BadRequest
             };
 
-        await using var transaction = await context.Database.BeginTransactionAsync();
-
-        var validBatteries = await context.Batteries.Include(b => b.StationBatterySlot).Where(b =>
-            b.BatteryTypeId == vehicle.BatteryTypeId &&
-            b.StationBatterySlot != null
-            && b.StationBatterySlot.StationId == request.StationId
-            && b.StationBatterySlot.Status == SBSStatus.Available
-        ).ToListAsync();
-        if (validBatteries.Count == 0 || validBatteries.Count < request.BatteryIds.Count)
-            throw new ValidationException
-            {
-                ErrorMessage = "No available battery",
-                Code = "400",
-                StatusCode = HttpStatusCode.BadRequest
-            };
-
-        var bookingEntity = new Booking
-        {
-            UserId = userId,
-            StationId = request.StationId,
-            VehicleId = request.VehicleId,
-            Status = BBRStatus.Pending
-        };
-
+        await using var tx = await context.Database.BeginTransactionAsync();
         try
         {
-            context.Bookings.Add(bookingEntity);
-            var bookingSlot = new List<BatteryBookingSlot>();
-            for (var i = 0; i < request.BatteryIds.Count; i++)
+            var booking = new Booking
             {
-                var battery = validBatteries[i];
+                BookingId = Guid.NewGuid().ToString(),
+                UserId = userId,
+                StationId = request.StationId,
+                VehicleId = request.VehicleId,
+                Status = BBRStatus.Pending,
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+
+            var bookingSlots = new List<BatteryBookingSlot>();
+            foreach (var battery in selected)
+            {
                 if (battery.StationBatterySlot is null)
                     throw new ValidationException
                     {
-                        ErrorMessage = "Station battery slot is not existed",
+                        ErrorMessage = "Station battery slot not found for a selected battery.",
                         Code = "400",
                         StatusCode = HttpStatusCode.BadRequest
                     };
-                var slot = new BatteryBookingSlot
+
+                bookingSlots.Add(new BatteryBookingSlot
                 {
-                    Booking = bookingEntity,
+                    Booking = booking,
                     BatteryId = battery.BatteryId,
                     StationSlotId = battery.StationBatterySlot.StationSlotId,
-                    CreatedAt = DateTime.UtcNow,
-                    Status = SBSStatus.Available
-                };
-                bookingSlot.Add(slot);
+                    Status = SBSStatus.Available,
+                    CreatedAt = DateTime.UtcNow
+                });
             }
 
-            if (bookingSlot.Count == 0)
-            {
+            if (bookingSlots.Count == 0)
                 throw new ValidationException
                 {
-                    ErrorMessage = "No available battery",
+                    ErrorMessage = "No valid batteries to book.",
                     Code = "400",
                     StatusCode = HttpStatusCode.BadRequest
                 };
-            }
-            context.BatteryBookingSlots.AddRange(bookingSlot);
-            await context.StationBatterySlots
-                .Where(s => request.BatteryIds.Contains(s.BatteryId ?? ""))
-                .ExecuteUpdateAsync(s => 
-                    s.SetProperty(b => b.Status, SBSStatus.Full_slot)
-                        .SetProperty(b => b.LastUpdated, DateTime.UtcNow));
+
+            context.BatteryBookingSlots.AddRange(bookingSlots);
             await context.SaveChangesAsync();
-            await transaction.CommitAsync();
+            await tx.CommitAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            await transaction.RollbackAsync();
+            await tx.RollbackAsync();
+            throw;
+        }
+    }
+
+    public async Task<BookingResponse> GetBookingAsync(string bookingId)
+    {
+        var b = await context.Bookings
+            .Include(x => x.User)
+            .Include(x => x.Station)
+            .Include(x => x.Vehicle)
+            .Include(x => x.BatteryBookingSlots)
+                .ThenInclude(s => s.Battery)
+                    .ThenInclude(bb => bb.BatteryType)
+            .FirstOrDefaultAsync(x => x.BookingId == bookingId);
+
+        if (b is null)
             throw new ValidationException
             {
-                ErrorMessage = ex.Message,
-                Code = "400",
-                StatusCode = HttpStatusCode.BadRequest
+                ErrorMessage = "Booking not found.",
+                Code = "404",
+                StatusCode = HttpStatusCode.NotFound
             };
+
+        return ToResponse(b);
+    }
+
+    public async Task<PaginationWrapper<List<BookingResponse>, BookingResponse>> GetAllBookingAsync(
+        int page, int pageSize, string? search)
+    {
+        if (page <= 0) page = 1;
+        if (pageSize <= 0) pageSize = 10;
+
+        var query = context.Bookings
+            .Include(x => x.User)
+            .Include(x => x.Station)
+            .Include(x => x.Vehicle)
+            .Include(x => x.BatteryBookingSlots)
+                .ThenInclude(s => s.Battery)
+                    .ThenInclude(bb => bb.BatteryType)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(b =>
+                b.BookingId.Contains(term) ||
+                b.User.FullName.Contains(term) ||
+                b.User.Email.Contains(term) ||
+                b.Station.Name.Contains(term) ||
+                b.Vehicle.LicensePlate.Contains(term));
         }
+
+        var totalItems = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(b => b.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var responses = items.Select(ToResponse).ToList();
+
+     
+        return new PaginationWrapper<List<BookingResponse>, BookingResponse>(responses, page, totalItems, pageSize);
+    }
+
+    private static BookingResponse ToResponse(Booking b)
+    {
+       
+        var firstSlot = b.BatteryBookingSlots.FirstOrDefault();
+        var firstBattery = firstSlot?.Battery;
+        var batteryType = firstBattery?.BatteryType;
+
+        return new BookingResponse
+        {
+            // Base
+            BookingId = b.BookingId,
+            StationId = b.StationId,
+            UserId = b.UserId,
+            VehicleId = b.VehicleId,
+            BatteryId = firstBattery?.BatteryId ?? string.Empty,
+            BatteryTypeId = batteryType?.BatteryTypeId ?? string.Empty,
+            TimeSlot = string.Empty, 
+            Status = b.Status,
+            CreatedAt = b.CreatedAt,
+
+            // User
+            UserName = b.User.FullName,
+            UserEmail = b.User.Email,
+            UserPhone = b.User.Phone ?? string.Empty,
+
+            // Station
+            StationName = b.Station.Name,
+            StationAddress = b.Station.Address,
+
+            // Vehicle
+            VehicleBrand = b.Vehicle.VBrand,
+            VehicleModel = b.Vehicle.Model,
+            LicensePlate = b.Vehicle.LicensePlate,
+
+    
+            BatteryTypeName = batteryType?.BatteryTypeName ?? string.Empty,
+
+
+            ConfirmedByName = null,
+            ConfirmedAt = null,
+            CompletedAt = null,
+            UpdatedAt = null,
+
+            CanCancel = b.Status is BBRStatus.Pending or BBRStatus.Confirmed,
+            CanModify = b.Status is BBRStatus.Pending
+        };
     }
 }
