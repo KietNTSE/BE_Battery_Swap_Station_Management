@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Service.Interfaces
 {
     public interface IStationBatterySlotService
     {
-        Task<IEnumerable<StationBatterySlotResponse>> GetAllAsync();
+        Task<PaginationWrapper<List<StationInventoryResponse>, StationInventoryResponse>> GetAllStationInventoryAsync(int page, int pageSize, string? search);
         Task<StationBatterySlotResponse?> GetByIdAsync(string id);
-        Task<IEnumerable<StationBatterySlotResponse>> GetByStationAsync(string stationId);
+        Task<StationBatterySlotResponse> GetByStationAsync(string stationId);
         Task AddAsync(StationBatterySlotRequest request);
         Task UpdateAsync(StationBatterySlotRequest request);
         Task DeleteAsync(string id);

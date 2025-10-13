@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Service.Interfaces
 {
     public interface ISupportTicketService
     {
-        Task<IEnumerable<SupportTicketResponse>> GetAllAsync();
-        Task<IEnumerable<SupportTicketResponse>> GetByUserAsync(string userId);
-        Task<SupportTicketResponse?> GetByIdAsync(string id);
+        Task<PaginationWrapper<List<SupportTicketResponse>, SupportTicketResponse>> GetAllSupportTicketAsync(int page,
+        int pageSize, string? search);
+        Task<SupportTicketResponse?> GetBySupportTicketAsync(string id);
         Task AddAsync(SupportTicketRequest request);
         Task UpdateAsync(SupportTicketRequest request);
         Task DeleteAsync(string id);
