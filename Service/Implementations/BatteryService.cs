@@ -1,28 +1,19 @@
 ﻿using BusinessObject;
 using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using BusinessObject.Entities;
 using BusinessObject.Enums;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Service.Exceptions;
 using Service.Interfaces;
+using System.Net;
 
 namespace Service.Implementations
 {
-    public class BatteryService(ApplicationDbContext context, IHttpContextAccessor accessor) : IBatteryService
+    
+    public class BatteryService(ApplicationDbContext context) : IBatteryService
     {
-        public async Task<IEnumerable<BatteryResponse>> GetAllAsync()
-        {
-            var batteries = await context.Batteries
-                .Include(b => b.Station)
-                .Include(b => b.BatteryType)
-                .AsNoTracking()
-                .ToListAsync();
-
-            return batteries.Select(ToResponse);
-        }
-
-        //Lấy pin theo ID
-        public async Task<BatteryResponse?> GetByIdAsync(string id)
+        public async Task<BatteryResponse?> GetByBatteryAsync(string id)
         {
             var battery = await context.Batteries
                 .Include(b => b.Station)
@@ -32,7 +23,6 @@ namespace Service.Implementations
             return battery == null ? null : ToResponse(battery);
         }
 
-        //Lấy pin theo số serial
         public async Task<BatteryResponse?> GetBySerialAsync(int serialNo)
         {
             var battery = await context.Batteries
@@ -43,38 +33,65 @@ namespace Service.Implementations
             return battery == null ? null : ToResponse(battery);
         }
 
-        //Lấy pin theo trạm
-        public async Task<IEnumerable<BatteryResponse>> GetByStationAsync(string stationId)
+       
+        public async Task<BatteryResponse> GetByStationAsync(string stationId)
         {
-            var batteries = await context.Batteries
+            var battery = await context.Batteries
                 .Include(b => b.Station)
                 .Include(b => b.BatteryType)
                 .Where(b => b.StationId == stationId)
-                .AsNoTracking()
-                .ToListAsync();
+                .OrderByDescending(b => b.UpdatedAt ?? b.CreatedAt)
+                .FirstOrDefaultAsync();
 
-            return batteries.Select(ToResponse);
+            if (battery == null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "No battery found for the given station."
+                };
+
+            return ToResponse(battery);
         }
 
-        //Lấy danh sách pin có sẵn (Available)
-        public async Task<IEnumerable<BatteryResponse>> GetAvailableAsync(string? stationId = null)
+       
+        public async Task<BatteryResponse> GetAvailableAsync(string? stationId = null)
         {
             var query = context.Batteries
                 .Include(b => b.Station)
                 .Include(b => b.BatteryType)
-                .Where(b => b.Status == BatteryStatus.Available)
-                .AsQueryable();
+                .Where(b => b.Status == BatteryStatus.Available);
 
             if (!string.IsNullOrEmpty(stationId))
                 query = query.Where(b => b.StationId == stationId);
 
-            var list = await query.AsNoTracking().ToListAsync();
-            return list.Select(ToResponse);
+            var battery = await query
+                .OrderByDescending(b => b.UpdatedAt ?? b.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            if (battery == null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "No available battery found."
+                };
+
+            return ToResponse(battery);
         }
 
-        //Thêm mới pin
         public async Task AddAsync(BatteryRequest request)
         {
+            // Đảm bảo SerialNo unique
+            var exists = await context.Batteries.AnyAsync(b => b.SerialNo == request.SerialNo);
+            if (exists)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "Battery with the same SerialNo already exists."
+                };
+
             var entity = new Battery
             {
                 BatteryId = Guid.NewGuid().ToString(),
@@ -84,9 +101,9 @@ namespace Service.Implementations
                 Voltage = request.Voltage,
                 CapacityWh = request.CapacityWh,
                 ImageUrl = request.ImageUrl,
-                StationId = request.StationId,
-                BatteryTypeId = request.BatteryTypeId,
-                UserId = request.UserId,
+                StationId = request.StationId ?? string.Empty,
+                BatteryTypeId = request.BatteryTypeId ?? string.Empty,
+                UserId = request.UserId ?? string.Empty,
                 ReservationId = request.ReservationId,
                 CreatedAt = DateTime.UtcNow
             };
@@ -95,40 +112,84 @@ namespace Service.Implementations
             await context.SaveChangesAsync();
         }
 
-        //Cập nhật pin
         public async Task UpdateAsync(BatteryRequest request)
         {
-            var battery = await context.Batteries.FirstOrDefaultAsync(b => b.SerialNo == request.SerialNo);
+           
+            var battery = await context.Batteries
+                .FirstOrDefaultAsync(b => b.SerialNo == request.SerialNo);
+
             if (battery == null)
-                throw new Exception("Battery not found.");
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Battery not found."
+                };
 
             battery.Owner = request.Owner;
             battery.Status = request.Status;
             battery.Voltage = request.Voltage;
             battery.CapacityWh = request.CapacityWh;
             battery.ImageUrl = request.ImageUrl;
-            battery.StationId = request.StationId;
-            battery.BatteryTypeId = request.BatteryTypeId;
-            battery.UserId = request.UserId;
+            battery.StationId = request.StationId ?? battery.StationId;
+            battery.BatteryTypeId = request.BatteryTypeId ?? battery.BatteryTypeId;
+            battery.UserId = request.UserId ?? battery.UserId;
             battery.ReservationId = request.ReservationId;
             battery.UpdatedAt = DateTime.UtcNow;
 
-            context.Batteries.Update(battery);
             await context.SaveChangesAsync();
         }
 
-        //Xóa pin
         public async Task DeleteAsync(string id)
         {
             var battery = await context.Batteries.FirstOrDefaultAsync(b => b.BatteryId == id);
             if (battery == null)
-                throw new Exception("Battery not found.");
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Battery not found."
+                };
 
             context.Batteries.Remove(battery);
             await context.SaveChangesAsync();
         }
 
-        //Hàm chuyển đổi Entity → DTO
+        public async Task<PaginationWrapper<List<BatteryResponse>, BatteryResponse>> GetAllBatteriesAsync(
+            int page, int pageSize, string? search)
+        {
+            if (page <= 0) page = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            var query = context.Batteries
+                .Include(b => b.Station)
+                .Include(b => b.BatteryType)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var term = search.Trim();
+                query = query.Where(b =>
+                    b.SerialNo.ToString().Contains(term) ||
+                    (b.Station != null && b.Station.Name.Contains(term)) ||
+                    (b.BatteryType != null && b.BatteryType.BatteryTypeName.Contains(term))
+                );
+            }
+
+            var totalItems = await query.CountAsync();
+
+            var data = await query
+                .OrderByDescending(b => b.UpdatedAt ?? b.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var responses = data.Select(ToResponse).ToList();
+
+            return new PaginationWrapper<List<BatteryResponse>, BatteryResponse>(responses, totalItems, page, pageSize);
+        }
+
+        
         private static BatteryResponse ToResponse(Battery b)
         {
             return new BatteryResponse
@@ -151,6 +212,4 @@ namespace Service.Implementations
             };
         }
     }
-
 }
-
