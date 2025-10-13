@@ -22,9 +22,6 @@ jobs:
             REPO_LOWER=$(echo "${{ inputs.repository }}" | tr '[:upper:]' '[:lower:]')
             echo "REGISTRY=ghcr.io/$REPO_LOWER" >> $GITHUB_ENV
       - name: Build Image And Push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: EV_Driver/Dockerfile
-          push: true
-          tags: ${{env.REGISTRY}}/ev-driver-api:latest
+        run: |
+          docker compose -f .docker/compose.yaml build ev-api
+          docker compose -f .docker/compose.yaml push ev-api
