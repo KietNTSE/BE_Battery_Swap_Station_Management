@@ -44,8 +44,6 @@ namespace Service.Implementations
 
             var responses = items.Select(ToResponse).ToList();
 
-            // Nếu constructor của PaginationWrapper trong dự án bạn khác tham số,
-            // hãy đổi lại thứ tự cho khớp (có nơi dùng (items, total, page, size)).
             return new PaginationWrapper<List<SupportTicketResponse>, SupportTicketResponse>(
                 responses, totalItems, page, pageSize);
         }
@@ -147,6 +145,19 @@ namespace Service.Implementations
             await context.SaveChangesAsync();
         }
 
+        // NEW METHOD - Added based on the new interface
+        public async Task<List<SupportTicketResponse>> GetSupportTicketDetailAsync()
+        {
+            var tickets = await context.SupportTickets
+                .Include(t => t.User)
+                .Include(t => t.Station)
+                .OrderByDescending(t => t.UpdatedAt)
+                .ThenByDescending(t => t.CreatedAt)
+                .ToListAsync();
+
+            return tickets.Select(ToResponse).ToList();
+        }
+
         private static SupportTicketResponse ToResponse(SupportTicket t)
         {
             return new SupportTicketResponse
@@ -159,7 +170,12 @@ namespace Service.Implementations
                 Priority = t.Priority,
                 Status = t.Status,
                 CreatedAt = t.CreatedAt,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = t.UpdatedAt ?? t.CreatedAt,
+                // Additional details
+                UserName = t.User?.FullName,
+                UserEmail = t.User?.Email,
+                StationName = t.Station?.Name,
+                StationAddress = t.Station?.Address
             };
         }
     }

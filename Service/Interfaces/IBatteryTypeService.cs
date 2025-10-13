@@ -1,9 +1,5 @@
 ﻿using BusinessObject.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessObject.DTOs;
 
 namespace Service.Interfaces
 {
@@ -13,5 +9,6 @@ namespace Service.Interfaces
         Task AddAsync(BatteryTypeRequest request);
         Task UpdateAsync(BatteryTypeRequest request);
         Task DeleteAsync(string id);
+        Task<PaginationWrapper<List<BatteryTypeResponse>, BatteryTypeResponse>> GetAllBatteryTypeAsync(int page, int pageSize, string? search);
     }
 }

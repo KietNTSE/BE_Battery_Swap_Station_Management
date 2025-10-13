@@ -17,5 +17,6 @@ namespace Service.Interfaces
         Task AddAsync(SubscriptionRequest request);
         Task UpdateAsync(SubscriptionRequest request);
         Task DeleteAsync(string id);
+        Task<List<SubscriptionResponse>> GetSubscriptionDetailAsync();
     }
 }

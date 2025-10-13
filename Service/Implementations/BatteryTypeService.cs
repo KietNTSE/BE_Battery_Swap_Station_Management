@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using BusinessObject;
 using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using BusinessObject.Entities;
 using Microsoft.EntityFrameworkCore;
 using Service.Exceptions;
@@ -115,6 +116,13 @@ namespace Service.Implementations
                     ErrorMessage = "Cannot delete this BatteryType because it is being referenced by other records."
                 };
             }
+        }
+        public async Task<PaginationWrapper<List<BatteryTypeResponse>, BatteryTypeResponse>> GetAllBatteryTypeAsync(int page, int pageSize, string? search)
+        {
+            var entities = await context.BatteryTypes.ToListAsync();
+            var totalItems = entities.Count;
+            var responses = entities.Select(MapToResponse).ToList();
+            return new PaginationWrapper<List<BatteryTypeResponse>, BatteryTypeResponse>(responses, totalItems, page, pageSize);
         }
 
         private static BatteryTypeResponse MapToResponse(BatteryType e) => new()

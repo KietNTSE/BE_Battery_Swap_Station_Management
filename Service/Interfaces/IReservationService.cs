@@ -15,7 +15,7 @@ namespace Service.Interfaces
         Task AddAsync(ReservationRequest request);
         Task UpdateAsync(ReservationRequest request);
         Task DeleteAsync(string id);
-        Task<PaginationWrapper<List<ReservationResponse>, ReservationResponse>> GetAllReservationsAsync(int page,
-        int pageSize, string? search);
+        Task<PaginationWrapper<List<ReservationResponse>, ReservationResponse>> GetAllReservationsAsync(int page, int pageSize, string? search);
+        Task<List<ReservationResponse>> GetReservationDetailAsync();
     }
 }

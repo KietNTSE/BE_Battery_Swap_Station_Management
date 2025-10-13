@@ -40,20 +40,24 @@ namespace Service.Implementations
 
             var responses = items.Select(ToResponse).ToList();
 
-           
+
             return new PaginationWrapper<List<StationInventoryResponse>, StationInventoryResponse>(
                 responses, page, totalItems, pageSize);
         }
 
         public async Task<StationInventoryResponse?> GetByIdAsync(string id)
         {
-            var si = await context.StationInventories.FirstOrDefaultAsync(x => x.StationInventoryId == id);
+            var si = await context.StationInventories
+                .Include(si => si.Station)
+                .FirstOrDefaultAsync(x => x.StationInventoryId == id);
             return si is null ? null : ToResponse(si);
         }
 
         public async Task<StationInventoryResponse?> GetByStationIdAsync(string stationId)
         {
-            var si = await context.StationInventories.FirstOrDefaultAsync(x => x.StationId == stationId);
+            var si = await context.StationInventories
+                .Include(si => si.Station)
+                .FirstOrDefaultAsync(x => x.StationId == stationId);
             return si is null ? null : ToResponse(si);
         }
 
@@ -114,11 +118,8 @@ namespace Service.Implementations
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Code = "404",
-                    ErrorMessage = "Station inventory not found."
+                    ErrorMessage = "Station Inventory not found."
                 };
-
-            // Cho phép đổi StationId nếu cần? Thường KHÔNG. Giữ nguyên để tránh xung đột dữ liệu.
-            // entity.StationId = request.StationId;
 
             entity.MaintenanceCount = request.MaintenanceCount;
             entity.FullCount = request.FullCount;
@@ -130,51 +131,53 @@ namespace Service.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            var entity = await context.StationInventories.FirstOrDefaultAsync(si => si.StationInventoryId == id);
+            var entity = await context.StationInventories
+                .FirstOrDefaultAsync(si => si.StationInventoryId == id);
             if (entity is null)
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Code = "404",
-                    ErrorMessage = "Station inventory not found."
+                    ErrorMessage = "Station Inventory not found."
                 };
 
             context.StationInventories.Remove(entity);
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                // Có thể bị ràng buộc bởi Reservation hoặc các liên kết khác
-                throw new ValidationException
-                {
-                    StatusCode = HttpStatusCode.Conflict,
-                    Code = "409",
-                    ErrorMessage = "Cannot delete this station inventory because it is referenced by other records."
-                };
-            }
+            await context.SaveChangesAsync();
         }
 
-        private static void ValidateCounts(int maintenance, int full, int charging)
+        // NEW METHOD - Added based on the new interface
+        public async Task<List<StationInventoryResponse>> GetStationInventoryDetailAsync()
         {
-            if (maintenance < 0 || full < 0 || charging < 0)
+            var inventories = await context.StationInventories
+                .Include(si => si.Station)
+                .OrderBy(si => si.Station != null ? si.Station.Name : si.StationId)
+                .ToListAsync();
+
+            return inventories.Select(ToResponse).ToList();
+        }
+
+        private static void ValidateCounts(int maintenanceCount, int fullCount, int chargingCount)
+        {
+            if (maintenanceCount < 0 || fullCount < 0 || chargingCount < 0)
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.BadRequest,
                     Code = "400",
-                    ErrorMessage = "Counts must be non-negative."
+                    ErrorMessage = "All counts must be non-negative."
                 };
         }
 
-        private static StationInventoryResponse ToResponse(StationInventory si) => new()
+        private static StationInventoryResponse ToResponse(StationInventory entity)
         {
-            StationInventoryId = si.StationInventoryId,
-            StationId = si.StationId,
-            MaintenanceCount = si.MaintenanceCount,
-            FullCount = si.FullCount,
-            ChargingCount = si.ChargingCount,
-            LastUpdated = si.LastUpdate
-        };
+            return new StationInventoryResponse
+            {
+                StationInventoryId = entity.StationInventoryId,
+                StationId = entity.StationId,
+                MaintenanceCount = entity.MaintenanceCount,
+                FullCount = entity.FullCount,
+                ChargingCount = entity.ChargingCount,
+                LastUpdate = entity.LastUpdate
+            };
+        }
     }
 }

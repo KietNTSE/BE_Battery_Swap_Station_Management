@@ -8,12 +8,18 @@ namespace EV_Driver.Controllers
     [Route("api/[controller]")]
     public class StationInventoryController(IStationInventoryService stationInventoryService) : ControllerBase
     {
-
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
         {
-            var inventories = await stationInventoryService.GetAllAsync();
+            var inventories = await stationInventoryService.GetAllStationInventoryAsync(page, pageSize, search);
             return Ok(new { Success = true, Message = "Fetched all station inventories.", Data = inventories });
+        }
+
+        [HttpGet("details")]
+        public async Task<IActionResult> GetStationInventoryDetails()
+        {
+            var inventories = await stationInventoryService.GetStationInventoryDetailAsync();
+            return Ok(new { Success = true, Message = "Fetched station inventory details.", Data = inventories });
         }
 
         [HttpGet("{id}")]

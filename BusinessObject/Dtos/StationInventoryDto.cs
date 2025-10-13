@@ -22,6 +22,6 @@ namespace BusinessObject.Dtos
         public int MaintenanceCount { get; set; }
         public int FullCount { get; set; }
         public int ChargingCount { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTime LastUpdate { get; set; }
     }
 }

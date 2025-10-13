@@ -13,7 +13,6 @@ namespace Service.Implementations
 {
     public class ReservationService(ApplicationDbContext context, IHttpContextAccessor accessor) : IReservationService
     {
-        
         public async Task<PaginationWrapper<List<ReservationResponse>, ReservationResponse>> GetAllReservationsAsync(
             int page, int pageSize, string? search)
         {
@@ -42,7 +41,6 @@ namespace Service.Implementations
 
             var responses = items.Select(ToResponse).ToList();
 
-            
             return new PaginationWrapper<List<ReservationResponse>, ReservationResponse>(
                 responses, page, totalItems, pageSize);
         }
@@ -53,7 +51,6 @@ namespace Service.Implementations
             return r is null ? null : ToResponse(r);
         }
 
-        
         public async Task<ReservationResponse> GetByStationInventoryAsync(string stationInventoryId)
         {
             var r = await context.Reservations
@@ -74,7 +71,6 @@ namespace Service.Implementations
 
         public async Task AddAsync(ReservationRequest request)
         {
-           
             if (string.IsNullOrWhiteSpace(request.StationInventoryId))
                 throw new ValidationException
                 {
@@ -142,7 +138,6 @@ namespace Service.Implementations
                     ErrorMessage = "ExpiredAt must be greater than ReservedAt."
                 };
 
-          
             entity.StationInventoryId = request.StationInventoryId;
             entity.Status = request.Status;
             entity.ReservedAt = request.ReservedAt;
@@ -170,7 +165,6 @@ namespace Service.Implementations
             }
             catch (DbUpdateException)
             {
-               
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.Conflict,
@@ -178,6 +172,12 @@ namespace Service.Implementations
                     ErrorMessage = "Cannot delete this reservation because it is referenced by other records."
                 };
             }
+        }
+
+        public async Task<List<ReservationResponse>> GetReservationDetailAsync()
+        {
+            var reservations = await context.Reservations.ToListAsync();
+            return reservations.Select(ToResponse).ToList();
         }
 
         private static ReservationResponse ToResponse(Reservation r) => new()
