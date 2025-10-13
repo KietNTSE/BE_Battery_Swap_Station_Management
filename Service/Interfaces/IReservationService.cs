@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ namespace Service.Interfaces
 {
     public interface IReservationService
     {
-        Task<IEnumerable<ReservationResponse>> GetAllAsync();
         Task<ReservationResponse?> GetByIdAsync(string id);
-        Task<IEnumerable<ReservationResponse>> GetByStationInventoryAsync(string stationInventoryId);
+        Task<ReservationResponse> GetByStationInventoryAsync(string stationInventoryId);
         Task AddAsync(ReservationRequest request);
         Task UpdateAsync(ReservationRequest request);
         Task DeleteAsync(string id);
+        Task<PaginationWrapper<List<ReservationResponse>, ReservationResponse>> GetAllReservationsAsync(int page,
+        int pageSize, string? search);
     }
 }
