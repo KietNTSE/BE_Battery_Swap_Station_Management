@@ -19,7 +19,7 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
       - name: Lowercase repository name
         run: |
-            REPO_LOWER=$(echo "${{ inputs.repository }}" | tr '[:upper:]' '[:lower:]')
+            REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
             echo "REGISTRY=ghcr.io/$REPO_LOWER" >> $GITHUB_ENV
       - name: Build Image And Push
         run: |
