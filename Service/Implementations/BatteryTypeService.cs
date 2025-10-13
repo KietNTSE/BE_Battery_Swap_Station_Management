@@ -1,49 +1,45 @@
-﻿using BusinessObject;
+﻿using System.Net;
+using BusinessObject;
 using BusinessObject.Dtos;
 using BusinessObject.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Service.Exceptions;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Implementations
 {
-    public class BatteryTypeService(ApplicationDbContext context, IHttpContextAccessor accessor)
-        : IBatteryTypeService
+    public class BatteryTypeService(ApplicationDbContext context) : IBatteryTypeService
     {
-        public async Task<IEnumerable<BatteryTypeResponse>> GetAllAsync()
-        {
-            return await context.BatteryTypes
-                .Select(t => new BatteryTypeResponse
-                {
-                    BatteryTypeId = t.BatteryTypeId,
-                    BatteryTypeName = t.BatteryTypeName
-                })
-                .ToListAsync();
-        }
-
         public async Task<BatteryTypeResponse?> GetByIdAsync(string id)
         {
-            var t = await context.BatteryTypes.FindAsync(id);
-            if (t == null) return null;
-
-            return new BatteryTypeResponse
-            {
-                BatteryTypeId = t.BatteryTypeId,
-                BatteryTypeName = t.BatteryTypeName
-            };
+            var entity = await context.BatteryTypes.FirstOrDefaultAsync(x => x.BatteryTypeId == id);
+            return entity is null ? null : MapToResponse(entity);
         }
 
         public async Task AddAsync(BatteryTypeRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.BatteryTypeName))
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "BatteryTypeName is required."
+                };
+
+            var exists = await context.BatteryTypes
+                .AnyAsync(x => x.BatteryTypeName == request.BatteryTypeName);
+            if (exists)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "BatteryTypeName already exists."
+                };
+
             var entity = new BatteryType
             {
                 BatteryTypeId = Guid.NewGuid().ToString(),
-                BatteryTypeName = request.BatteryTypeName
+                BatteryTypeName = request.BatteryTypeName.Trim()
             };
 
             context.BatteryTypes.Add(entity);
@@ -52,20 +48,79 @@ namespace Service.Implementations
 
         public async Task UpdateAsync(BatteryTypeRequest request)
         {
-            var t = await context.BatteryTypes.FindAsync(request.BatteryTypeId);
-            if (t == null) throw new Exception("BatteryType not found.");
+            if (string.IsNullOrWhiteSpace(request.BatteryTypeId))
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "BatteryTypeId is required."
+                };
 
-            t.BatteryTypeName = request.BatteryTypeName;
+            if (string.IsNullOrWhiteSpace(request.BatteryTypeName))
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "BatteryTypeName is required."
+                };
+
+            var entity = await context.BatteryTypes
+                .FirstOrDefaultAsync(x => x.BatteryTypeId == request.BatteryTypeId);
+            if (entity is null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Battery type not found."
+                };
+
+            var nameInUse = await context.BatteryTypes.AnyAsync(x =>
+                x.BatteryTypeName == request.BatteryTypeName &&
+                x.BatteryTypeId != request.BatteryTypeId);
+            if (nameInUse)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "BatteryTypeName already exists."
+                };
+
+            entity.BatteryTypeName = request.BatteryTypeName.Trim();
             await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string id)
         {
-            var t = await context.BatteryTypes.FindAsync(id);
-            if (t == null) throw new Exception("BatteryType not found.");
+            var entity = await context.BatteryTypes.FirstOrDefaultAsync(x => x.BatteryTypeId == id);
+            if (entity is null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Battery type not found."
+                };
 
-            context.BatteryTypes.Remove(t);
-            await context.SaveChangesAsync();
+            context.BatteryTypes.Remove(entity);
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+            
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.Conflict,
+                    Code = "409",
+                    ErrorMessage = "Cannot delete this BatteryType because it is being referenced by other records."
+                };
+            }
         }
+
+        private static BatteryTypeResponse MapToResponse(BatteryType e) => new()
+        {
+            BatteryTypeId = e.BatteryTypeId,
+            BatteryTypeName = e.BatteryTypeName
+        };
     }
 }
