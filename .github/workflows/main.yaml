@@ -7,6 +7,9 @@ jobs:
   api-image-build:
     name: Build / API
     runs-on: ubuntu-22.04
+    permissions: 
+      contents: read
+      packages: write
     steps:
       - name: Checkout Develop
         uses: actions/checkout@v3
