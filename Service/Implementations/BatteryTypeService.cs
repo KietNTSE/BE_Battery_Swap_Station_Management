@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using BusinessObject;
 using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using BusinessObject.Entities;
 using Microsoft.EntityFrameworkCore;
 using Service.Exceptions;
@@ -116,10 +117,12 @@ namespace Service.Implementations
                 };
             }
         }
-        public async Task<List<BatteryTypeResponse>> GetAllBatteryTypeAsync()
+        public async Task<PaginationWrapper<List<BatteryTypeResponse>, BatteryTypeResponse>> GetAllBatteryTypeAsync(int page, int pageSize, string? search)
         {
             var entities = await context.BatteryTypes.ToListAsync();
-            return entities.Select(MapToResponse).ToList();
+            var totalItems = entities.Count;
+            var responses = entities.Select(MapToResponse).ToList();
+            return new PaginationWrapper<List<BatteryTypeResponse>, BatteryTypeResponse>(responses, totalItems, page, pageSize);
         }
 
         private static BatteryTypeResponse MapToResponse(BatteryType e) => new()

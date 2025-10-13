@@ -25,6 +25,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<StationBatterySlot> StationBatterySlots { get; set; }
     public DbSet<BatteryBookingSlot> BatteryBookingSlots { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+    public DbSet<StaffAbsence> StaffAbsences { get; set; }
+    public DbSet<StationStaffOverride> StationStaffOverrides { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,6 +47,41 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         modelBuilder.Entity<PasswordResetToken>()
             .HasIndex(p => new { p.Email, p.CreatedAt });
+
+        modelBuilder.Entity<StaffAbsence>(e =>
+        {
+            e.ToTable("StaffAbsense");
+            e.HasKey(x => x.StaffAbsenceId);
+            e.HasIndex(x => new { x.UserId, x.Date }).IsUnique();
+            e.HasIndex(x => x.Date);
+            e.Property(x => x.CreatedAt)
+                .HasColumnName("created_at")
+                .HasColumnType("datetime2")
+                .HasDefaultValueSql("GETUTCDATE()");
+
+        });
+
+        modelBuilder.Entity<StationStaffOverride>(e =>
+        {
+            e.ToTable("StationStaffOverride");
+            e.HasKey(x => x.StationStaffOverrideId);
+            e.HasIndex(x => new { x.UserId, x.Date })
+            .HasFilter("[shift_id] IS NULL")
+            .IsUnique();
+
+            e.HasIndex(x => new { x.UserId, x.Date, x.ShiftId })
+             .HasFilter("[shift_id] IS NOT NULL")
+             .IsUnique();
+
+            e.HasIndex(x => new { x.StationId, x.Date });
+
+            e.Property(x => x.CreatedAt)
+                .HasColumnName("created_at")
+                .HasColumnType("datetime2")
+                .HasDefaultValueSql("GETUTCDATE()");
+
+        });
+            
 
         // ======= FIX ALL FOREIGN KEY RELATIONSHIPS =======
 
@@ -208,6 +245,28 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany(u => u.PasswordResetTokens)
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<StaffAbsence>()
+            .HasOne(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<StationStaffOverride>(e =>
+        {
+            e.HasOne(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+            e.HasOne(x => x.Station)
+                .WithMany()
+                .HasForeignKey(x => x.StationId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+            
+
         // ======= END OF FIX ALL FOREIGN KEY RELATIONSHIPS =======
 
 
