@@ -1,4 +1,5 @@
-﻿using BusinessObject;
+﻿using System.Net;
+using BusinessObject;
 using BusinessObject.Dtos;
 using BusinessObject.DTOs;
 using BusinessObject.Entities;
@@ -6,31 +7,46 @@ using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;
 using Service.Exceptions;
 using Service.Interfaces;
-using System.Net;
 
 namespace Service.Implementations
 {
     
     public class BatteryService(ApplicationDbContext context) : IBatteryService
     {
-        public async Task<BatteryResponse?> GetByBatteryAsync(string id)
+        public async Task<BatteryResponse> GetByBatteryAsync(string id)
         {
             var battery = await context.Batteries
                 .Include(b => b.Station)
                 .Include(b => b.BatteryType)
                 .FirstOrDefaultAsync(b => b.BatteryId == id);
 
-            return battery == null ? null : ToResponse(battery);
+           if (battery is null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Battery not found."
+                };
+           return ToResponse(battery);
         }
 
-        public async Task<BatteryResponse?> GetBySerialAsync(int serialNo)
+        public async Task<BatteryResponse> GetBySerialAsync(int serialNo)
         {
             var battery = await context.Batteries
                 .Include(b => b.Station)
                 .Include(b => b.BatteryType)
                 .FirstOrDefaultAsync(b => b.SerialNo == serialNo);
 
-            return battery == null ? null : ToResponse(battery);
+            if (battery is null)
+            {
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Code = "404",
+                    ErrorMessage = "Battery not found."
+                };
+            }
+            return ToResponse(battery);
         }
 
        
