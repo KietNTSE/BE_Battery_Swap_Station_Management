@@ -159,7 +159,7 @@ namespace Service.Implementations
                 Priority = t.Priority,
                 Status = t.Status,
                 CreatedAt = t.CreatedAt,
-                UpdatedAt = t.UpdatedAt
+                UpdatedAt = DateTime.UtcNow
             };
         }
     }
