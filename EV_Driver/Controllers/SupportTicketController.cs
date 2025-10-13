@@ -8,11 +8,10 @@ namespace EV_Driver.Controllers
     [Route("api/[controller]")]
     public class SupportTicketController(ISupportTicketService supportTicketService) : ControllerBase
     {
-
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
         {
-            var tickets = await supportTicketService.GetAllAsync();
+            var tickets = await supportTicketService.GetAllSupportTicketAsync(page, pageSize, search);
             return Ok(new
             {
                 Success = true,
@@ -21,10 +20,22 @@ namespace EV_Driver.Controllers
             });
         }
 
+        [HttpGet("details")]
+        public async Task<IActionResult> GetSupportTicketDetails()
+        {
+            var tickets = await supportTicketService.GetSupportTicketDetailAsync();
+            return Ok(new
+            {
+                Success = true,
+                Message = "Fetched support ticket details successfully.",
+                Data = tickets
+            });
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var ticket = await supportTicketService.GetByIdAsync(id);
+            var ticket = await supportTicketService.GetBySupportTicketAsync(id);
             if (ticket == null)
             {
                 return NotFound(new
@@ -42,68 +53,81 @@ namespace EV_Driver.Controllers
             });
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUser(string userId)
-        {
-            var tickets = await supportTicketService.GetByUserAsync(userId);
-            return Ok(new
-            {
-                Success = true,
-                Message = "Fetched user support tickets successfully.",
-                Data = tickets
-            });
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SupportTicketRequest request)
         {
-            if (!ModelState.IsValid)
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new
+                    {
+                        Success = false,
+                        Message = "Invalid ticket data.",
+                        Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    });
+                }
+
+                await supportTicketService.AddAsync(request);
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Support ticket created successfully."
+                });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {
                     Success = false,
-                    Message = "Invalid ticket data.",
-                    Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    Message = ex.Message
                 });
             }
-
-            await supportTicketService.AddAsync(request);
-            return Ok(new
-            {
-                Success = true,
-                Message = "Support ticket created successfully."
-            });
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] SupportTicketRequest request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] SupportTicketRequest request)
         {
-            if (string.IsNullOrEmpty(request.TicketId))
+            try
+            {
+                request.TicketId = id;
+                await supportTicketService.UpdateAsync(request);
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Support ticket updated successfully."
+                });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {
                     Success = false,
-                    Message = "TicketId is required for update."
+                    Message = ex.Message
                 });
             }
-
-            await supportTicketService.UpdateAsync(request);
-            return Ok(new
-            {
-                Success = true,
-                Message = "Support ticket updated successfully."
-            });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            await supportTicketService.DeleteAsync(id);
-            return Ok(new
+            try
             {
-                Success = true,
-                Message = "Support ticket deleted successfully."
-            });
+                await supportTicketService.DeleteAsync(id);
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Support ticket deleted successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

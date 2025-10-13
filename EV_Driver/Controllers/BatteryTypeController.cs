@@ -9,7 +9,11 @@ namespace EV_Driver.Controllers
     public class BatteryTypeController(IBatteryTypeService service) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await service.GetAllAsync());
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await service.GetAllBatteryTypeAsync();
+            return Ok(result);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
@@ -41,4 +45,3 @@ namespace EV_Driver.Controllers
         }
     }
 }
-

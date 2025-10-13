@@ -16,5 +16,6 @@ namespace Service.Interfaces
         Task AddAsync(SupportTicketRequest request);
         Task UpdateAsync(SupportTicketRequest request);
         Task DeleteAsync(string id);
+        Task<List<SupportTicketResponse>> GetSupportTicketDetailAsync();
     }
 }

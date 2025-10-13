@@ -13,5 +13,6 @@ namespace Service.Interfaces
         Task AddAsync(BatteryTypeRequest request);
         Task UpdateAsync(BatteryTypeRequest request);
         Task DeleteAsync(string id);
+        Task<List<BatteryTypeResponse>> GetAllBatteryTypeAsync();
     }
 }

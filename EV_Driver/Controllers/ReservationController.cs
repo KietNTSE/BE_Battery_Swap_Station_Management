@@ -6,51 +6,101 @@ namespace EV_Driver.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ReservationController(IReservationService reservationService) : ControllerBase
+    public class ReservationController(IReservationService service) : ControllerBase
     {
-
+        // Lấy danh sách reservation có phân trang
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
         {
-            var result = await reservationService.GetAllAsync();
-            return Ok(new { Success = true, Message = "Fetched all reservations.", Data = result });
+            var result = await service.GetAllReservationsAsync(page, pageSize, search);
+            return Ok(result);
         }
 
+        // Lấy reservation theo id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var result = await reservationService.GetByIdAsync(id);
-            if (result == null)
-                return NotFound(new { Success = false, Message = "Reservation not found." });
-            return Ok(new { Success = true, Data = result });
+            var result = await service.GetByIdAsync(id);
+            return result == null ? NotFound() : Ok(result);
         }
 
-        [HttpGet("stationinventory/{stationInventoryId}")]
+        // Lấy reservation mới nhất theo station inventory id
+        [HttpGet("station-inventory/{stationInventoryId}")]
         public async Task<IActionResult> GetByStationInventory(string stationInventoryId)
         {
-            var result = await reservationService.GetByStationInventoryAsync(stationInventoryId);
-            return Ok(new { Success = true, Message = "Fetched reservations by station inventory.", Data = result });
+            try
+            {
+                var result = await service.GetByStationInventoryAsync(stationInventoryId);
+                return Ok(result);
+            }
+            catch (Service.Exceptions.ValidationException ex)
+            {
+                return NotFound(new { error = ex.ErrorMessage });
+            }
         }
 
+        // Lấy toàn bộ chi tiết reservation (không phân trang)
+        [HttpGet("details/all")]
+        public async Task<IActionResult> GetAllDetails()
+        {
+            var result = await service.GetReservationDetailAsync();
+            return Ok(result);
+        }
+
+        // Thêm reservation
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ReservationRequest request)
+        public async Task<IActionResult> Add([FromBody] ReservationRequest request)
         {
-            await reservationService.AddAsync(request);
-            return Ok(new { Success = true, Message = "Reservation created successfully." });
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await service.AddAsync(request);
+                return Ok(new { message = "Reservation created successfully" });
+            }
+            catch (Service.Exceptions.ValidationException ex)
+            {
+                return BadRequest(new { error = ex.ErrorMessage });
+            }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ReservationRequest request)
+        // Sửa reservation
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] ReservationRequest request)
         {
-            await reservationService.UpdateAsync(request);
-            return Ok(new { Success = true, Message = "Reservation updated successfully." });
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            request.ReservationId = id;
+            try
+            {
+                await service.UpdateAsync(request);
+                return Ok(new { message = "Reservation updated successfully" });
+            }
+            catch (Service.Exceptions.ValidationException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return NotFound(new { error = ex.ErrorMessage });
+                return BadRequest(new { error = ex.ErrorMessage });
+            }
         }
 
+        // Xoá reservation
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            await reservationService.DeleteAsync(id);
-            return Ok(new { Success = true, Message = "Reservation deleted successfully." });
+            try
+            {
+                await service.DeleteAsync(id);
+                return Ok(new { message = "Reservation deleted successfully" });
+            }
+            catch (Service.Exceptions.ValidationException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return NotFound(new { error = ex.ErrorMessage });
+                return BadRequest(new { error = ex.ErrorMessage });
+            }
         }
     }
 }

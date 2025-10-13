@@ -67,6 +67,7 @@ namespace Service.Implementations
         public async Task<SubscriptionResponse> GetByUserAsync(string userId)
         {
             var s = await context.Subscriptions
+                .Include(x => x.User)
                 .Include(x => x.SubscriptionPlan)
                 .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.Status == SubscriptionStatus.Active)
@@ -224,6 +225,20 @@ namespace Service.Implementations
             }
         }
 
+        // NEW METHOD - Added based on the new interface
+        public async Task<List<SubscriptionResponse>> GetSubscriptionDetailAsync()
+        {
+            var subscriptions = await context.Subscriptions
+                .Include(s => s.User)
+                .Include(s => s.SubscriptionPlan)
+                .OrderByDescending(s => s.Status == SubscriptionStatus.Active)
+                .ThenByDescending(s => s.CreatedAt)
+                .ThenBy(s => s.User != null ? s.User.FullName : s.UserId)
+                .ToListAsync();
+
+            return subscriptions.Select(Map).ToList();
+        }
+
         private static void ValidateRequestDates(DateTime start, DateTime end)
         {
             if (end <= start)
@@ -244,7 +259,11 @@ namespace Service.Implementations
             EndDate = s.EndDate,
             Status = s.Status,
             NumberOfSwap = s.NumberOfSwaps,
-            CreatedAt = s.CreatedAt
+            CreatedAt = s.CreatedAt,
+            // Thêm thông tin chi tiết nếu cần
+            UserName = s.User?.FullName,
+            UserEmail = s.User?.Email,
+            PlanName = s.SubscriptionPlan?.Name
         };
     }
 }

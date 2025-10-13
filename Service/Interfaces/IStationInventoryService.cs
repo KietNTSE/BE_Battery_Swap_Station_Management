@@ -16,5 +16,6 @@ namespace Service.Interfaces
         Task AddAsync(StationInventoryRequest request);
         Task UpdateAsync(StationInventoryRequest request);
         Task DeleteAsync(string id);
+        Task<List<StationInventoryResponse>> GetStationInventoryDetailAsync();
     }
 }

@@ -10,11 +10,12 @@ namespace Service.Interfaces
 {
     public interface IStationBatterySlotService
     {
-        Task<PaginationWrapper<List<StationInventoryResponse>, StationInventoryResponse>> GetAllStationInventoryAsync(int page, int pageSize, string? search);
+        Task<PaginationWrapper<List<StationBatterySlotResponse>, StationBatterySlotResponse>> GetAllStationSlotAsync(int page, int pageSize, string? search);
         Task<StationBatterySlotResponse?> GetByIdAsync(string id);
         Task<StationBatterySlotResponse> GetByStationAsync(string stationId);
         Task AddAsync(StationBatterySlotRequest request);
         Task UpdateAsync(StationBatterySlotRequest request);
         Task DeleteAsync(string id);
+        Task<List<StationBatterySlotResponse>> GetStationBatterySlotDetailAsync();
     }
 }
