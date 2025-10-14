@@ -7,7 +7,7 @@ services:
       context: ..
       dockerfile: EV_Driver/Dockerfile
     environment:
-      ConnectionStrings__DefaultConnection: "Server=mssql-database;Database: EV_DriverDB;User Id=sa;Password=Password1!;TrustServerCertificate=true;"
+      ConnectionStrings__DefaultConnection: "Server=mssql-database;Database=EV_DriverDB;User Id=sa;Password=Password1!;TrustServerCertificate=true;"
       JwtSettings__Key: your-super-secret-key-that-is-at-least-32-characters-long-for-jwt-token
       JwtSettings__Issuer: EV_Driver_API
       JwtSettings__Audience: EV_Driver_Client
