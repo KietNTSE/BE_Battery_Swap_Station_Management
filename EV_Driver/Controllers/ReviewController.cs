@@ -1,8 +1,8 @@
-﻿using BusinessObject.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
-using Service.Exceptions;
-using System.Net;
 
 namespace EV_Driver.Controllers
 {
@@ -11,65 +11,123 @@ namespace EV_Driver.Controllers
     public class ReviewController(IReviewService reviewService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll() =>
-            Ok(await reviewService.GetAllAsync());
+        public async Task<ActionResult<ResponseObject<List<ReviewResponse>>>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+        {
+            var reviews = await reviewService.GetAllReviewAsync(page, pageSize, search);
+            return Ok(new ResponseObject<List<ReviewResponse>>
+            {
+                Message = "Get reviews successfully",
+                Code = "200",
+                Success = true
+            }.UnwrapPagination(reviews));
+        }
+
+        [HttpGet("detail")]
+        public async Task<ActionResult<ResponseObject<ReviewResponse>>> GetReviewDetail()
+        {
+            var review = await reviewService.GetReviewDetailAsync();
+            return Ok(new ResponseObject<ReviewResponse>
+            {
+                Message = "Get review detail successfully",
+                Code = "200",
+                Success = true,
+                Content = review
+            });
+        }
 
         [HttpGet("station/{stationId}")]
-        public async Task<IActionResult> GetByStation(string stationId) =>
-            Ok(await reviewService.GetByStationAsync(stationId));
+        public async Task<ActionResult<ResponseObject<ReviewResponse>>> GetByStation(string stationId)
+        {
+            var review = await reviewService.GetByStationAsync(stationId);
+            return Ok(new ResponseObject<ReviewResponse>
+            {
+                Message = "Get review by station successfully",
+                Code = "200",
+                Success = true,
+                Content = review
+            });
+        }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUser(string userId) =>
-            Ok(await reviewService.GetByUserAsync(userId));
+        public async Task<ActionResult<ResponseObject<ReviewResponse>>> GetByUser(string userId)
+        {
+            var review = await reviewService.GetByUserAsync(userId);
+            return Ok(new ResponseObject<ReviewResponse>
+            {
+                Message = "Get review by user successfully",
+                Code = "200",
+                Success = true,
+                Content = review
+            });
+        }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<ActionResult<ResponseObject<ReviewResponse>>> GetById(string id)
         {
             var review = await reviewService.GetByIdAsync(id);
-            if (review == null) return NotFound();
-            return Ok(review);
+            if (review == null)
+            {
+                return Ok(new ResponseObject<ReviewResponse>
+                {
+                    Message = "Review not found",
+                    Code = "404",
+                    Success = false,
+                    Content = null
+                });
+            }
+
+            return Ok(new ResponseObject<ReviewResponse>
+            {
+                Message = "Get review successfully",
+                Code = "200",
+                Success = true,
+                Content = review
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] ReviewRequest review)
+        public async Task<ActionResult<ResponseObject<object>>> Add([FromBody] ReviewRequest request)
         {
-            try
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await reviewService.AddAsync(request);
+            return Ok(new ResponseObject<object>
             {
-                await reviewService.AddAsync(review);
-                return Ok(new { message = "Review added successfully" });
-            }
-            catch (ValidationException ex)
-            {
-                return StatusCode((int)ex.StatusCode, new { message = ex.ErrorMessage, code = ex.Code });
-            }
+                Message = "Review created successfully",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ReviewRequest review)
+        public async Task<ActionResult<ResponseObject<object>>> Update([FromBody] ReviewRequest request)
         {
-            try
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await reviewService.UpdateAsync(request);
+            return Ok(new ResponseObject<object>
             {
-                await reviewService.UpdateAsync(review);
-                return Ok(new { message = "Review updated successfully" });
-            }
-            catch (ValidationException ex)
-            {
-                return StatusCode((int)ex.StatusCode, new { message = ex.ErrorMessage, code = ex.Code });
-            }
+                Message = "Review updated successfully",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<ActionResult<ResponseObject<object>>> Delete(string id)
         {
-            try
+            await reviewService.DeleteAsync(id);
+            return Ok(new ResponseObject<object>
             {
-                await reviewService.DeleteAsync(id);
-                return Ok(new { message = "Review deleted successfully" });
-            }
-            catch (ValidationException ex)
-            {
-                return StatusCode((int)ex.StatusCode, new { message = ex.ErrorMessage, code = ex.Code });
-            }
+                Message = "Review deleted successfully",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
     }
 }
