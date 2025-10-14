@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,13 @@ namespace Service.Interfaces
 {
     public interface IReviewService
     {
-        Task<IEnumerable<ReviewResponse>> GetAllAsync();
-        Task<IEnumerable<ReviewResponse>> GetByStationAsync(string stationId);
-        Task<IEnumerable<ReviewResponse>> GetByUserAsync(string userId);
+        Task<ReviewResponse> GetReviewDetailAsync();
+        Task<ReviewResponse> GetByStationAsync(string stationId);
+        Task<ReviewResponse> GetByUserAsync(string userId);
         Task<ReviewResponse?> GetByIdAsync(string id);
         Task AddAsync(ReviewRequest review);
         Task UpdateAsync(ReviewRequest review);
         Task DeleteAsync(string id);
+        Task<PaginationWrapper<List<ReviewResponse>, ReviewResponse>> GetAllReviewAsync(int page, int pageSize, string? search);
     }
 }

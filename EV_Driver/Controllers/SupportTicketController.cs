@@ -1,4 +1,6 @@
-﻿using BusinessObject.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
@@ -9,125 +11,98 @@ namespace EV_Driver.Controllers
     public class SupportTicketController(ISupportTicketService supportTicketService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+        public async Task<ActionResult<ResponseObject<List<SupportTicketResponse>>>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
         {
             var tickets = await supportTicketService.GetAllSupportTicketAsync(page, pageSize, search);
-            return Ok(new
+            return Ok(new ResponseObject<List<SupportTicketResponse>>
             {
-                Success = true,
-                Message = "Fetched all support tickets successfully.",
-                Data = tickets
-            });
+                Message = "Get support tickets successfully",
+                Code = "200",
+                Success = true
+            }.UnwrapPagination(tickets));
         }
 
         [HttpGet("details")]
-        public async Task<IActionResult> GetSupportTicketDetails()
+        public async Task<ActionResult<ResponseObject<List<SupportTicketResponse>>>> GetSupportTicketDetails()
         {
             var tickets = await supportTicketService.GetSupportTicketDetailAsync();
-            return Ok(new
+            return Ok(new ResponseObject<List<SupportTicketResponse>>
             {
+                Message = "Get support ticket details successfully",
+                Code = "200",
                 Success = true,
-                Message = "Fetched support ticket details successfully.",
-                Data = tickets
+                Content = tickets
             });
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<ActionResult<ResponseObject<SupportTicketResponse>>> GetById(string id)
         {
             var ticket = await supportTicketService.GetBySupportTicketAsync(id);
             if (ticket == null)
             {
-                return NotFound(new
+                return Ok(new ResponseObject<SupportTicketResponse>
                 {
+                    Message = "Support ticket not found",
+                    Code = "404",
                     Success = false,
-                    Message = "Support ticket not found."
+                    Content = null
                 });
             }
 
-            return Ok(new
+            return Ok(new ResponseObject<SupportTicketResponse>
             {
+                Message = "Get support ticket successfully",
+                Code = "200",
                 Success = true,
-                Message = "Fetched support ticket successfully.",
-                Data = ticket
+                Content = ticket
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SupportTicketRequest request)
+        public async Task<ActionResult<ResponseObject<object>>> Create([FromBody] SupportTicketRequest request)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new
-                    {
-                        Success = false,
-                        Message = "Invalid ticket data.",
-                        Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
-                    });
-                }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                await supportTicketService.AddAsync(request);
-                return Ok(new
-                {
-                    Success = true,
-                    Message = "Support ticket created successfully."
-                });
-            }
-            catch (Exception ex)
+            await supportTicketService.AddAsync(request);
+            return Ok(new ResponseObject<object>
             {
-                return BadRequest(new
-                {
-                    Success = false,
-                    Message = ex.Message
-                });
-            }
+                Message = "Support ticket created successfully",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] SupportTicketRequest request)
+        public async Task<ActionResult<ResponseObject<object>>> Update(string id, [FromBody] SupportTicketRequest request)
         {
-            try
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            request.TicketId = id;
+            await supportTicketService.UpdateAsync(request);
+            return Ok(new ResponseObject<object>
             {
-                request.TicketId = id;
-                await supportTicketService.UpdateAsync(request);
-                return Ok(new
-                {
-                    Success = true,
-                    Message = "Support ticket updated successfully."
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    Success = false,
-                    Message = ex.Message
-                });
-            }
+                Message = "Support ticket updated successfully",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<ActionResult<ResponseObject<object>>> Delete(string id)
         {
-            try
+            await supportTicketService.DeleteAsync(id);
+            return Ok(new ResponseObject<object>
             {
-                await supportTicketService.DeleteAsync(id);
-                return Ok(new
-                {
-                    Success = true,
-                    Message = "Support ticket deleted successfully."
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    Success = false,
-                    Message = ex.Message
-                });
-            }
+                Message = "Support ticket deleted successfully",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
     }
 }
