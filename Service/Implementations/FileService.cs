@@ -6,9 +6,18 @@ using Service.Interfaces;
 
 namespace Service.Implementations;
 
-public class FileService(IConfiguration configuration): IFileService
+public class FileService: IFileService
 {
-    private readonly Cloudinary _cloudinary = new(configuration["CloudinaryUrl"]);
+    private readonly Cloudinary _cloudinary;
+
+    public FileService(IConfiguration configuration)
+    {
+        var cloudName = configuration["CloudinarySettings:CloudName"];
+        var apiKey = configuration["CloudinarySettings:ApiKey"];
+        var apiSecret = configuration["CloudinarySettings:ApiSecret"];
+        var account = new Account(cloudName, apiKey, apiSecret);
+        _cloudinary = new Cloudinary(account);
+    }
 
     public Task<Uri> UploadAvatarAsync(string fileName)
     {
