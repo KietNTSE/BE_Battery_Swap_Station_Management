@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Dtos;
+using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
 using Service.Interfaces;
@@ -10,20 +11,25 @@ namespace EV_Driver.Controllers
     public class PasswordResetController(IPasswordResetService service) : ControllerBase
     {
         [HttpPost("forgot")]
-        public async Task<IActionResult> Forgot([FromBody] ForgotPasswordRequest request)
+        public async Task<ActionResult<ResponseObject<object>>> Forgot([FromBody] ForgotPasswordRequest request)
         {
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                return BadRequest(new { Success = false, Message = "Invalid request", Errors = errors });
+                return BadRequest(new ResponseObject<object>{ Success = false, Message = "Invalid request", Errors = errors });
             }
 
             await service.RequestPasswordResetAsync(request);
-            return Ok(new { Success = true, Message = "If email exists, OTP has been sent." });
+            return Ok(new ResponseObject<object>{
+                Message = "Send OTP to email",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
         }
 
         [HttpPost("reset")]
-        public async Task<IActionResult> Reset([FromBody] ResetPasswordRequest request)
+        public async Task<ActionResult<ResponseObject<object>>> Reset([FromBody] ResetPasswordRequest request)
         {
             if (!ModelState.IsValid)
             {
