@@ -6,9 +6,23 @@ services:
     build: 
       context: ..
       dockerfile: EV_Driver/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection=Server=mssql-database;Database=EV_DriverDB;User Id=sa;Password=12345;TrustServerCertificate=true;
+      JwtSettings__Key=your-super-secret-key-that-is-at-least-32-characters-long-for-jwt-token
+      JwtSettings__Issuer=EV_Driver_API
+      JwtSettings__Audience=EV_Driver_Client
+      JwtSettings__ExpiryInHours=24
+      Email__From=no-reply@evdriver.local
+      Email__SmtpHost=smtp.gmail.com
+      Email__SmtpPort=587
+      Email__EnableSsl=true
+      Email__User=test
+      Email__Password=test
+      Logging__LogLevel__Default=Information
+      Logging__LogLevel__Microsoft.AspNetCore=Warning
+      AllowedHosts=*
     networks:
       - ev-network
-
 networks:
   ev-network:
     name: ev-network
