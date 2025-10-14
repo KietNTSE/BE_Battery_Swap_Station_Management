@@ -33,6 +33,7 @@ jobs:
   api-deploy:
     name: Deploy / API
     runs-on: [self-hosted, linux, x64]
+    needs: api-image-build
     permissions:
       contents: read
       packages: write
