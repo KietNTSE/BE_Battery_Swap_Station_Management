@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessObject.Dtos;
+﻿using BusinessObject.Dtos;
+using static BusinessObject.Dtos.ForgotPasswordResponse;
 
 namespace Service.Interfaces
 {
     public interface IPasswordResetService
     {
-        Task RequestPasswordResetAsync(ForgotPasswordRequest request);
-        Task ResetPasswordAsync(ResetPasswordRequest request);
+        Task<ForgotPasswordResponse> RequestPasswordResetAsync(ForgotPasswordRequest request);
+        Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }
