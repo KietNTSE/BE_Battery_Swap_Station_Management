@@ -37,6 +37,21 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      DB_HOST: ${{secrets.DB_HOST}}
+      DB_USERNAME: ${{secrets.DB_USERNAME}}
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      JWT_KEY: ${{secrets.JWT_KEY}}
+      JWT_EXPIRY_IN_HOURS: ${{secrets.JWT_EXPIRY_IN_HOURS}}
+      EMAIL_FROM: ${{secrets.EMAIL_FROM}}
+      EMAIL_USER: ${{secrets.EMAIL_USER}}
+      EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
+      CLOUDINARY_CLOUD_NAME: ${{secrets.CLOUDINARY_CLOUD_NAME}}
+      CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
+      CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
+      PAYOS_CLIENT_ID: ${{secrets.PAYOS_CLIENT_ID}}
+      PAYOS_API_KEY: ${{secrets.PAYOS_API_KEY}}
+      PAYOS_CHECKSUM_KEY: ${{secrets.PAYOS_CHECKSUM_KEY}}
     steps:
       - name: Checkout Develop
         uses: actions/checkout@v3
