@@ -1,0 +1,31 @@
+services:
+  ev-database:
+    container_name: ev-database
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${DB_PASSWORD}
+      - MSSQL_PID=Express
+    networks:
+      - ev-network
+    volumes:
+      - ev-database-data:/var/opt/mssql/data
+  
+  ev-api:
+    container_name: ev-api
+    image: ${REGISTRY}/ev-api:latest
+    restart: always
+    build:
+      context: ..
+      dockerfile: EV_Driver/Dockerfile
+    networks:
+      - ev-network
+
+networks:
+  ev-network:
+    name: ev-network
+
+volumes:
+  ev-database-data:
+    name: ev-database-data

@@ -1,17 +1,4 @@
 services:
-  ev-database:
-    container_name: ev-database
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    restart: unless-stopped
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=${DB_PASSWORD}
-      - MSSQL_PID=Express
-    networks:
-      - ev-network
-    volumes:
-      - ev-database-data:/var/opt/mssql/data
-    
   ev-api:
     container_name: ev-api
     image: ${REGISTRY}/ev-api:latest
@@ -19,13 +6,24 @@ services:
     build: 
       context: ..
       dockerfile: EV_Driver/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql-database;Database=EV_DriverDB;User Id=sa;Password=Password1!;TrustServerCertificate=true;"
+      JwtSettings__Key: your-super-secret-key-that-is-at-least-32-characters-long-for-jwt-token
+      JwtSettings__Issuer: EV_Driver_API
+      JwtSettings__Audience: EV_Driver_Client
+      JwtSettings__ExpiryInHours: 24
+      Email__From: no-reply@evdriver.local
+      Email__SmtpHost: smtp.gmail.com
+      Email__SmtpPort: 587
+      Email__EnableSsl: true
+      Email__User: test
+      Email__Password: test
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+      AllowedHosts: "*"
     networks:
       - ev-network
-
 networks:
   ev-network:
     name: ev-network
-    
-volumes:
-  ev-database-data:
-    name: ev-database-data
+    external: true
