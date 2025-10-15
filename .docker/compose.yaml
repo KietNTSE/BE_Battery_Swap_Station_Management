@@ -7,17 +7,23 @@ services:
       context: ..
       dockerfile: EV_Driver/Dockerfile
     environment:
-      ConnectionStrings__DefaultConnection: "Server=mssql-database;Database=EV_DriverDB;User Id=sa;Password=Password1!;TrustServerCertificate=true;"
-      JwtSettings__Key: your-super-secret-key-that-is-at-least-32-characters-long-for-jwt-token
+      ConnectionStrings__DefaultConnection: "Server=${DB_HOST};Database=EV_DriverDB;User Id=${DB_USERNAME};Password=${DB_PASSWORD};TrustServerCertificate=true;"
+      JwtSettings__Key: ${JWT_KEY}
       JwtSettings__Issuer: EV_Driver_API
       JwtSettings__Audience: EV_Driver_Client
-      JwtSettings__ExpiryInHours: 24
-      Email__From: no-reply@evdriver.local
+      JwtSettings__ExpiryInHours: ${JWT_EXPIRY_IN_HOURS}
+      Email__From: ${EMAIL_FROM}
       Email__SmtpHost: smtp.gmail.com
       Email__SmtpPort: 587
       Email__EnableSsl: true
-      Email__User: test
-      Email__Password: test
+      Email__User: ${EMAIL_USER}
+      Email__Password: ${EMAIL_PASSWORD}
+      CloudinarySettings__CloudName: ${CLOUDINARY_CLOUD_NAME}
+      CloudinarySettings__ApiKey: ${CLOUDINARY_API_KEY}
+      CloudinarySettings__ApiSecret: ${CLOUDINARY_API_SECRET}
+      PayOSSetting__ClientId: ${PAYOS_CLIENT_ID}
+      PayOSSetting__ApiKey: ${PAYOS_API_KEY}
+      PayOSSetting__ChecksumKey: ${PAYOS_CHECKSUM_KEY}
       Logging__LogLevel__Default: Information
       Logging__LogLevel__Microsoft.AspNetCore: Warning
       AllowedHosts: "*"
