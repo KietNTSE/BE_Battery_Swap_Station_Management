@@ -1,43 +1,81 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Service.Implementations
 {
-    public class EmailService(IConfiguration config, ILogger<EmailService> logger) : IEmailService
+    public class EmailService : IEmailService
     {
-        public async Task SendAsync(string to, string subject, string htmlBody, CancellationToken ct = default)
+        private readonly ILogger<EmailService> _logger;
+        private readonly string _mailHost;
+        private readonly int _mailPort;
+        private readonly string _mailUser;
+        private readonly string _mailPass;
+        private readonly bool _mailEnableSsl;
+
+        public EmailService(IConfiguration config, ILogger<EmailService> logger)
         {
-            var section = config.GetSection("Email");
-            var from = section["From"];
-            var host = section["SmtpHost"];
-            var port = int.TryParse(section["SmtpPort"], out var p) ? p : 587;
-            var enableSsl = bool.TryParse(section["EnableSsl"], out var ssl) && ssl;
-            var user = section["User"];
-            var pass = section["Password"];
+            _logger = logger;
 
-            if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(from))
+            _mailHost = string.IsNullOrWhiteSpace(config["Email:SmtpHost"])
+                ? "smtp.gmail.com"
+                : config["Email:SmtpHost"]!;
+
+            if (string.IsNullOrWhiteSpace(_mailHost))
+                throw new InvalidOperationException("Email:SmtpHost is missing or empty in configuration.");
+
+            var portString = config["Email:SmtpPort"];
+            if (!int.TryParse(portString, out _mailPort))
+                _mailPort = 587;
+
+            _mailUser = config["Email:User"] ?? string.Empty;
+            _mailPass = config["Email:Password"] ?? string.Empty;
+            _mailEnableSsl = bool.TryParse(config["Email:EnableSsl"], out var enableSsl) && enableSsl;
+
+            if (string.IsNullOrWhiteSpace(_mailUser))
+                _logger.LogWarning("Email:User is empty — outgoing mail may fail.");
+        }
+        
+        public async Task SendEmailAsync(string to, string subject, string htmlBody)
+        {
+            try
             {
-                
-                logger.LogInformation("Email (fallback log). To: {to}, Subject: {subject}, Body: {body}", to, subject, htmlBody);
-                return;
+                using var client = await CreateClientAsync();
+
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("EV Driver Dev Team", _mailUser));
+                message.To.Add(new MailboxAddress(to, to));
+                message.Subject = subject;
+
+                var builder = new BodyBuilder
+                {
+                    HtmlBody = htmlBody
+                };
+                message.Body = builder.ToMessageBody();
+
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
             }
-
-            using var client = new SmtpClient(host, port)
+            catch (Exception ex)
             {
-                Credentials = string.IsNullOrWhiteSpace(user) ? CredentialCache.DefaultNetworkCredentials : new NetworkCredential(user, pass),
-                EnableSsl = enableSsl
-            };
-            using var mail = new MailMessage(from!, to, subject, htmlBody) { IsBodyHtml = true };
+                _logger.LogError(ex, "Failed to send email to {To}", to);
+                throw;
+            }
+        }
+        
+        
+        private async Task<SmtpClient> CreateClientAsync()
+        {
+            var client = new SmtpClient();
+            var socketOption = _mailEnableSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto;
 
-            await client.SendMailAsync(mail, ct);
+            await client.ConnectAsync(_mailHost, _mailPort, socketOption);
+            await client.AuthenticateAsync(_mailUser, _mailPass);
+
+            return client;
         }
     }
 }

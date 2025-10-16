@@ -11,7 +11,6 @@ namespace EV_Driver.Controllers
     [AllowAnonymous]
     public class PasswordResetController(IPasswordResetService passwordResetService) : ControllerBase
     {
-        // Gửi OTP quên mật khẩu
         [HttpPost("forgot")]
         public async Task<ActionResult<ResponseObject<object>>> Forgot([FromBody] ForgotPasswordRequest request)
         {
@@ -27,8 +26,7 @@ namespace EV_Driver.Controllers
                 Content = null
             });
         }
-
-        // Xác nhận OTP và đặt lại mật khẩu
+        
         [HttpPost("reset")]
         public async Task<ActionResult<ResponseObject<object>>> Reset([FromBody] ResetPasswordRequest request)
         {

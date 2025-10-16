@@ -28,7 +28,7 @@ namespace Service.Implementations
 
             // Validate staff role
             var staff = await context.Users.FindAsync(staffUserId);
-            if (staff == null || staff.Role != UserRole.Staff)
+            if (staff is not { Role: UserRole.Staff })
                 throw new ValidationException
                 {
                     ErrorMessage = "Only staff can create battery swaps",
