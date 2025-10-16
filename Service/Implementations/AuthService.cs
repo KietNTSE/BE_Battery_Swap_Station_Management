@@ -4,12 +4,13 @@ using BusinessObject.DTOs;
 using BusinessObject.Entities;
 using BusinessObject.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Service.Exceptions;
 using Service.Interfaces;
 
 namespace Service.Implementations;
 
-public class AuthService(ApplicationDbContext context, IJwtService jwtService) : IAuthService
+public class AuthService(ApplicationDbContext context, IJwtService jwtService, IDistributedCache cache) : IAuthService
 {
     public async Task<AuthResponseDto?> RegisterAsync(RegisterDto registerDto)
     {
@@ -29,7 +30,7 @@ public class AuthService(ApplicationDbContext context, IJwtService jwtService) :
             Email = registerDto.Email,
             Phone = registerDto.Phone,
             Role = registerDto.Role,
-            Status = UserStatus.Active,
+            Status = UserStatus.Inactive,
             Password = passwordHash
         };
 
@@ -59,6 +60,7 @@ public class AuthService(ApplicationDbContext context, IJwtService jwtService) :
             };
         }
     }
+    
 
     public async Task<AuthResponseDto?> LoginAsync(LoginDto loginDto)
     {

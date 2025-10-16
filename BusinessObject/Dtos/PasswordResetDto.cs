@@ -7,13 +7,9 @@ namespace BusinessObject.Dtos
         [Required, EmailAddress, MaxLength(255)]
         public string Email { get; set; } = string.Empty;
     }
-
-    // B2: Người dùng xác nhận OTP và đặt mật khẩu mới
+    
     public class ResetPasswordRequest
     {
-        [Required, EmailAddress, MaxLength(255)]
-        public string Email { get; set; } = string.Empty;
-        
         [Required, StringLength(6, MinimumLength = 6)]
         [RegularExpression(@"^\d{6}$", ErrorMessage = "OTP must be 6 digits.")]
         public string Otp { get; set; } = string.Empty;

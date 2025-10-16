@@ -1,43 +1,57 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Service.Implementations
 {
     public class EmailService(IConfiguration config, ILogger<EmailService> logger) : IEmailService
     {
-        public async Task SendAsync(string to, string subject, string htmlBody, CancellationToken ct = default)
+        private readonly string _mailHost = config["Email:SmtpHost"] ?? "smtp.gmail.com";
+        private readonly int _mailPort = int.Parse(config["Email:SmtpPort"] ?? "25");
+        private readonly string _mailUser = config["Email:User"] ?? "";
+        private readonly string _mailPass = config["Email:Password"] ?? "";
+        private readonly bool _mailEnableSsl = bool.Parse(config["Email:EnableSsl"] ?? "false");
+        
+        public async Task SendEmailAsync(string to, string subject, string htmlBody)
         {
-            var section = config.GetSection("Email");
-            var from = section["From"];
-            var host = section["SmtpHost"];
-            var port = int.TryParse(section["SmtpPort"], out var p) ? p : 587;
-            var enableSsl = bool.TryParse(section["EnableSsl"], out var ssl) && ssl;
-            var user = section["User"];
-            var pass = section["Password"];
-
-            if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(from))
+            try
             {
-                
-                logger.LogInformation("Email (fallback log). To: {to}, Subject: {subject}, Body: {body}", to, subject, htmlBody);
-                return;
+                using var client = await CreateClientAsync();
+
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("EV Driver Dev Team", _mailUser));
+                message.To.Add(new MailboxAddress(to, to));
+                message.Subject = subject;
+
+                var builder = new BodyBuilder
+                {
+                    HtmlBody = htmlBody
+                };
+                message.Body = builder.ToMessageBody();
+
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
             }
-
-            using var client = new SmtpClient(host, port)
+            catch (Exception ex)
             {
-                Credentials = string.IsNullOrWhiteSpace(user) ? CredentialCache.DefaultNetworkCredentials : new NetworkCredential(user, pass),
-                EnableSsl = enableSsl
-            };
-            using var mail = new MailMessage(from!, to, subject, htmlBody) { IsBodyHtml = true };
+                logger.LogError(ex, "Failed to send email to {To}", to);
+                throw;
+            }
+        }
+        
+        
+        private async Task<SmtpClient> CreateClientAsync()
+        {
+            var client = new SmtpClient();
+            var socketOption = _mailEnableSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto;
 
-            await client.SendMailAsync(mail, ct);
+            await client.ConnectAsync(_mailHost, _mailPort, socketOption);
+            await client.AuthenticateAsync(_mailUser, _mailPass);
+
+            return client;
         }
     }
 }

@@ -1,16 +1,14 @@
-﻿using BusinessObject;
+﻿using System.Net;
+using BusinessObject;
 using BusinessObject.Dtos;
-using BusinessObject.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Service.Exceptions;
 using Service.Interfaces;
-using System.Net;
-using static BusinessObject.Dtos.ForgotPasswordResponse;
 
 namespace Service.Implementations
 {
-    public class PasswordResetService(ApplicationDbContext context, IEmailService emailService, IHttpContextAccessor accessor)
+    public class PasswordResetService(ApplicationDbContext context, IEmailService emailService, IEmailTemplateLoaderService emailTemplateLoaderService, IDistributedCache cache)
         : IPasswordResetService
     {
         private static string GenerateOtp()
@@ -19,49 +17,56 @@ namespace Service.Implementations
             return rng.ToString();
         }
 
-        public async Task<ForgotPasswordResponse> RequestPasswordResetAsync(ForgotPasswordRequest request)
+        public async Task RequestPasswordResetAsync(ForgotPasswordRequest request)
         {
-            // Không tiết lộ email có tồn tại hay không
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (user is null)
             {
-                // Luôn trả về thành công với thông điệp chung
-                return new ForgotPasswordResponse();
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "Email not found."
+                };
             }
 
             var otp = GenerateOtp();
-            var hash = BCrypt.Net.BCrypt.HashPassword(otp);
-
-            var token = new PasswordResetToken
+            var otpKey = "reset_otp" + otp;
+            var otpCheck = false;
+            do
             {
-                ResetId = Guid.NewGuid().ToString(),
-                UserId = user.UserId,
-                Email = user.Email,
-                OtpHash = hash,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(10),
-                Consumed = false,
-                AttemptCount = 0,
-                CreatedAt = DateTime.UtcNow
+                var checkOtp = await cache.GetStringAsync(otpKey);
+                if (checkOtp == otp)
+                {
+                    otp = GenerateOtp();
+                    otpKey = "reset_otp" + otp;
+                }
+                else
+                {
+                    otpCheck = true;
+                }
+            } while (!otpCheck);
+            
+            var cacheEntryOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15)
             };
+            
+            await cache.SetStringAsync(otpKey,user.UserId, cacheEntryOptions);
 
-            context.PasswordResetTokens.Add(token);
-            await context.SaveChangesAsync();
+            const string subject = "EV Driver - OTP code to reset password";
+            
+            var loader = await emailTemplateLoaderService.RenderTemplateAsync("ResettingPassword", new PasswordResetOtpModel
+            {
+                FullName = user.FullName,
+                Otp = otp,
+            });
 
-            var subject = "EV Driver - OTP code to reset password";
-            var body = $@"
-            <p>Hello {user.FullName},</p>
-            <p>Your password reset OTP code is: <b>{otp}</b></p>
-            <p>OTP is valid for 10 minutes. If not requested by you, please ignore this email.</p>
-            <p>Best regards,</p>
-            <p>EV Driver Team</p>";
-
-            await emailService.SendAsync(user.Email, subject, body);
-
-            return new ForgotPasswordResponse(); // Success=true, message chung
+            await emailService.SendEmailAsync(user.Email, subject, loader);
         }
 
-        public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request)
+        public async Task ResetPasswordAsync(ResetPasswordRequest request)
         {
             if (request.NewPassword != request.ConfirmPassword)
                 throw new ValidationException
@@ -70,60 +75,47 @@ namespace Service.Implementations
                     Code = "400",
                     ErrorMessage = "NewPassword and ConfirmPassword do not match."
                 };
-
-            // Lấy token mới nhất còn hiệu lực, chưa consumed
-            var token = await context.PasswordResetTokens
-                .Where(t => t.Email == request.Email && !t.Consumed && t.ExpiresAt > DateTime.UtcNow)
-                .OrderByDescending(t => t.CreatedAt)
-                .FirstOrDefaultAsync();
-
-            if (token is null)
-                throw new ValidationException
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Code = "400",
-                    ErrorMessage = "OTP invalid or expired."
-                };
-
-            // Giới hạn số lần thử
-            if (token.AttemptCount >= 5)
-                throw new ValidationException
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Code = "400",
-                    ErrorMessage = "You have entered the wrong OTP more than the allowed number of times. Please request a new OTP."
-                };
-
-            var otpOk = BCrypt.Net.BCrypt.Verify(request.Otp, token.OtpHash);
-            if (!otpOk)
+            
+            var otpKey = "reset_otp" + request.Otp;
+            
+            var userId = await cache.GetStringAsync(otpKey);
+            if (userId is null)
             {
-                token.AttemptCount += 1;
-                await context.SaveChangesAsync();
-
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.BadRequest,
                     Code = "400",
-                    ErrorMessage = "OTP is incorrect."
+                    ErrorMessage = "Invalid OTP."
                 };
             }
+            
+            var userEntity = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
 
-            // Đúng OTP → cập nhật password
-            var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == token.UserId);
-            if (user is null)
+            if (userEntity is null)
+            {
                 throw new ValidationException
                 {
                     StatusCode = HttpStatusCode.BadRequest,
                     Code = "400",
                     ErrorMessage = "User not found."
                 };
+            }
 
-            user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-            token.Consumed = true;
+            userEntity.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
-            await context.SaveChangesAsync();
-
-            return new ResetPasswordResponse(); // Success=true, message mặc định
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException
+                {
+                    ErrorMessage = ex.Message,
+                    Code = "500",
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
     }
 }
