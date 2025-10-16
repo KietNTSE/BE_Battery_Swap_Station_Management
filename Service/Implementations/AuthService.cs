@@ -61,7 +61,7 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
             if (checkOtp == otp)
             {
                 otp = RandomUtils.GenerateOtp();
-                otpKey = "reset_otp" + otp;
+                otpKey = "register_otp" + otp;
             }
             else
             {
