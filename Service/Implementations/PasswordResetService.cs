@@ -5,17 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Service.Exceptions;
 using Service.Interfaces;
+using Service.Utils;
 
 namespace Service.Implementations
 {
     public class PasswordResetService(ApplicationDbContext context, IEmailService emailService, IEmailTemplateLoaderService emailTemplateLoaderService, IDistributedCache cache)
         : IPasswordResetService
     {
-        private static string GenerateOtp()
-        {
-            var rng = Random.Shared.Next(100000, 999999);
-            return rng.ToString();
-        }
+        
 
         public async Task RequestPasswordResetAsync(ForgotPasswordRequest request)
         {
@@ -31,7 +28,7 @@ namespace Service.Implementations
                 };
             }
 
-            var otp = GenerateOtp();
+            var otp = RandomUtils.GenerateOtp();
             var otpKey = "reset_otp" + otp;
             var otpCheck = false;
             do
@@ -39,7 +36,7 @@ namespace Service.Implementations
                 var checkOtp = await cache.GetStringAsync(otpKey);
                 if (checkOtp == otp)
                 {
-                    otp = GenerateOtp();
+                    otp = RandomUtils.GenerateOtp();
                     otpKey = "reset_otp" + otp;
                 }
                 else
@@ -120,6 +117,7 @@ namespace Service.Implementations
             try
             {
                 await context.SaveChangesAsync();
+                await cache.RemoveAsync(otpKey);
             }
             catch (Exception ex)
             {

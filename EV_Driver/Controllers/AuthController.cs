@@ -26,6 +26,30 @@ public class AuthController(IAuthService authService) : ControllerBase
         });
     }
 
+    [HttpPost("activate-account/{otp}")]
+    public async Task<ActionResult<ResponseObject<object>>> ActivateAccount(string otp)
+    {
+        await authService.ActivateAccountAsync(otp);
+        return Ok(new ResponseObject<object>
+        {
+            Message = "Activate account successful",
+            Code = "200",
+            Success = true
+        });
+    }
+
+    [HttpPost("resend-register-otp")]
+    public async Task<ActionResult<ResponseObject<object>>> ResendRegisterOtp()
+    {
+        await authService.ResendRegisterOtp();
+        return Ok(new ResponseObject<object>
+        {
+            Message = "Resend register otp successful",
+            Code = "200",
+            Success = true
+        });
+    }
+
     [HttpPost("login")]
     public async Task<ActionResult<ResponseObject<AuthResponseDto>>> Login([FromBody] LoginDto loginDto)
     {

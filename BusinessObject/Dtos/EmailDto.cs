@@ -11,3 +11,10 @@ public class PasswordResetOtpModel
     public string FullName { get; set; } = string.Empty;
     public string Otp { get; set; } = string.Empty;
 }
+
+
+public class UserRegisterOtpModel
+{
+    public string FullName { get; set; } = string.Empty;
+    public string Otp { get; set; } = string.Empty;
+}
