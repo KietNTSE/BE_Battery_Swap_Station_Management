@@ -8,4 +8,7 @@ public interface IBookingService
     Task CreateBooking(CreateBookingRequest request);
     Task<PaginationWrapper<List<BookingResponse>, BookingResponse>> GetAllBookingAsync(int page,
         int pageSize, string? search);
+
+    Task<PaginationWrapper<List<BookingResponse>, BookingResponse>> GetAllMyBookingAsync(int page, int pageSize,
+        string? search);
 }

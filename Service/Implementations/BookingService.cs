@@ -145,6 +145,58 @@ public class BookingService(ApplicationDbContext context, IHttpContextAccessor a
 
         return ToResponse(b);
     }
+    
+    public async Task<PaginationWrapper<List<BookingResponse>, BookingResponse>> GetAllMyBookingAsync(int page, int pageSize, string? search)
+    {
+        var userId = JwtUtils.GetUserId(accessor);
+        if (string.IsNullOrEmpty(userId))
+        {
+            throw new ValidationException
+            {
+                ErrorMessage = "Unauthorized",
+                Code = "401",
+                StatusCode = HttpStatusCode.Unauthorized
+            };
+        }
+        
+        if (page <= 0) page = 1;
+        if (pageSize <= 0) pageSize = 10;
+
+        var query = context.Bookings
+            .Include(x => x.User)
+            .Include(x => x.Station)
+            .Include(x => x.Vehicle)
+            .Include(x => x.BatteryBookingSlots)
+            .ThenInclude(s => s.Battery)
+            .ThenInclude(bb => bb.BatteryType)
+            .AsQueryable();
+        
+        query = query.Where(b => b.UserId == userId);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(b =>
+                b.BookingId.Contains(term) ||
+                b.User.FullName.Contains(term) ||
+                b.User.Email.Contains(term) ||
+                b.Station.Name.Contains(term) ||
+                b.Vehicle.LicensePlate.Contains(term));
+        }
+
+        var totalItems = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(b => b.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var responses = items.Select(ToResponse).ToList();
+
+     
+        return new PaginationWrapper<List<BookingResponse>, BookingResponse>(responses, page, totalItems, pageSize);
+    }
 
     public async Task<PaginationWrapper<List<BookingResponse>, BookingResponse>> GetAllBookingAsync(
         int page, int pageSize, string? search)

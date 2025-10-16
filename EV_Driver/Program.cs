@@ -37,6 +37,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IFileService,FileService>();
+builder.Services.AddScoped<IEmailTemplateLoaderService, EmailTemplateLoaderService>();
 
 
 // Add JWT authentication
@@ -106,6 +107,11 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetSection("ConnectionStrings:RedisConnection").Value;
+});
 
 var app = builder.Build();
 

@@ -21,4 +21,41 @@ public class BookingController(IBookingService bookingService) : ControllerBase
             Success = true
         });
     }
+
+    [HttpGet]
+    public async Task<ActionResult<ResponseObject<List<BookingResponse>>>> GetAllBookingAsync([FromQuery] int page, [FromQuery] int size, [FromQuery] string? search)
+    {
+        var result = await bookingService.GetAllBookingAsync(page, size, search);
+        return Ok(new ResponseObject<List<BookingResponse>>
+        {
+            Message = "Get booking successfully",
+            Code = "200",
+            Success = true
+        }.UnwrapPagination(result));
+    }
+    
+    [HttpGet("me")]
+    public async Task<ActionResult<ResponseObject<List<BookingResponse>>>> GetAllMyBookingAsync([FromQuery] int page, [FromQuery] int size, [FromQuery] string? search)
+    {
+        var result = await bookingService.GetAllMyBookingAsync(page, size, search);
+        return Ok(new ResponseObject<List<BookingResponse>>
+        {
+            Message = "Get booking successfully",
+            Code = "200",
+            Success = true
+        }.UnwrapPagination(result));
+    }
+
+    [HttpGet("{bookingId}")]
+    public async Task<ActionResult<ResponseObject<BookingResponse>>> GetBookingById(string bookingId)
+    {
+        var result = await bookingService.GetBookingAsync(bookingId);
+        return Ok(new ResponseObject<BookingResponse>
+        {
+            Content = result,
+            Message = "Get booking successfully",
+            Code = "200",
+            Success = true
+        });
+    }
 }
