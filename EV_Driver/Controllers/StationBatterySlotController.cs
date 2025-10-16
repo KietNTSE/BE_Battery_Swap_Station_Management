@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using BusinessObject.Dtos;
+﻿using BusinessObject.Dtos;
 using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;

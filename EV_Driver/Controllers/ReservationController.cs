@@ -1,7 +1,8 @@
-﻿using BusinessObject.Dtos;
+﻿using System.Net;
+using BusinessObject.Dtos;
 using BusinessObject.DTOs;
-using BusinessObject.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Service.Exceptions;
 using Service.Interfaces;
 
 namespace EV_Driver.Controllers
@@ -48,7 +49,7 @@ namespace EV_Driver.Controllers
                     Success = true
                 });
             }
-            catch (Service.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 return NotFound(new { error = ex.ErrorMessage });
             }
@@ -84,7 +85,7 @@ namespace EV_Driver.Controllers
                     Success = true
                 });
             }
-            catch (Service.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 return BadRequest(new { error = ex.ErrorMessage });
             }
@@ -108,9 +109,9 @@ namespace EV_Driver.Controllers
                     Success = true
                 });
             }
-            catch (Service.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
-                if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (ex.StatusCode == HttpStatusCode.NotFound)
                     return NotFound(new { error = ex.ErrorMessage });
                 return BadRequest(new { error = ex.ErrorMessage });
             }
@@ -130,9 +131,9 @@ namespace EV_Driver.Controllers
                     Success = true
                 });
             }
-            catch (Service.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
-                if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (ex.StatusCode == HttpStatusCode.NotFound)
                     return NotFound(new { error = ex.ErrorMessage });
                 return BadRequest(new { error = ex.ErrorMessage });
             }

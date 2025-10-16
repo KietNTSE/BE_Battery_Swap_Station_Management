@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
-namespace API.Controllers;
+namespace EV_Driver.Controllers;
 
 [ApiController]
 [Route("api/admin")]
