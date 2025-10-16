@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusinessObject.Enums;
 
 namespace BusinessObject.DTOs;
 
@@ -19,6 +18,4 @@ public class RegisterDto
     [Required]
     [StringLength(255, MinimumLength = 6)]
     public string Password { get; set; } = string.Empty;
-
-    public UserRole Role { get; set; } = UserRole.Driver;
 }
