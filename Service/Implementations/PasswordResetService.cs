@@ -56,14 +56,28 @@ namespace Service.Implementations
             await cache.SetStringAsync(otpKey,user.UserId, cacheEntryOptions);
 
             const string subject = "EV Driver - OTP code to reset password";
-            
-            var loader = await emailTemplateLoaderService.RenderTemplateAsync("ResettingPassword", new PasswordResetOtpModel
-            {
-                FullName = user.FullName,
-                Otp = otp,
-            });
 
-            await emailService.SendEmailAsync(user.Email, subject, loader);
+            try
+            {
+                var loader = await emailTemplateLoaderService.RenderTemplateAsync("ResetPassword.cshtml",
+                    new PasswordResetOtpModel
+                    {
+                        FullName = user.FullName,
+                        Otp = otp,
+                    });
+
+                await emailService.SendEmailAsync(user.Email, subject, loader);
+            }
+            catch (Exception ex)
+            {
+                await cache.RemoveAsync(otpKey);
+                throw new ValidationException
+                {
+                    ErrorMessage = ex.Message,
+                    Code = "500",
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
 
         public async Task ResetPasswordAsync(ResetPasswordRequest request)

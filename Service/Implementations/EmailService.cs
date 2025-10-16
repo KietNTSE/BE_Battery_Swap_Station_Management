@@ -7,13 +7,37 @@ using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Service.Implementations
 {
-    public class EmailService(IConfiguration config, ILogger<EmailService> logger) : IEmailService
+    public class EmailService : IEmailService
     {
-        private readonly string _mailHost = config["Email:SmtpHost"] ?? "smtp.gmail.com";
-        private readonly int _mailPort = int.Parse(config["Email:SmtpPort"] ?? "25");
-        private readonly string _mailUser = config["Email:User"] ?? "";
-        private readonly string _mailPass = config["Email:Password"] ?? "";
-        private readonly bool _mailEnableSsl = bool.Parse(config["Email:EnableSsl"] ?? "false");
+        private readonly ILogger<EmailService> _logger;
+        private readonly string _mailHost;
+        private readonly int _mailPort;
+        private readonly string _mailUser;
+        private readonly string _mailPass;
+        private readonly bool _mailEnableSsl;
+
+        public EmailService(IConfiguration config, ILogger<EmailService> logger)
+        {
+            _logger = logger;
+
+            _mailHost = string.IsNullOrWhiteSpace(config["Email:SmtpHost"])
+                ? "smtp.gmail.com"
+                : config["Email:SmtpHost"]!;
+
+            if (string.IsNullOrWhiteSpace(_mailHost))
+                throw new InvalidOperationException("Email:SmtpHost is missing or empty in configuration.");
+
+            var portString = config["Email:SmtpPort"];
+            if (!int.TryParse(portString, out _mailPort))
+                _mailPort = 587;
+
+            _mailUser = config["Email:User"] ?? string.Empty;
+            _mailPass = config["Email:Password"] ?? string.Empty;
+            _mailEnableSsl = bool.TryParse(config["Email:EnableSsl"], out var enableSsl) && enableSsl;
+
+            if (string.IsNullOrWhiteSpace(_mailUser))
+                _logger.LogWarning("Email:User is empty — outgoing mail may fail.");
+        }
         
         public async Task SendEmailAsync(string to, string subject, string htmlBody)
         {
@@ -37,7 +61,7 @@ namespace Service.Implementations
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send email to {To}", to);
+                _logger.LogError(ex, "Failed to send email to {To}", to);
                 throw;
             }
         }
