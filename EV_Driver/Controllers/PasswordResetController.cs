@@ -26,8 +26,7 @@ namespace EV_Driver.Controllers
                 Content = null
             });
         }
-
-        // Xác nhận OTP và đặt lại mật khẩu
+        
         [HttpPost("reset")]
         public async Task<ActionResult<ResponseObject<object>>> Reset([FromBody] ResetPasswordRequest request)
         {
