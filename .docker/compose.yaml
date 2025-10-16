@@ -8,6 +8,7 @@ services:
       dockerfile: EV_Driver/Dockerfile
     environment:
       ConnectionStrings__DefaultConnection: "Server=${DB_HOST};Database=EV_DriverDB;User Id=${DB_USERNAME};Password=${DB_PASSWORD};TrustServerCertificate=true;"
+      ConnectionStrings__RedisConnection: "${REDIS_HOST}:6379"
       JwtSettings__Key: ${JWT_KEY}
       JwtSettings__Issuer: EV_Driver_API
       JwtSettings__Audience: EV_Driver_Client
