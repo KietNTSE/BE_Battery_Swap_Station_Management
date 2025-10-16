@@ -35,10 +35,12 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
             Status = UserStatus.Inactive,
             Password = passwordHash
         };
+        await using var transaction = await context.Database.BeginTransactionAsync();
         try
         {
             context.Users.Add(user);
             await context.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
         catch (Exception ex)
         {
@@ -88,6 +90,7 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
         catch (Exception ex)
         {
             await cache.RemoveAsync(otpKey);
+            await transaction.RollbackAsync();
             throw new ValidationException
             {
                 ErrorMessage = ex.Message,
