@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using BusinessObject;
 using BusinessObject.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Service.Exceptions;
@@ -9,7 +10,7 @@ using Service.Utils;
 
 namespace Service.Implementations
 {
-    public class PasswordResetService(ApplicationDbContext context, IEmailService emailService, IEmailTemplateLoaderService emailTemplateLoaderService, IDistributedCache cache)
+    public class PasswordResetService(ApplicationDbContext context, IEmailService emailService, IEmailTemplateLoaderService emailTemplateLoaderService, IDistributedCache cache, IHttpContextAccessor accessor)
         : IPasswordResetService
     {
         
@@ -68,6 +69,69 @@ namespace Service.Implementations
             catch (Exception ex)
             {
                 await cache.RemoveAsync(otpKey);
+                throw new ValidationException
+                {
+                    ErrorMessage = ex.Message,
+                    Code = "500",
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
+        public async Task ResentResetPasswordOtp()
+        {
+            var userId = JwtUtils.GetUserId(accessor);
+            if (string.IsNullOrEmpty(userId))
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    ErrorMessage = "Unauthorized",
+                    Code = "401"
+                };
+            var user = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (user is null)
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessage = "User not found.",
+                    Code = "400"
+                };
+            var otp = RandomUtils.GenerateOtp();
+            var otpKey = "reset_otp" + otp;
+            var otpCheck = false;
+            do
+            {
+                if (await cache.GetStringAsync(otpKey) is null)
+                {
+                    otpCheck = true;
+                }
+                else
+                {
+                    otp = RandomUtils.GenerateOtp();
+                    otpKey = "reset_otp" + otp;
+                }
+            } while (!otpCheck);
+            
+            var cacheEntryOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15)
+            };
+            
+            try
+            {
+                await cache.SetStringAsync(otpKey,userId, cacheEntryOptions);
+                const string subject = "EV Driver - OTP code to reset password";
+                var loader = await emailTemplateLoaderService.RenderTemplateAsync("ResetPassword.cshtml",
+                    new PasswordResetOtpModel
+                    {
+                        FullName = user.FullName,
+                        Otp = otp,
+                    });
+
+                await emailService.SendEmailAsync(user.Email, subject, loader);
+            }
+            catch (Exception ex)
+            {
                 throw new ValidationException
                 {
                     ErrorMessage = ex.Message,
