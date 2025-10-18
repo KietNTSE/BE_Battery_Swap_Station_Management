@@ -35,10 +35,12 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
             Status = UserStatus.Inactive,
             Password = passwordHash
         };
+        await using var transaction = await context.Database.BeginTransactionAsync();
         try
         {
             context.Users.Add(user);
             await context.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
         catch (Exception ex)
         {
@@ -59,7 +61,7 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
             if (checkOtp == otp)
             {
                 otp = RandomUtils.GenerateOtp();
-                otpKey = "reset_otp" + otp;
+                otpKey = "register_otp" + otp;
             }
             else
             {
@@ -88,6 +90,7 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
         catch (Exception ex)
         {
             await cache.RemoveAsync(otpKey);
+            await transaction.RollbackAsync();
             throw new ValidationException
             {
                 ErrorMessage = ex.Message,
@@ -262,10 +265,10 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
                 Code = "401"
             };
 
-        if (user.Status != UserStatus.Active)
+        if (user.Status == UserStatus.Suspended)
             throw new ValidationException
             {
-                ErrorMessage = "User is disabled or banned, please contact admin",
+                ErrorMessage = "User is banned, please contact admin",
                 StatusCode = HttpStatusCode.Unauthorized,
                 Code = "401"
             };

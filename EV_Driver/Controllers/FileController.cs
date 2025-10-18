@@ -1,3 +1,4 @@
+using BusinessObject.Dtos;
 using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,13 @@ namespace EV_Driver.Controllers;
 public class FileController(IFileService fileService): ControllerBase
 {
     [HttpPost("upload/avatar")]
-    public async Task<ActionResult<ResponseObject<string>>> AvatarUpload([FromQuery] string fileName)
+    public async Task<ActionResult<ResponseObject<AvatarPresignResponse>>> AvatarUpload([FromQuery] string fileName)
     {
         var result = await fileService.UploadAvatarAsync(fileName);
-        return Ok(new ResponseObject<string>
+        return Ok(new ResponseObject<AvatarPresignResponse>
         {
-            Content = result.ToString(),
-            Message = "Login successful",
+            Content = result,
+            Message = "Create presign url successfully",
             Code = "200",
             Success = true
         });
