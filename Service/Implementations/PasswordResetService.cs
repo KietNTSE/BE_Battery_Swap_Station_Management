@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using BusinessObject;
 using BusinessObject.Dtos;
+using BusinessObject.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -182,6 +183,63 @@ namespace Service.Implementations
             {
                 await context.SaveChangesAsync();
                 await cache.RemoveAsync(otpKey);
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException
+                {
+                    ErrorMessage = ex.Message,
+                    Code = "500",
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
+        public async Task ReassignPasswordForUser(string userId)
+        {
+            var authUserId = JwtUtils.GetUserId(accessor);
+            if (string.IsNullOrEmpty(authUserId))
+            {
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    ErrorMessage = "Unauthorized",
+                    Code = "401"
+                };
+            }
+            var checkUser = await context.Users.AnyAsync(u => u.UserId == userId && u.Role == UserRole.Admin);
+            if (!checkUser)
+            {
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessage = "User is not an admin.",
+                    Code = "400"
+                };
+            }
+            var userEntity = await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userEntity is null)
+            {
+                throw new ValidationException
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Code = "400",
+                    ErrorMessage = "User not found."
+                };
+            }
+            var randomPassword = RandomUtils.GeneratePassword();
+            userEntity.Password = BCrypt.Net.BCrypt.HashPassword(randomPassword);
+            try
+            {
+                await context.SaveChangesAsync();
+                const string subject = "EV Driver - New password";
+                var loader = await emailTemplateLoaderService.RenderTemplateAsync("PasswordReassign.cshtml",
+                    new PasswordReassignModel
+                    {
+                        FullName = userEntity.FullName,
+                        NewPassword = randomPassword
+                    });
+                await emailService.SendEmailAsync(userEntity.Email, subject, loader);
             }
             catch (Exception ex)
             {
