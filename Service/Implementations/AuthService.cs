@@ -61,7 +61,7 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
             if (checkOtp == otp)
             {
                 otp = RandomUtils.GenerateOtp();
-                otpKey = "reset_otp" + otp;
+                otpKey = "register_otp" + otp;
             }
             else
             {
@@ -265,10 +265,10 @@ public class AuthService(ApplicationDbContext context, IHttpContextAccessor http
                 Code = "401"
             };
 
-        if (user.Status != UserStatus.Active)
+        if (user.Status == UserStatus.Suspended)
             throw new ValidationException
             {
-                ErrorMessage = "User is disabled or banned, please contact admin",
+                ErrorMessage = "User is banned, please contact admin",
                 StatusCode = HttpStatusCode.Unauthorized,
                 Code = "401"
             };

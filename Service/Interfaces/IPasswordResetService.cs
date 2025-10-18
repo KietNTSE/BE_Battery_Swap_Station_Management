@@ -6,5 +6,6 @@ namespace Service.Interfaces
     {
         Task RequestPasswordResetAsync(ForgotPasswordRequest request);
         Task ResetPasswordAsync(ResetPasswordRequest request);
+        Task ResentResetPasswordOtp();
     }
 }
