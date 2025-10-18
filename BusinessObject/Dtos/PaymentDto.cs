@@ -6,9 +6,7 @@ namespace BusinessObject.DTOs
     public class CreatePaymentRequest
     {
         public string SwapId { get; set; } = string.Empty;
-        public double Amount { get; set; }
         public PayMethod PaymentMethod { get; set; }
-        public string Currency { get; set; } = "VND";
     }
 
     public class PaymentResponse
@@ -23,7 +21,6 @@ namespace BusinessObject.DTOs
         public PayMethod PaymentMethod { get; set; }
         public PayStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string? QrCodeUrl { get; set; } // For QR payment display
     }
 
     public class UpdatePaymentStatusRequest
