@@ -42,5 +42,18 @@ namespace EV_Driver.Controllers
                 Content = null
             });
         }
+        
+        [HttpPost("change/{userId}")]
+        public async Task<ActionResult<ResponseObject<object>>> ResetPasswordWithUserId(string userId)
+        {
+            await passwordResetService.ReassignPasswordForUser(userId);
+            return Ok(new ResponseObject<object>
+            {
+                Message = "Password has been reset successfully.",
+                Code = "200",
+                Success = true,
+                Content = null
+            });
+        }
     }
 }
